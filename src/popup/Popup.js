@@ -1,38 +1,8 @@
 import React from 'react';
 import './Popup.css';
+import '@polymer/paper-button/paper-button.js';
 
 import Sample from 'components/Sample';
-
-const TechStackLogos = () => {
-   return (
-      <div className='tech-logos'>
-         <img
-            className='logo'
-            src='/img/react.svg'
-            alt='ReactJS logo'
-            title='ReactJS'
-         />
-         <img
-            className='logo'
-            src='/img/webpack.svg'
-            alt='Webpack logo'
-            title='Webpack'
-         />
-         <img
-            className='logo'
-            src='/img/eslint.svg'
-            alt='ESLint logo'
-            title='ESLint'
-         />
-         <img
-            className='logo'
-            src='/img/jest.svg'
-            alt='Jest logo'
-            title='Jest'
-         />
-      </div>
-   );
-};
 
 const Popup = () => {
    return (
@@ -42,17 +12,14 @@ const Popup = () => {
             Thanks for using complex changess
             <span className='brand'>Modern extension Mark Projects</span>
          </p>
-         <p className='stack-head'>Made using :</p>
-         <TechStackLogos />
+
          <p className='contrib-msg'>
             We would love some of your help in making this boilerplate even
             better. <br />
-            <a
-               href='https://www.github.com/kryptokinght/react-extension-boilerplate'
-               target='_blank'>
-               React Extension Boilerplate
-            </a>
          </p>
+         <paper-button toggles raised class='green'>
+            toggles
+         </paper-button>
       </div>
    );
 };
