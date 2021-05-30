@@ -1,5 +1,8 @@
 import React from 'react';
 import './Popup.css';
+import 'components/Sample.scss';
+
+import Sample from 'components/Sample';
 
 const TechStackLogos = () => {
    return (
@@ -35,8 +38,9 @@ const TechStackLogos = () => {
 const Popup = () => {
    return (
       <div className='popup'>
+         <Sample />
          <p className='popup-greet'>
-            Thanks for using Cool
+            Thanks for using complex changess
             <span className='brand'>Modern extension Mark Projects</span>
          </p>
          <p className='stack-head'>Made using :</p>
