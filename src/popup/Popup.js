@@ -1,6 +1,5 @@
 import React from 'react';
 import './Popup.css';
-import 'components/Sample.scss';
 
 import Sample from 'components/Sample';
 

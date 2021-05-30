@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import './Sample.scss';
+import './Sample.css';
+import { sample } from 'constant/insurers';
 const Sample = () => {
    const [count, setCount] = useState(0);
    useEffect(() => {
@@ -8,7 +9,9 @@ const Sample = () => {
 
    return (
       <div className='sample_components' onClick={() => setCount(count + 1)}>
-         <h2>Im a cool Sample component {count}</h2>
+         <h2>
+            Im a cool Sample component {sample} {count}
+         </h2>
       </div>
    );
 };
