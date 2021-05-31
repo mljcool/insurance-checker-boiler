@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
 
 import Main from 'components/main';
 import Settings from 'components/settings';
@@ -17,13 +19,20 @@ const Popup = () => {
    return (
       <div className='popup'>
          <Header switchMenu={toggleSettings} />
-         {isToggle && <Settings />}
-         {!isToggle && <Main />}
-
-         <p className='contrib-msg'>
-            We would love some of your help in making this boilerplate even
-            better. <br />
-         </p>
+         {isToggle && (
+            <Grow in={isToggle}>
+               <Paper elevation={0}>
+                  <Settings />
+               </Paper>
+            </Grow>
+         )}
+         {!isToggle && (
+            <Grow in={!isToggle}>
+               <Paper elevation={0}>
+                  <Main />
+               </Paper>
+            </Grow>
+         )}
       </div>
    );
 };
