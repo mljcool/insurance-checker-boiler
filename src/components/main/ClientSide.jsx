@@ -5,19 +5,6 @@ import InboxIcon from '@material-ui/icons/Inbox';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
-const clietnList = [
-   {
-      id: 1,
-      fname: 'Sara',
-      lastname: 'Wagon',
-   },
-   {
-      id: 2,
-      fname: 'John',
-      lastname: 'Doe',
-   },
-];
-
 const ClientSide = () => {
    return (
       <div className='client_side'>
