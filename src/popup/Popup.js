@@ -8,30 +8,35 @@ import Main from 'components/main';
 import Settings from 'components/settings';
 import Header from 'components/Header/Header';
 
+const WrapperPapper = ({ isToggle = false, children }) => {
+   return (
+      <Grow in={isToggle}>
+         <Paper elevation={0} className='page_render'>
+            {children}
+         </Paper>
+      </Grow>
+   );
+};
+
 const Popup = () => {
    const [isToggle, setIsToggle] = useState(false);
 
    const toggleSettings = () => {
-      setIsToggle((v) => !v);
-      console.log('COOL', isToggle);
+      setIsToggle((toggle) => !toggle);
    };
 
    return (
       <div className='popup'>
          <Header switchMenu={toggleSettings} />
          {isToggle && (
-            <Grow in={isToggle}>
-               <Paper elevation={0}>
-                  <Settings />
-               </Paper>
-            </Grow>
+            <WrapperPapper isToggle={isToggle}>
+               <Settings />
+            </WrapperPapper>
          )}
          {!isToggle && (
-            <Grow in={!isToggle}>
-               <Paper elevation={0}>
-                  <Main />
-               </Paper>
-            </Grow>
+            <WrapperPapper isToggle={!isToggle}>
+               <Main />
+            </WrapperPapper>
          )}
       </div>
    );

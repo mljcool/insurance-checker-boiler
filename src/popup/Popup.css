@@ -1,53 +1,33 @@
 .popup {
-   text-align: center;
-   width: 680px;
+   width: 690px;
+   max-height: 370px;
+   height: 370px;
 }
 
-.popup-greet {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
-   font-size: 2em;
-   font-style: italic;
-   letter-spacing: 0.1em;
-   font-family: 'Noto Sans', sans-serif;
-   margin-top: 2em;
-   padding: 0 0.8em 0.1em 0.8em;
+.popup .MuiPaper-rounded {
+   height: 100%;
 }
 
-.brand {
-   font-family: 'Roboto Mono', monospace;
-   letter-spacing: 0em;
-   font-style: normal;
-   font-weight: 600;
+::-webkit-scrollbar {
+   width: 10px;
 }
 
-.stack-head {
-   color: #ffffff;
-   font-family: 'Roboto Mono', monospace;
-   /* font-weight: 700; */
-   font-size: 2em;
+/* Track */
+::-webkit-scrollbar-track {
+   background: #f1f1f1;
 }
 
-.tech-logos {
-   padding: 0 2em 2em 2em;
+/* Handle */
+::-webkit-scrollbar-thumb {
+   background: #888;
 }
 
-.logo {
-   height: 40px;
-   padding-right: 1.8em;
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: #555;
 }
-
-.contrib-msg {
-   color: #ffffff;
-   font-family: 'Roboto Mono', monospace;
-   /* font-weight: 700; */
-   font-size: 1.5em;
-   margin: 2em 2em 3em 2em;
-}
-
-.contrib-msg a {
-   color: #0055ff;
-   font-weight: bold;
+.ins-list.login-providers {
+   max-height: 235px;
+   height: 100%;
+   overflow-y: scroll;
 }

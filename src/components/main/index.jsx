@@ -1,9 +1,14 @@
 import React from 'react';
+import './main.css';
+
+import ClientSide from './ClientSide';
+import ResultSide from './ResultSide';
 
 const Main = () => {
    return (
-      <div>
-         <h2>Main Page</h2>
+      <div className='maing_page'>
+         <ClientSide />
+         <ResultSide />
       </div>
    );
 };
