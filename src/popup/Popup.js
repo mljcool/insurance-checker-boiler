@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
 
-import Sample from 'components/Sample';
+import Main from 'components/main';
+import Settings from 'components/settings';
+import Header from 'components/Header/Header';
 
 const Popup = () => {
+   const [isToggle, setIsToggle] = useState(false);
+
+   const toggleSettings = () => {
+      setIsToggle((v) => !v);
+      console.log('COOL', isToggle);
+   };
+
    return (
       <div className='popup'>
-         <Sample />
-         <p className='popup-greet'>
-            Thanks for using complex changess
-            <span className='brand'>Modern extension Mark Projects</span>
-         </p>
+         <Header switchMenu={toggleSettings} />
+         {isToggle && <Settings />}
+         {!isToggle && <Main />}
 
          <p className='contrib-msg'>
             We would love some of your help in making this boilerplate even
             better. <br />
          </p>
-         <paper-button toggles raised class='green'>
-            toggles
-         </paper-button>
       </div>
    );
 };

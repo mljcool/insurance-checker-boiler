@@ -1,0 +1,36 @@
+.header_menu {
+   display: flex;
+   width: 100%;
+   background: #f8fafc;
+   justify-content: space-between;
+   align-items: center;
+   padding: 8px 0;
+   border-bottom: 1px solid #e3e4e6;
+}
+
+.logo_sections {
+   display: flex;
+   align-items: center;
+}
+.logo_sections span {
+   margin-bottom: 2px;
+   margin-left: 5px;
+   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+   font-weight: 500;
+   font-size: 11px;
+   text-transform: uppercase;
+}
+
+.header_logo {
+   width: 25px;
+   height: 25px;
+   margin-left: 8px;
+}
+
+.header_settings {
+   margin-right: 1rem;
+   cursor: pointer;
+}
+.header_settings:hover svg {
+   filter: invert(60%);
+}
