@@ -45,7 +45,9 @@ const ResultSide = () => {
          <div className='result_list list_wrapper'>
             {getInsurerConnected.map((insurer) => (
                <Fragment key={insurer.id}>
-                  <Paper elevation={0} key={insurer.id} />
+                  <div className='main_result_list'>
+                     <Paper elevation={1} key={insurer.id} />
+                  </div>
                </Fragment>
             ))}
          </div>
