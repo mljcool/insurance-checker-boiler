@@ -11,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import CachedIcon from '@material-ui/icons/Cached';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Loader from '../Loader';
 
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
@@ -114,6 +115,7 @@ const ResultSide = () => {
    return (
       <div className='result_side'>
          <ResultHeader />
+         <Loader isLoading={true} />
          <div className='result_list list_wrapper'>
             {getInsurerConnected.map((insurer) => (
                <Fragment key={insurer.id}>

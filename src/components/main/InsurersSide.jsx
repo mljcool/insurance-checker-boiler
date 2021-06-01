@@ -8,6 +8,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
+import Loader from '../Loader';
 
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
@@ -61,6 +62,7 @@ const InsurersSide = () => {
    return (
       <div className='insurer_side'>
          <InsurerHeader />
+         <Loader isLoading={true} />
          <div className='insurer_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>
                {getInsurerConnected.map((insurer) => (

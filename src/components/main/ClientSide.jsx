@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple, green } from '@material-ui/core/colors';
+import Loader from '../Loader';
 
 const sampleClient = [
    {
@@ -67,6 +68,7 @@ const ClientSide = () => {
    return (
       <div className='client_side'>
          <ClientHeader />
+         <Loader isLoading={true} />
          <div className='client_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>
                {sampleClient.map((client) => (
