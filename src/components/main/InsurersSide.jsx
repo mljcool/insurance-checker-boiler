@@ -45,6 +45,7 @@ const InsurerFooter = ({ state, handleChange }) => {
          <PurpleSwitch
             checked={state.checkedB}
             onChange={handleChange}
+            size={'small'}
             name='checkedB'
          />
       </div>

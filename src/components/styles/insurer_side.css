@@ -15,7 +15,7 @@
 .insurer_list_footer {
    display: flex;
    align-items: center;
-   padding: 7px 8px;
+   padding: 10px 8px;
    border-top: 1px solid #e3e4e6;
    background: #f8fafc;
 }

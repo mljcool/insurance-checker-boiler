@@ -57,7 +57,7 @@ const ClientFooter = () => {
       <div className='client_footer'>
          <span>Re-sync all client data</span>
          <IconButton color='primary' aria-label='add to shopping cart'>
-            <RefreshIcon className={classes.crmTheme} />
+            <RefreshIcon className={classes.crmTheme} size={'small'} />
          </IconButton>
       </div>
    );
