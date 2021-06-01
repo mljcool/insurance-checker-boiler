@@ -1,5 +1,5 @@
 import React from 'react';
-import './main.css';
+import '../styles/main.css';
 
 import ClientSide from './ClientSide';
 import ResultSide from './ResultSide';
