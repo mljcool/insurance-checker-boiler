@@ -2,10 +2,10 @@
    display: flex;
    max-height: 340px;
    height: 340px;
-   background: #f1f5f9;
 }
 
 .insurer_login_form {
+   background: #f1f5f9;
    width: 100%;
 }
 
@@ -34,4 +34,7 @@ form {
 
 .login_details span {
    margin-left: 5px;
+}
+.selected_list {
+   background: #dbdbdb !important;
 }

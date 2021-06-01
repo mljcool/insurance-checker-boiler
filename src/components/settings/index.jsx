@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const InsurerList = () => {
+const InsurerList = ({ onSelectInurance }) => {
+   const [selectedInsurer, setSelectedInsurer] = useState(1);
    return (
       <div className='insurer_side_setting'>
          <div className='insurer_list_header header_section'>
@@ -33,7 +34,15 @@ const InsurerList = () => {
             <List component='nav' aria-label='main mailbox folders'>
                {insurerList.map((insurer) => (
                   <Fragment key={insurer.id}>
-                     <ListItem button>
+                     <ListItem
+                        className={
+                           selectedInsurer === insurer.id ? 'selected_list' : ''
+                        }
+                        button
+                        onClick={() => {
+                           onSelectInurance(insurer);
+                           setSelectedInsurer(insurer.id);
+                        }}>
                         <div className='insurer_icon' key={insurer.id}>
                            <img src={`img/insurers/${insurer.id}.png`} />
                            <span>{insurer.providerName}</span>
@@ -52,18 +61,22 @@ const InsurerList = () => {
 };
 
 const Settings = () => {
-   const [selectedInsurer, setSelectedInsurer] = useState({});
+   const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
    const classes = useStyles();
+
+   const onSelectInurance = (insurance) => {
+      setSelectedInsurer(insurance);
+   };
 
    return (
       <div className='settings_page'>
-         <InsurerList />
+         <InsurerList onSelectInurance={onSelectInurance} />
          <div className='insurer_login_form'>
             <div className='form_fields'>
                <Paper elevation={1}>
                   <div className='login_details'>
-                     <img src={`img/insurers/${'1'}.png`} />
-                     <span>Login to your {'AIA'}</span>
+                     <img src={`img/insurers/${selectedInsurer.id}.png`} />
+                     <span>Login to your {selectedInsurer.providerName}</span>
                   </div>
                   <form className={classes.root} noValidate autoComplete='off'>
                      <TextField
