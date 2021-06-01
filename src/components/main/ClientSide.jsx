@@ -45,7 +45,7 @@ const ClientHeader = () => {
    return (
       <div className='client_header header_section'>
          <GroupIcon style={{ fontSize: '15px', color: green[500] }} />
-         <span>Selected Clients</span>
+         <span>Insured Clients</span>
       </div>
    );
 };

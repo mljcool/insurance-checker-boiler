@@ -1,5 +1,13 @@
+*,
+*:before,
+*:after {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
 .popup {
-   width: 690px;
+   width: 710px;
    max-height: 370px;
    height: 370px;
 }

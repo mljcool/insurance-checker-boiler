@@ -27,10 +27,90 @@
 
 .main_result_list {
    padding: 10px;
-   background: #f1f5f9;
-   height: 100%;
+   background: #f8f8f8;
+   height: auto;
 }
 
 .main_result_list .MuiPaper-root {
    background: #f4f1f8;
+   border-radius: 9px !important;
+}
+
+.paper_client_details {
+   padding: 0.8rem 8px;
+   position: relative;
+}
+
+.topright {
+   position: absolute;
+   top: 8px;
+   right: 8px;
+   cursor: pointer;
+}
+
+.client_full_name {
+   font-size: 14px;
+   font-weight: 600;
+}
+
+.client_result_sections {
+   margin-top: 15px;
+}
+
+.client_provider_results {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.result_policy {
+   display: flex;
+   flex-direction: column;
+}
+
+.client_provider_results {
+   margin-top: 4px;
+}
+
+.details_place {
+   display: flex;
+}
+
+.details_place img {
+   margin-top: 3px;
+}
+
+.ic_card_premium {
+   font-weight: bold;
+   color: #8d76a0;
+   font-size: 15px;
+   padding-top: 1px;
+   white-space: nowrap;
+   margin-left: 5px;
+}
+
+.ic_card_policy {
+   font-size: 13px;
+   color: #8d76a0;
+   font-weight: 400;
+   white-space: nowrap;
+   margin-left: 5px;
+}
+
+.client_cover_sections {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   white-space: nowrap;
+   margin-top: 1rem;
+   border-top: 1px solid #cccccc;
+   border-bottom: 1px solid #cccccc;
+   padding: 0.8rem 3px;
+}
+
+.ic_card_cover_label {
+   display: flex;
+}
+.ic_card_cover_label span {
+   margin-left: 4px;
 }
