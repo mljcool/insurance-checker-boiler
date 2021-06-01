@@ -5,14 +5,27 @@ import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import Switch from '@material-ui/core/Switch';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-
 import { insurerList } from 'constant/insurers';
 
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
 );
 
+const PurpleSwitch = withStyles({
+   switchBase: {
+      color: '#8d76a0',
+      '&$checked': {
+         color: '#8d76a0',
+      },
+      '&$checked + $track': {
+         backgroundColor: '#8d76a0',
+      },
+   },
+   checked: {},
+   track: {},
+})(Switch);
 const InsurerHeader = () => {
    return (
       <div className='insurer_list_header header_section'>
@@ -28,12 +41,10 @@ const InsurerFooter = ({ state, handleChange }) => {
    return (
       <div className='insurer_list_footer'>
          <span>Auto check all</span>
-         <Switch
+         <PurpleSwitch
             checked={state.checkedB}
             onChange={handleChange}
-            color='primary'
             name='checkedB'
-            inputProps={{ 'aria-label': 'primary checkbox' }}
          />
       </div>
    );

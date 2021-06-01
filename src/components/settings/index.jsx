@@ -76,7 +76,9 @@ const Settings = () => {
                <Paper elevation={1}>
                   <div className='login_details'>
                      <img src={`img/insurers/${selectedInsurer.id}.png`} />
-                     <span>Login to your {selectedInsurer.providerName}</span>
+                     <span>
+                        Login to your {selectedInsurer.providerName} account
+                     </span>
                   </div>
                   <form className={classes.root} noValidate autoComplete='off'>
                      <TextField

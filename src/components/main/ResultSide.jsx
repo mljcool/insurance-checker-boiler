@@ -8,9 +8,17 @@ import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
 import MenuFilter from '../MenuFilter/MenuFilter';
 
+import { makeStyles } from '@material-ui/core/styles';
+
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
 );
+
+const useStyles = makeStyles((theme) => ({
+   crmTheme: {
+      color: '#8d76a0',
+   },
+}));
 
 const ResultHeader = () => {
    return (
@@ -28,11 +36,12 @@ const ResultHeader = () => {
 };
 
 const ResultsFooter = () => {
+   const classes = useStyles();
    return (
       <div className='result_list_footer'>
          <span>Re-check all</span>
          <IconButton color='primary' aria-label='add to shopping cart'>
-            <RestorePageIcon />
+            <RestorePageIcon className={classes.crmTheme} />
          </IconButton>
       </div>
    );

@@ -33,7 +33,11 @@ const sampleClient = [
 const useStyles = makeStyles((theme) => ({
    purple: {
       color: theme.palette.getContrastText(deepPurple[500]),
-      backgroundColor: deepPurple[500],
+      backgroundColor: '#8d76a0',
+      fontSize: '15px',
+   },
+   crmTheme: {
+      color: '#8d76a0',
    },
 }));
 
@@ -47,11 +51,12 @@ const ClientHeader = () => {
 };
 
 const ClientFooter = () => {
+   const classes = useStyles();
    return (
       <div className='client_footer'>
          <span>Re-sync all client data</span>
          <IconButton color='primary' aria-label='add to shopping cart'>
-            <RefreshIcon />
+            <RefreshIcon className={classes.crmTheme} />
          </IconButton>
       </div>
    );
