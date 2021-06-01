@@ -6,10 +6,6 @@
    margin-left: 1rem;
 }
 
-.client_header {
-   border-right: 1px solid #c7c6ca;
-}
-
 .client_header span {
    font-size: 11px;
    font-weight: 500;
@@ -23,7 +19,6 @@
    padding: 0 8px;
    border-top: 1px solid #e3e4e6;
    background: #f8fafc;
-   border-right: 1px solid #c7c6ca;
 }
 .client_footer span {
    white-space: nowrap;

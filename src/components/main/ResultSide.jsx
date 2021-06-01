@@ -6,6 +6,7 @@ import RestorePageIcon from '@material-ui/icons/RestorePage';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
+import MenuFilter from '../MenuFilter/MenuFilter';
 
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
@@ -14,10 +15,14 @@ const getInsurerConnected = insurerList.filter(
 const ResultHeader = () => {
    return (
       <div className='result_list_header header_section'>
-         <AssignmentTurnedInIcon
-            style={{ fontSize: '15px', color: green[500] }}
-         />
-         <span>Results from Insurers</span>
+         <div className='resul_banner'>
+            <AssignmentTurnedInIcon
+               style={{ fontSize: '15px', color: green[500] }}
+            />
+            <span>Results from Insurers</span>
+         </div>
+
+         <MenuFilter />
       </div>
    );
 };
