@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import Main from 'components/main';
 import Settings from 'components/settings';
 import Header from 'components/Header/Header';
+import { AppContext } from '../context/AppContext';
 
 const WrapperPapper = ({ isToggle = false, children }) => {
    return (
@@ -26,19 +27,24 @@ const Popup = () => {
    };
 
    return (
-      <div className='popup'>
-         <Header switchMenu={toggleSettings} />
-         {isToggle && (
-            <WrapperPapper isToggle={isToggle}>
-               <Settings />
-            </WrapperPapper>
-         )}
-         {!isToggle && (
-            <WrapperPapper isToggle={!isToggle}>
-               <Main />
-            </WrapperPapper>
-         )}
-      </div>
+      <AppContext.Provider
+         value={{
+            title: 'SUPER COOL',
+         }}>
+         <div className='popup'>
+            <Header switchMenu={toggleSettings} />
+            {isToggle && (
+               <WrapperPapper isToggle={isToggle}>
+                  <Settings />
+               </WrapperPapper>
+            )}
+            {!isToggle && (
+               <WrapperPapper isToggle={!isToggle}>
+                  <Main />
+               </WrapperPapper>
+            )}
+         </div>
+      </AppContext.Provider>
    );
 };
 

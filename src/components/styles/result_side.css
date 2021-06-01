@@ -1,8 +1,13 @@
 .result_list_header {
    justify-content: space-between;
 }
+
 .resul_banner {
    display: flex;
+}
+
+.result_list {
+   background: #dcdcdc;
 }
 
 .result_list_header span {
@@ -26,9 +31,8 @@
 }
 
 .main_result_list {
-   padding: 11px;
-   background: #dcdcdc;
    height: auto;
+   margin: 1rem;
 }
 
 .main_result_list .MuiPaper-root {
@@ -62,15 +66,12 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
+   margin-top: 1rem;
 }
 
 .result_policy {
    display: flex;
    flex-direction: column;
-}
-
-.client_provider_results {
-   margin-top: 4px;
 }
 
 .details_place {
@@ -112,6 +113,7 @@
 .ic_card_cover_label {
    display: flex;
 }
+
 .ic_card_cover_label span {
    margin-left: 4px;
 }

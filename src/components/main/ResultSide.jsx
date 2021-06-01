@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import '../styles/result_side.css';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,12 +12,13 @@ import CachedIcon from '@material-ui/icons/Cached';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Loader from '../Loader';
+import { AppContext } from 'context/AppContext';
 
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
 );
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
    crmTheme: {
       color: '#8d76a0',
    },
@@ -112,6 +113,7 @@ const CoverListItem = () => {
 
 const ResultSide = () => {
    const classes = useStyles();
+   const appContext = useContext(AppContext);
    return (
       <div className='result_side'>
          <ResultHeader />
