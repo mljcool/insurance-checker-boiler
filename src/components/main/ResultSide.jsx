@@ -1,62 +1,50 @@
-import React from 'react';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import React, { Fragment } from 'react';
+import '../styles/result_side.css';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import RestorePageIcon from '@material-ui/icons/RestorePage';
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import { green } from '@material-ui/core/colors';
+import { insurerList } from 'constant/insurers';
 
-function TabPanel(props) {
-   const { children, value, index, ...other } = props;
+const getInsurerConnected = insurerList.filter(
+   (insurer) => insurer.isConnected,
+);
 
+const ResultHeader = () => {
    return (
-      <div
-         role='tabpanel'
-         hidden={value !== index}
-         id={`scrollable-auto-tabpanel-${index}`}
-         aria-labelledby={`scrollable-auto-tab-${index}`}
-         {...other}>
-         {value === index && (
-            <Box p={3}>
-               <Typography>{children}</Typography>
-            </Box>
-         )}
+      <div className='result_list_header header_section'>
+         <AssignmentTurnedInIcon
+            style={{ fontSize: '15px', color: green[500] }}
+         />
+         <span>Results from Insurers</span>
       </div>
    );
-}
+};
 
-function a11yProps(index) {
-   return {
-      id: `scrollable-auto-tab-${index}`,
-      'aria-controls': `scrollable-auto-tabpanel-${index}`,
-   };
-}
+const ResultsFooter = () => {
+   return (
+      <div className='result_list_footer'>
+         <span>Re-check all</span>
+         <IconButton color='primary' aria-label='add to shopping cart'>
+            <RestorePageIcon />
+         </IconButton>
+      </div>
+   );
+};
 
 const ResultSide = () => {
-   const [value, setValue] = React.useState(0);
-
-   const handleChange = (event, newValue) => {
-      setValue(newValue);
-   };
-
    return (
       <div className='result_side'>
-         <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor='primary'
-            textColor='primary'>
-            <Tab label='All' {...a11yProps(0)} />
-            <Tab label='In Progess' {...a11yProps(1)} />
-            <Tab label='Cancelled' {...a11yProps(2)} />
-         </Tabs>
-         <TabPanel value={value} index={0}>
-            Item One
-         </TabPanel>
-         <TabPanel value={value} index={1}>
-            Item Two
-         </TabPanel>
-         <TabPanel value={value} index={2}>
-            Item Three
-         </TabPanel>
+         <ResultHeader />
+         <div className='result_list list_wrapper'>
+            {getInsurerConnected.map((insurer) => (
+               <Fragment key={insurer.id}>
+                  <Paper elevation={0} key={insurer.id} />
+               </Fragment>
+            ))}
+         </div>
+         <ResultsFooter />
       </div>
    );
 };

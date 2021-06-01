@@ -16,11 +16,19 @@
 
 .result_side {
    width: 100%;
-   flex: 0 0 900%;
    background: #f5f5f5;
 }
 .list_wrapper {
    overflow-y: auto;
    max-height: 340px;
    height: 340px;
+}
+
+.header_section {
+   height: 15px;
+   display: flex;
+   align-items: center;
+   padding: 8px 5px;
+   background: #eeebf0;
+   border-bottom: 1px solid #c7c6ca;
 }

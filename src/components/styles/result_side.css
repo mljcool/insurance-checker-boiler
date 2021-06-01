@@ -1,0 +1,19 @@
+.result_list_header span {
+   font-size: 11px;
+   font-weight: 500;
+   margin-left: 4px;
+}
+
+.result_list_footer {
+   display: flex;
+   align-items: center;
+   justify-content: flex-end;
+   border-top: 1px solid #e3e4e6;
+   background: #f8fafc;
+}
+.result_list_footer span {
+   white-space: nowrap;
+   font-size: 10px;
+   font-weight: 500;
+   text-transform: uppercase;
+}

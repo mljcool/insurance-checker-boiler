@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import '../styles/client_side.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ClientHeader = () => {
    return (
-      <div className='client_header'>
+      <div className='client_header header_section'>
          <GroupIcon style={{ fontSize: '15px', color: green[500] }} />
          <span>Selected Clients</span>
       </div>
@@ -49,7 +49,7 @@ const ClientHeader = () => {
 const ClientFooter = () => {
    return (
       <div className='client_footer'>
-         <span>Resync all client data</span>
+         <span>Re-sync all client data</span>
          <IconButton color='primary' aria-label='add to shopping cart'>
             <RefreshIcon />
          </IconButton>
@@ -65,8 +65,8 @@ const ClientSide = () => {
          <div className='client_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>
                {sampleClient.map((client) => (
-                  <>
-                     <ListItem button key={client.id}>
+                  <Fragment key={client.id}>
+                     <ListItem button>
                         <div className='client_details'>
                            <div className='prefix'>
                               <Avatar className={classes.purple}>
@@ -79,7 +79,7 @@ const ClientSide = () => {
                         </div>
                      </ListItem>
                      <Divider />
-                  </>
+                  </Fragment>
                ))}
             </List>
          </div>

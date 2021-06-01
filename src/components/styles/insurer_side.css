@@ -4,10 +4,6 @@
 }
 
 .insurer_list_header {
-   display: flex;
-   align-items: center;
-   padding: 8px 5px;
-   background: #eeebf0;
    border-bottom: 1px solid #c7c6ca;
    border-right: 1px solid #c7c6ca;
 }
@@ -23,7 +19,6 @@
    padding: 7px 8px;
    border-top: 1px solid #e3e4e6;
    border-right: 1px solid #c7c6ca;
-   margin-top: -2px;
    background: #f8fafc;
 }
 .insurer_list_footer span {

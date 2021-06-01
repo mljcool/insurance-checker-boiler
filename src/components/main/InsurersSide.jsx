@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import '../styles/insurer_side.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,7 +15,7 @@ const getInsurerConnected = insurerList.filter(
 
 const InsurerHeader = () => {
    return (
-      <div className='insurer_list_header'>
+      <div className='insurer_list_header header_section'>
          <AssignmentTurnedInIcon
             style={{ fontSize: '15px', color: green[500] }}
          />
@@ -53,15 +53,15 @@ const InsurersSide = () => {
          <div className='insurer_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>
                {getInsurerConnected.map((insurer) => (
-                  <>
+                  <Fragment key={insurer.id}>
                      <ListItem button>
-                        <div className='insurer_icon'>
+                        <div className='insurer_icon' key={insurer.id}>
                            <img src={`img/insurers/${insurer.id}.png`} />
                            <span>{insurer.providerName}</span>
                         </div>
                      </ListItem>
                      <Divider />
-                  </>
+                  </Fragment>
                ))}
             </List>
          </div>
