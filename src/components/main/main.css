@@ -10,9 +10,8 @@
    background: #f5f5f5;
 }
 
-.client_side,
-.insurer_side .MuiList-padding {
-   padding-top: 0;
+.MuiList-padding {
+   padding-top: 0 !important;
 }
 
 .result_side {
@@ -25,7 +24,3 @@
    max-height: 340px;
    height: 340px;
 }
-
-/* .maing_page .MuiTab-root {
-   min-height: 25px;
-} */

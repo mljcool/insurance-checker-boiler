@@ -24,7 +24,7 @@ const InsurerHeader = () => {
    );
 };
 
-const InurerFooter = ({ state, handleChange }) => {
+const InsurerFooter = ({ state, handleChange }) => {
    return (
       <div className='insurer_list_footer'>
          <span>Auto check all</span>
@@ -65,7 +65,7 @@ const InsurersSide = () => {
                ))}
             </List>
          </div>
-         <InurerFooter state={state} handleChange={handleChange} />
+         <InsurerFooter state={state} handleChange={handleChange} />
       </div>
    );
 };

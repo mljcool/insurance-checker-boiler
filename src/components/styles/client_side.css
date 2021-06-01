@@ -1,42 +1,37 @@
-.insurer_side .insurer_icon img {
-   width: 53px;
-   height: 31px;
+.client_details .prefix {
+   display: flex;
+   align-items: center;
+}
+.prefix span {
+   margin-left: 1rem;
 }
 
-.insurer_list_header {
+.client_header {
    display: flex;
    align-items: center;
    padding: 8px 5px;
    background: #eeebf0;
    border-bottom: 1px solid #c7c6ca;
-   border-right: 1px solid #c7c6ca;
 }
-.insurer_list_header span {
+
+.client_header span {
    font-size: 11px;
    font-weight: 500;
    margin-left: 4px;
 }
 
-.insurer_list_footer {
+.client_footer {
    display: flex;
    align-items: center;
-   padding: 7px 8px;
+   justify-content: center;
+   padding: 0 8px;
    border-top: 1px solid #e3e4e6;
-   border-right: 1px solid #c7c6ca;
    margin-top: -2px;
    background: #f8fafc;
 }
-.insurer_list_footer span {
+.client_footer span {
    white-space: nowrap;
    font-size: 10px;
    font-weight: 500;
    text-transform: uppercase;
-}
-
-.insurer_icon {
-   display: flex;
-   align-items: center;
-}
-.insurer_icon span {
-   margin-left: 5px;
 }
