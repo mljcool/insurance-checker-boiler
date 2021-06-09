@@ -27,3 +27,8 @@
    font-weight: 500;
    text-transform: uppercase;
 }
+.view_all {
+   display: block;
+   width: 100%;
+   text-align: center;
+}

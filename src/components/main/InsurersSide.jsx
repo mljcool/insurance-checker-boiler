@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import '../styles/insurer_side.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
 import Loader from '../Loader';
+import { AppContext } from 'context/AppContext';
 
 const getInsurerConnected = insurerList.filter(
    (insurer) => insurer.isConnected,
@@ -57,18 +58,30 @@ const InsurersSide = () => {
       checkedA: true,
       checkedB: true,
    });
+   const [insurerId, setInsurerId] = React.useState(0);
    const handleChange = (event) => {
       setState({ ...state, [event.target.name]: event.target.checked });
    };
+
+   const { isSearching, setToggleSearch } = useContext(AppContext);
+
    return (
       <div className='insurer_side'>
          <InsurerHeader />
-         <Loader isLoading={true} />
+         <Loader isLoading={isSearching} />
          <div className='insurer_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>
                {getInsurerConnected.map((insurer) => (
                   <Fragment key={insurer.id}>
-                     <ListItem button>
+                     <ListItem
+                        button
+                        className={
+                           insurerId === insurer.id ? 'selected_list' : ''
+                        }
+                        onClick={() => {
+                           setToggleSearch(insurer.id);
+                           setInsurerId(insurer.id);
+                        }}>
                         <div className='insurer_icon' key={insurer.id}>
                            <img src={`img/insurers/${insurer.id}.png`} />
                            <span>{insurer.providerName}</span>

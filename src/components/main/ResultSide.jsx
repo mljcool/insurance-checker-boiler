@@ -73,13 +73,17 @@ const TopRightButton = ({ crmTheme }) => {
    );
 };
 
-const InsurancesDetails = () => {
+const InsurancesDetails = ({ insurer }) => {
    return (
       <div className='client_result_sections'>
          <span>Insurance Checker found 1 benefits from 1 Insurer</span>
          <div className='client_provider_results'>
             <div className='details_place'>
-               <img src={`img/insurers/1.png`} width='65px' height='35px' />
+               <img
+                  src={`img/insurers/${insurer.id}.png`}
+                  width='65px'
+                  height='35px'
+               />
                <div className='result_policy'>
                   <span className='ic_card_policy'>236729</span>
                   <span className='ic_card_premium'>$205.95 Monthly</span>
@@ -111,36 +115,53 @@ const CoverListItem = () => {
    );
 };
 
+const EmptyWrapper = () => {
+   return (
+      <div className='empty_wrapper'>
+         <img className='empty_img_placeholder' src={'img/Group5.svg'} />
+      </div>
+   );
+};
+
 const ResultSide = () => {
    const classes = useStyles();
-   const appContext = useContext(AppContext);
+   const { isSearching, resultList } = useContext(AppContext);
+   const emptyList = !resultList.length;
+   const appendClass = emptyList ? 'empty_list' : '';
    return (
       <div className='result_side'>
          <ResultHeader />
-         <Loader isLoading={true} />
-         <div className='result_list list_wrapper'>
-            {getInsurerConnected.map((insurer) => (
-               <Fragment key={insurer.id}>
-                  <div className='main_result_list'>
-                     <Paper
-                        className='paper_client_details'
-                        elevation={1}
-                        key={insurer.id}>
-                        <div className={'client_details'}>
-                           <div className='prefix'>
-                              <Avatar className={classes.crmThemeAvatar}>
-                                 {'JD'}
-                              </Avatar>
-                              <span className='client_full_name'>Jhon Doe</span>
+         <Loader isLoading={isSearching} />
+         {/* <prev>{JSON.stringify(resultList)}</prev> */}
+         <div className={`result_list list_wrapper ${appendClass}`}>
+            {!!resultList.length &&
+               resultList.map((insurer) => (
+                  <Fragment key={insurer.id}>
+                     <div className='main_result_list'>
+                        <Paper
+                           className='paper_client_details'
+                           elevation={1}
+                           key={insurer.id}>
+                           <div className={'client_details'}>
+                              <div className='prefix'>
+                                 <Avatar className={classes.crmThemeAvatar}>
+                                    {insurer.prefix}
+                                 </Avatar>
+                                 <span className='client_full_name'>
+                                    {insurer.fname} {insurer.lname}
+                                 </span>
+                              </div>
                            </div>
-                        </div>
-                        <TopRightButton crmTheme={classes.crmTheme} />
-                        <InsurancesDetails />
-                        <CoverListItem />
-                     </Paper>
-                  </div>
-               </Fragment>
-            ))}
+                           <TopRightButton crmTheme={classes.crmTheme} />
+                           <InsurancesDetails
+                              insurer={insurer.insurerDetails}
+                           />
+                           <CoverListItem />
+                        </Paper>
+                     </div>
+                  </Fragment>
+               ))}
+            {!resultList.length && <EmptyWrapper />}
          </div>
          <ResultsFooter />
       </div>

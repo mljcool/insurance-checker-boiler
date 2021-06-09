@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Pipeline-Application-offstats-Copy" transform="translate(-1224.000000, -252.000000)">
+            <g id="Group-5" transform="translate(1223.000000, 251.000000)">
+                <rect id="Rectangle-3" fill="#CDC3D2" transform="translate(12.500000, 14.000000) rotate(-15.000000) translate(-12.500000, -14.000000) " x="3" y="3" width="19" height="22" rx="2.7"></rect>
+                <g id="Group-4" transform="translate(8.000000, 1.000000)">
+                    <rect id="Rectangle-3-Copy" fill="#F5F1F8" x="0" y="2.22044605e-15" width="18.8995944" height="21.9706905" rx="2.7"></rect>
+                    <rect id="Rectangle-4" fill="#CDC3D2" x="1.98943099" y="4.86374066" width="4.47621974" height="3.85744949"></rect>
+                    <polygon id="Rectangle-4-Copy-3" fill="#CDC3D2" points="2 11 17 11 17 16 2 16"></polygon>
+                    <rect id="Rectangle-4-Copy-6" fill="#CDC3D2" x="1.98943099" y="12.5786396" width="14.7549465" height="0.838575975"></rect>
+                    <rect id="Rectangle-4-Copy-7" fill="#CDC3D2" x="2" y="15" width="7" height="2"></rect>
+                    <rect id="Rectangle-4-Copy-8" fill="#CDC3D2" x="1.98943099" y="14.0880764" width="6.79722256" height="0.838575975"></rect>
+                    <rect id="Rectangle-4-Copy" fill="#CDC3D2" x="7.29458031" y="4.86374066" width="9.44979722" height="0.838575975"></rect>
+                    <rect id="Rectangle-4-Copy-4" fill="#CDC3D2" x="7.29458031" y="6.37317741" width="9.44979722" height="0.838575975"></rect>
+                    <text id="?" font-family="Arial, Helvetica, sans-serif" font-size="5" font-weight="bold" fill="#F5F1F8">
+                        <tspan x="4" y="16">?</tspan>
+                    </text>
+                    <rect id="Rectangle-4-Copy-5" fill="#CDC3D2" x="7.29458031" y="7.88261417" width="9.44979722" height="0.838575975"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

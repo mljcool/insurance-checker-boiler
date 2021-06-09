@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import '../styles/client_side.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,27 +10,8 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple, green } from '@material-ui/core/colors';
 import Loader from '../Loader';
+import { AppContext } from 'context/AppContext';
 
-const sampleClient = [
-   {
-      id: 1,
-      fname: 'John',
-      lname: 'Doe',
-      prefix: 'JD',
-   },
-   {
-      id: 2,
-      fname: 'Sarah',
-      lname: 'Doe',
-      prefix: 'SD',
-   },
-   {
-      id: 3,
-      fname: 'Forcewind',
-      lname: 'Cruiser',
-      prefix: 'FC',
-   },
-];
 const useStyles = makeStyles((theme) => ({
    purple: {
       color: theme.palette.getContrastText(deepPurple[500]),
@@ -65,15 +46,27 @@ const ClientFooter = () => {
 
 const ClientSide = () => {
    const classes = useStyles();
+   const { clientList, onFilterSelectedClient, viewAll } = useContext(
+      AppContext,
+   );
+   const [clientID, setClientID] = React.useState(0);
+
    return (
       <div className='client_side'>
          <ClientHeader />
-         <Loader isLoading={true} />
+         <Loader isLoading={false} />
          <div className='client_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>
-               {sampleClient.map((client) => (
+               {clientList.map((client) => (
                   <Fragment key={client.id}>
-                     <ListItem button>
+                     <ListItem
+                        button
+                        className={client.isSelected ? 'selected_list' : ''}
+                        onClick={() => {
+                           onFilterSelectedClient(client.id);
+                           setClientID(client.id);
+                           setViewAll(true);
+                        }}>
                         <div className='client_details'>
                            <div className='prefix'>
                               <Avatar className={classes.purple}>
@@ -88,6 +81,22 @@ const ClientSide = () => {
                      <Divider />
                   </Fragment>
                ))}
+               {viewAll && (
+                  <Fragment key={'12-2222asaz'}>
+                     <ListItem
+                        button
+                        className={clientID === 'ALL' ? 'selected_list' : ''}
+                        onClick={() => {
+                           onFilterSelectedClient('ALL');
+                           setClientID('ALL');
+                        }}>
+                        <div className='client_details view_all'>
+                           <span>View All</span>
+                        </div>
+                     </ListItem>
+                     <Divider />
+                  </Fragment>
+               )}
             </List>
          </div>
          <ClientFooter />
