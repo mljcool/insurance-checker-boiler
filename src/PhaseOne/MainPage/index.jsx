@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PaperWrapper from 'PhaseOne/components/PaperWrapper';
 import TabFilter from 'PhaseOne/components/TabFilter';
-import Settings from 'components/settings';
+import Settings from 'PhaseOne/settings';
 
 const MainPage = ({ isToggle }) => {
    return (

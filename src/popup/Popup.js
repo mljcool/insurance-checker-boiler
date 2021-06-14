@@ -6,7 +6,7 @@ import Header from 'PhaseOne/components/Header';
 import MainPage from 'PhaseOne/MainPage';
 
 import { AppContext } from '../context/AppContext';
-import { GetStorageClient } from 'PhaseOne/storage';
+import { GetStorageClient, setChromeIdentity } from 'PhaseOne/storage';
 
 const Popup = () => {
    const [isToggle, setIsToggle] = useState(false);
@@ -22,6 +22,7 @@ const Popup = () => {
             setClientList(clientList);
          }
       });
+      setChromeIdentity();
    }, []);
 
    return (
