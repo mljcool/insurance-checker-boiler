@@ -12,3 +12,43 @@
    max-height: 440px;
    height: 440px;
 }
+
+/* for empty state */
+.empty_wrapper {
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   height: 250px;
+   width: 250px;
+   border-radius: 6px;
+   margin-top: 1rem;
+   justify-content: center;
+}
+.empty_img_placeholder {
+   width: 100px;
+}
+.empty_message_h2 {
+   font-size: 15px;
+   font-weight: 500;
+   margin-top: 1rem;
+   white-space: nowrap;
+}
+.empty_message {
+   font-size: 11px;
+   font-weight: 500;
+   white-space: nowrap;
+   color: #838383;
+   margin-top: 5px;
+}
+
+.goto_settings {
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+}
+
+.button_connect {
+   margin-top: 1rem !important;
+}

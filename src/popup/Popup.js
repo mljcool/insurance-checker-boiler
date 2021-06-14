@@ -45,6 +45,7 @@ const Popup = () => {
             hasConnections,
             connectedInsurers,
             isToggle,
+            toggleSettings,
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} />

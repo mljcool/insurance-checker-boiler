@@ -2,16 +2,9 @@ import React, { useContext, Fragment } from 'react';
 import './main.css';
 import PaperWrapper from 'PhaseOne/components/PaperWrapper';
 import TabFilter from 'PhaseOne/components/TabFilter';
+import GotoSettings from 'PhaseOne/components/GotoSettings';
 import Settings from 'PhaseOne/settings';
 import { AppContext } from 'context/AppContext';
-
-const GotoSettings = () => {
-   return (
-      <div className='goto_settings'>
-         <h1>Cool</h1>
-      </div>
-   );
-};
 
 const ReadyForScrapeWrapper = () => {
    return (
@@ -22,13 +15,15 @@ const ReadyForScrapeWrapper = () => {
 };
 
 const MainPage = () => {
-   const { hasConnections, isToggle } = useContext(AppContext);
+   const { hasConnections, isToggle, toggleSettings } = useContext(AppContext);
    return (
       <Fragment>
          {!isToggle && (
             <PaperWrapper isToggle={!isToggle}>
                {hasConnections && <ReadyForScrapeWrapper />}
-               {!hasConnections && <GotoSettings />}
+               {!hasConnections && (
+                  <GotoSettings onToggleSettings={toggleSettings} />
+               )}
             </PaperWrapper>
          )}
          {isToggle && (
