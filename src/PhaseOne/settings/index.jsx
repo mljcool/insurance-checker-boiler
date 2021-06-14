@@ -10,6 +10,7 @@ import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
 import Button from '@material-ui/core/Button';
 import { postConnectToInsurers } from 'PhaseOne/services/connect';
+import SomethingWentWrong from '../components/SomethingWentWrong';
 import Loader from '../components/Loader';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,13 +63,16 @@ const InsurerList = ({ onSelectInurance }) => {
 
 const Settings = ({ browserId = '' }) => {
    const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
+   const [message, setMessage] = useState('');
    const [userName, setUserName] = useState('');
    const [password, setPassword] = useState('');
    const [isConnecting, setIsConnecting] = useState(false);
+   const [isSomethingWrong, setIsSomethingWrong] = useState(false);
    const classes = useStyles();
 
    const onSelectInurance = (insurance) => {
       setSelectedInsurer(insurance);
+      setIsSomethingWrong(false);
    };
 
    const onConnectAccount = () => {
@@ -78,11 +82,21 @@ const Settings = ({ browserId = '' }) => {
          browserId,
          ...selectedInsurer,
          password,
-      }).then(({ succeeded }) => {
+      }).then(({ succeeded, messages }) => {
          if (succeeded) {
             setIsConnecting(false);
+            setUserName('');
+            setPassword('');
+         } else {
+            setIsConnecting(false);
+            setIsSomethingWrong(true);
+            setMessage(
+               `Something went wrong with ${
+                  selectedInsurer.providerName
+               } ${messages}.`,
+            );
          }
-         console.log('postConnectToInsurers', response);
+         console.log('postConnectToInsurers', messages);
       });
    };
 
@@ -96,37 +110,40 @@ const Settings = ({ browserId = '' }) => {
                <span>Login to your {selectedInsurer.providerName} account</span>
             </div>
 
-            <form className={classes.root} noValidate autoComplete='off'>
-               <TextField
-                  id='outlined-basic'
-                  label='Username'
-                  variant='outlined'
-                  name='username'
-                  fullWidth
-                  onChange={(e) => {
-                     setUserName(e.target.value);
-                  }}
-               />
-               <TextField
-                  id='outlined-basic'
-                  label='Password'
-                  variant='outlined'
-                  name='password'
-                  type='password'
-                  fullWidth
-                  onChange={(e) => {
-                     setPassword(e.target.value);
-                  }}
-               />
-               <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={onConnectAccount}
-                  disabled={isConnecting}
-                  disableElevation>
-                  {isConnecting ? 'Please wait...' : 'Login'}
-               </Button>
-            </form>
+            {!isSomethingWrong && (
+               <form className={classes.root} noValidate autoComplete='off'>
+                  <TextField
+                     id='outlined-basic'
+                     label='Username'
+                     variant='outlined'
+                     name='username'
+                     fullWidth
+                     onChange={(e) => {
+                        setUserName(e.target.value);
+                     }}
+                  />
+                  <TextField
+                     id='outlined-basic'
+                     label='Password'
+                     variant='outlined'
+                     name='password'
+                     type='password'
+                     fullWidth
+                     onChange={(e) => {
+                        setPassword(e.target.value);
+                     }}
+                  />
+                  <Button
+                     variant='contained'
+                     color='primary'
+                     onClick={onConnectAccount}
+                     disabled={isConnecting}
+                     disableElevation>
+                     {isConnecting ? 'Please wait...' : 'Login'}
+                  </Button>
+               </form>
+            )}
+            {isSomethingWrong && <SomethingWentWrong message={message} />}
          </div>
       </div>
    );
