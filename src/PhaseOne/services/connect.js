@@ -18,3 +18,13 @@ export const postConnectToInsurers = (params = {}) => {
    };
    return postMethod('setup/set-credential', details);
 };
+
+export const onDisconnectInsurer = (params = {}) => {
+   const { providerNameLowerCases, id, browserId } = params;
+   const details = {
+      browserId,
+      insurerId: id,
+      insurerName: providerNameLowerCases,
+   };
+   return postMethod('setup/delete-credential', details);
+};

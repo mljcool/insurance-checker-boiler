@@ -10,7 +10,10 @@ import SyncDisabledIcon from '@material-ui/icons/SyncDisabled';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
-import { postConnectToInsurers } from 'PhaseOne/services/connect';
+import {
+   postConnectToInsurers,
+   onDisconnectInsurer,
+} from 'PhaseOne/services/connect';
 import SomethingWentWrong from '../components/SomethingWentWrong';
 import Loader from '../components/Loader';
 import { AppContext } from 'context/AppContext';
@@ -73,8 +76,13 @@ const InsurerList = ({ onSelectInurance, insurerList = [] }) => {
 };
 
 const Settings = () => {
-   const { browserId, insurerList } = useContext(AppContext);
-
+   const {
+      browserId,
+      insurerList,
+      updateSetListConnection,
+      recallConnect,
+   } = useContext(AppContext);
+   console.log('insurerList', insurerList);
    const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
    const [message, setMessage] = useState('');
    const [userName, setUserName] = useState('');
@@ -96,12 +104,12 @@ const Settings = () => {
          ...selectedInsurer,
          password,
       }).then(({ succeeded, messages }) => {
+         setIsConnecting(false);
          if (succeeded) {
-            setIsConnecting(false);
             setUserName('');
             setPassword('');
+            recallConnect();
          } else {
-            setIsConnecting(false);
             setIsSomethingWrong(true);
             setMessage(
                `Something went wrong with ${
@@ -109,7 +117,27 @@ const Settings = () => {
                } ${messages}.`,
             );
          }
-         console.log('postConnectToInsurers', messages);
+      });
+   };
+
+   const onDisconnect = () => {
+      setIsConnecting(true);
+      onDisconnectInsurer({
+         browserId,
+         ...selectedInsurer,
+      }).then(({ succeeded, messages }) => {
+         setIsConnecting(false);
+         if (succeeded) {
+            updateSetListConnection(selectedInsurer.id, false);
+            recallConnect();
+         } else {
+            setIsSomethingWrong(true);
+            setMessage(
+               `Something went wrong with ${
+                  selectedInsurer.providerName
+               } ${messages}.`,
+            );
+         }
       });
    };
 
@@ -137,7 +165,8 @@ const Settings = () => {
                   <Button
                      variant='contained'
                      color='default'
-                     startIcon={<SyncDisabledIcon />}>
+                     startIcon={<SyncDisabledIcon />}
+                     onClick={onDisconnect}>
                      Disconnect
                   </Button>
                </div>
