@@ -7,7 +7,8 @@
 }
 
 .popup {
-   width: 710px;
+   /* width: 710px; */
+   width: 420px;
    max-height: 370px;
    height: 370px;
 }

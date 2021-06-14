@@ -5,8 +5,8 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 
 import MainPage from 'PhaseOne/MainPage';
+import Header from 'PhaseOne/components/Header/Header';
 import Settings from 'components/settings';
-import Header from 'components/Header/Header';
 import { AppContext } from '../context/AppContext';
 
 const WrapperPapper = ({ isToggle = false, children }) => {
