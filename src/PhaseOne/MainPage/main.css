@@ -1,0 +1,14 @@
+.header_section {
+   height: 32px;
+   display: flex;
+   align-items: center;
+   padding: 8px 5px;
+   background: #eeebf0;
+   border-bottom: 1px solid #c7c6ca;
+}
+
+.list_wrapper {
+   overflow-y: auto;
+   max-height: 440px;
+   height: 440px;
+}

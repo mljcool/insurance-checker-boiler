@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import './main.css';
 import PaperWrapper from 'PhaseOne/components/PaperWrapper';
 import TabFilter from 'PhaseOne/components/TabFilter';
 import Settings from 'PhaseOne/settings';
