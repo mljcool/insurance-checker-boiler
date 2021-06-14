@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
 
-import MainPage from 'PhaseOne/MainPage';
 import Header from 'PhaseOne/components/Header';
-import TabFilter from 'PhaseOne/components/TabFilter';
-import PaperWrapper from 'PhaseOne/components/PaperWrapper';
-import Settings from 'components/settings';
+import MainPage from 'PhaseOne/MainPage';
+
 import { AppContext } from '../context/AppContext';
 import { GetStorageClient } from 'PhaseOne/storage';
 
@@ -21,6 +19,7 @@ const Popup = () => {
       GetStorageClient().then(({ clientList }) => {
          if (clientList.length) {
             console.log(clientList);
+            setClientList(clientList);
          }
       });
    }, []);
@@ -29,17 +28,7 @@ const Popup = () => {
       <AppContext.Provider value={{ title: 'Sample' }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} />
-            <TabFilter switchMenu={true} />
-            {isToggle && (
-               <PaperWrapper isToggle={isToggle}>
-                  <Settings />
-               </PaperWrapper>
-            )}
-            {!isToggle && (
-               <PaperWrapper isToggle={!isToggle}>
-                  <MainPage />
-               </PaperWrapper>
-            )}
+            <MainPage isToggle={isToggle} />
          </div>
       </AppContext.Provider>
    );
