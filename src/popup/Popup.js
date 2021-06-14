@@ -1,23 +1,13 @@
 import React, { useState } from 'react';
 import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
 
 import MainPage from 'PhaseOne/MainPage';
-import Header from 'PhaseOne/components/Header/Header';
+import Header from 'PhaseOne/components/Header';
+import TabFilter from 'PhaseOne/components/TabFilter';
+import PaperWrapper from 'PhaseOne/components/PaperWrapper';
 import Settings from 'components/settings';
 import { AppContext } from '../context/AppContext';
-
-const WrapperPapper = ({ isToggle = false, children }) => {
-   return (
-      <Grow in={isToggle}>
-         <Paper elevation={0} className='page_render'>
-            {children}
-         </Paper>
-      </Grow>
-   );
-};
 
 const Popup = () => {
    const [isToggle, setIsToggle] = useState(false);
@@ -28,15 +18,16 @@ const Popup = () => {
       <AppContext.Provider value={{ title: 'Sample' }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} />
+            <TabFilter switchMenu={true} />
             {isToggle && (
-               <WrapperPapper isToggle={isToggle}>
+               <PaperWrapper isToggle={isToggle}>
                   <Settings />
-               </WrapperPapper>
+               </PaperWrapper>
             )}
             {!isToggle && (
-               <WrapperPapper isToggle={!isToggle}>
+               <PaperWrapper isToggle={!isToggle}>
                   <MainPage />
-               </WrapperPapper>
+               </PaperWrapper>
             )}
          </div>
       </AppContext.Provider>
