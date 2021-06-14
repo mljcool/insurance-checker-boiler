@@ -4,7 +4,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';

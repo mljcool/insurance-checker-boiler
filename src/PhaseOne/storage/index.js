@@ -4,6 +4,10 @@ export const GetStorageClient = () => {
    return browser.storage.local.get('clientList');
 };
 
+export const GetBrowserID = () => {
+   return browser.storage.local.get('chromeId');
+};
+
 const setChromeToken = () => {
    var randomPool = new Uint8Array(32);
    crypto.getRandomValues(randomPool);
@@ -14,7 +18,7 @@ const setChromeToken = () => {
    return hex;
 };
 
-export const setChromeIdentity = () => {
+export const setChromeIdentity = (getId) => {
    const chromeId = setChromeToken();
    browser.storage.local.get('chromeId').then((response) => {
       if (!(response || { chromeId: null }).chromeId) {
@@ -23,8 +27,11 @@ export const setChromeIdentity = () => {
                ['chromeId']: chromeId,
             })
             .then(() => {
+               getId(chromeId);
                console.log(`Chrome Identity has set for this browser`);
             });
+      } else {
+         getId(response.chromeId);
       }
    });
 };
