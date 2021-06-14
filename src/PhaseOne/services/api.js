@@ -9,3 +9,11 @@ export const getMethod = (url) => {
       headers: myHeaders,
    }).then((response) => response.json());
 };
+
+export const postMethod = (url, dataParams = {}) => {
+   return fetch(URL_SCRAPING + url, {
+      method: 'POST',
+      headers: myHeaders,
+      body: JSON.stringify(dataParams),
+   }).then((response) => response.json());
+};

@@ -1,4 +1,4 @@
-import { getMethod } from './api';
+import { getMethod, postMethod } from './api';
 
 export const getProviderConnections = (browserId = '') => {
    return getMethod('setup/get-credential?browserId=' + browserId);
@@ -10,11 +10,11 @@ export const postConnectToInsurers = (params = {}) => {
       userName,
       password,
       title: 'ADVISER',
-      firstName: '',
-      lastName: '',
+      firstName: 'Sample',
+      lastName: 'Sample',
       insurerName: providerName,
       insurerId: id,
       browserId,
    };
-   console.log(details);
+   return postMethod('setup/set-credential', details);
 };

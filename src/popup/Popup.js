@@ -22,13 +22,15 @@ const Popup = () => {
    useEffect(() => {
       setChromeIdentity((chromeId) => {
          setBrowserId(chromeId);
-         getProviderConnections(chromeId).then(({ succeeded, data }) => {
-            if (succeeded) {
-               setConnectedInsurers(data);
-               setHasConnections(!!data.length);
-            }
-            console.log('getProviderConnections', data);
-         });
+         setTimeout(() => {
+            getProviderConnections(chromeId).then(({ succeeded, data }) => {
+               if (succeeded) {
+                  setConnectedInsurers(data);
+                  setHasConnections(!!data.length);
+               }
+               console.log('getProviderConnections', data);
+            });
+         }, 6000);
       });
 
       GetStorageClient().then(({ clientList }) => {

@@ -78,10 +78,12 @@ const Settings = ({ browserId = '' }) => {
          browserId,
          ...selectedInsurer,
          password,
+      }).then(({ succeeded }) => {
+         if (succeeded) {
+            setIsConnecting(false);
+         }
+         console.log('postConnectToInsurers', response);
       });
-      setTimeout(() => {
-         setIsConnecting(false);
-      }, 2000);
    };
 
    return (
