@@ -65,7 +65,7 @@ const ClientSide = () => {
                         onClick={() => {
                            onFilterSelectedClient(client.id);
                            setClientID(client.id);
-                           setViewAll(true);
+                           // setViewAll(true);
                         }}>
                         <div className='client_details'>
                            <div className='prefix'>
