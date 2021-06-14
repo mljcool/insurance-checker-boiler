@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
 import Button from '@material-ui/core/Button';
+import { postConnectToInsurers } from 'PhaseOne/services/connect';
+import Loader from '../components/Loader';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -58,37 +60,69 @@ const InsurerList = ({ onSelectInurance }) => {
    );
 };
 
-const Settings = () => {
+const Settings = ({ browserId = '' }) => {
    const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
+   const [userName, setUserName] = useState('');
+   const [password, setPassword] = useState('');
+   const [isConnecting, setIsConnecting] = useState(false);
    const classes = useStyles();
 
    const onSelectInurance = (insurance) => {
       setSelectedInsurer(insurance);
    };
 
+   const onConnectAccount = () => {
+      setIsConnecting(true);
+      postConnectToInsurers({
+         userName,
+         browserId,
+         ...selectedInsurer,
+         password,
+      });
+      setTimeout(() => {
+         setIsConnecting(false);
+      }, 2000);
+   };
+
    return (
       <div className='settings_page'>
          <InsurerList onSelectInurance={onSelectInurance} />
          <div className='insurer_login_form'>
+            <Loader isLoading={isConnecting} />
             <div className='login_details'>
                <img src={`img/insurers/${selectedInsurer.id}.png`} />
                <span>Login to your {selectedInsurer.providerName} account</span>
             </div>
+
             <form className={classes.root} noValidate autoComplete='off'>
                <TextField
                   id='outlined-basic'
                   label='Username'
                   variant='outlined'
+                  name='username'
                   fullWidth
+                  onChange={(e) => {
+                     setUserName(e.target.value);
+                  }}
                />
                <TextField
                   id='outlined-basic'
                   label='Password'
                   variant='outlined'
+                  name='password'
+                  type='password'
                   fullWidth
+                  onChange={(e) => {
+                     setPassword(e.target.value);
+                  }}
                />
-               <Button variant='contained' color='primary' disableElevation>
-                  Login
+               <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={onConnectAccount}
+                  disabled={isConnecting}
+                  disableElevation>
+                  {isConnecting ? 'Please wait...' : 'Login'}
                </Button>
             </form>
          </div>

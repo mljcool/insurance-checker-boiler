@@ -12,6 +12,7 @@ import { setChromeIdentity, GetStorageClient } from 'PhaseOne/storage';
 const Popup = () => {
    const [isToggle, setIsToggle] = useState(false);
    const [clientList, setClientList] = useState([]);
+   const [browserId, setBrowserId] = useState('');
    const [connectedInsurers, setConnectedInsurers] = useState([]);
    const [hasConnections, setHasConnections] = useState(false);
    const toggleSettings = () => {
@@ -20,6 +21,7 @@ const Popup = () => {
 
    useEffect(() => {
       setChromeIdentity((chromeId) => {
+         setBrowserId(chromeId);
          getProviderConnections(chromeId).then(({ succeeded, data }) => {
             if (succeeded) {
                setConnectedInsurers(data);
@@ -46,6 +48,7 @@ const Popup = () => {
             connectedInsurers,
             isToggle,
             toggleSettings,
+            browserId,
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} />
