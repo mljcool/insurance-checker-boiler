@@ -2,6 +2,11 @@
    display: flex;
 }
 
+.insurer_icon {
+   display: flex;
+   align-items: center;
+}
+
 .insurer_login_form {
    width: 100%;
    height: 440px;
@@ -24,7 +29,7 @@ form {
 }
 
 .insurer_side_setting {
-   flex: 0 0 30%;
+   flex: 0 0 34%;
 }
 .login_details {
    display: flex;

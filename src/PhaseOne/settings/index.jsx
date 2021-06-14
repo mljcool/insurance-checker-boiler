@@ -1,17 +1,18 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import './settings.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
-import { insurerList } from 'constant/insurers';
 import Button from '@material-ui/core/Button';
 import { postConnectToInsurers } from 'PhaseOne/services/connect';
 import SomethingWentWrong from '../components/SomethingWentWrong';
 import Loader from '../components/Loader';
+import { AppContext } from 'context/AppContext';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const InsurerList = ({ onSelectInurance }) => {
+const InsurerList = ({ onSelectInurance, insurerList = [] }) => {
    const [selectedInsurer, setSelectedInsurer] = useState(1);
    return (
       <div className='insurer_side_setting'>
@@ -47,6 +48,15 @@ const InsurerList = ({ onSelectInurance }) => {
                         }}>
                         <div className='insurer_icon' key={insurer.id}>
                            <img src={`img/insurers/${insurer.id}.png`} />
+                           {insurer.isConnected && (
+                              <CheckCircleIcon
+                                 style={{
+                                    fontSize: '20px',
+                                    color: green[500],
+                                    marginLeft: '1rem',
+                                 }}
+                              />
+                           )}
                         </div>
                      </ListItem>
                      <Divider />
@@ -61,7 +71,9 @@ const InsurerList = ({ onSelectInurance }) => {
    );
 };
 
-const Settings = ({ browserId = '' }) => {
+const Settings = () => {
+   const { browserId, insurerList } = useContext(AppContext);
+
    const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
    const [message, setMessage] = useState('');
    const [userName, setUserName] = useState('');
@@ -102,7 +114,10 @@ const Settings = ({ browserId = '' }) => {
 
    return (
       <div className='settings_page'>
-         <InsurerList onSelectInurance={onSelectInurance} />
+         <InsurerList
+            onSelectInurance={onSelectInurance}
+            insurerList={insurerList}
+         />
          <div className='insurer_login_form'>
             <Loader isLoading={isConnecting} />
             <div className='login_details'>

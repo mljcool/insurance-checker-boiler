@@ -15,9 +15,7 @@ const ReadyForScrapeWrapper = () => {
 };
 
 const MainPage = () => {
-   const { hasConnections, isToggle, toggleSettings, browserId } = useContext(
-      AppContext,
-   );
+   const { hasConnections, isToggle, toggleSettings } = useContext(AppContext);
    return (
       <Fragment>
          {!isToggle && (
@@ -30,7 +28,7 @@ const MainPage = () => {
          )}
          {isToggle && (
             <PaperWrapper isToggle={isToggle}>
-               <Settings browserId={browserId} />
+               <Settings />
             </PaperWrapper>
          )}
       </Fragment>
