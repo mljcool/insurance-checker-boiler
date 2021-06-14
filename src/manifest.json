@@ -10,6 +10,9 @@
          "js": [
             "lib/js/browser-polyfill.js",
             "lib/js/jquery.min.js",
+            "lib/js/util.js",
+            "lib/js/mappers.js",
+            "lib/js/services.js",
             "content.js"
          ]
       }

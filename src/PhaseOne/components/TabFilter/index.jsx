@@ -22,9 +22,9 @@ const filterTypes = [
 const TabFilter = () => {
    return (
       <div className='header_filter'>
-         {filterTypes.map((menus) => (
-            <div>
-               <span>{menus.filterName}</span>
+         {filterTypes.map((menu) => (
+            <div key={menu.id}>
+               <span>{menu.filterName}</span>
             </div>
          ))}
       </div>
