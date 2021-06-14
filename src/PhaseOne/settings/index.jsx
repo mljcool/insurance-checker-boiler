@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import SyncDisabledIcon from '@material-ui/icons/SyncDisabled';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
@@ -122,10 +123,27 @@ const Settings = () => {
             <Loader isLoading={isConnecting} />
             <div className='login_details'>
                <img src={`img/insurers/${selectedInsurer.id}.png`} />
-               <span>Login to your {selectedInsurer.providerName} account</span>
+               {!selectedInsurer.isConnected && (
+                  <span>
+                     Login to your {selectedInsurer.providerName} account
+                  </span>
+               )}
             </div>
+            {selectedInsurer.isConnected && (
+               <div className='is_connected_wrapper'>
+                  <span className='is_connected_message'>
+                     Your {selectedInsurer.providerName} account is connected
+                  </span>
+                  <Button
+                     variant='contained'
+                     color='default'
+                     startIcon={<SyncDisabledIcon />}>
+                     Disconnect
+                  </Button>
+               </div>
+            )}
 
-            {!isSomethingWrong && (
+            {!isSomethingWrong && !selectedInsurer.isConnected && (
                <form className={classes.root} noValidate autoComplete='off'>
                   <TextField
                      id='outlined-basic'

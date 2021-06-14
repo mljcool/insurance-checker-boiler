@@ -21,6 +21,17 @@ const Popup = () => {
       setIsToggle((toggle) => !toggle);
    };
 
+   const setListConnection = () => {
+      connectedInsurers.forEach((insurance) => {
+         insurerListRef.current = insurerList.map((insurer) => {
+            if (insurance.insurerId === insurer.id) {
+               insurer.isConnected = true;
+            }
+            return insurer;
+         });
+      });
+   };
+
    useEffect(() => {
       setChromeIdentity((chromeId) => {
          setBrowserId(chromeId);
@@ -28,16 +39,7 @@ const Popup = () => {
             if (succeeded) {
                setConnectedInsurers(data);
                setHasConnections(!!data.length);
-               data.forEach((insurance) => {
-                  insurerListRef.current = insurerList.map((insurer) => {
-                     console.log('insurerListRef', insurer);
-                     if (insurance.insurerId === insurer.id) {
-                        insurer.isConnected = true;
-                     }
-                     return insurer;
-                  });
-                  console.log('insurerListRef', insurerListRef.current);
-               });
+               setListConnection();
             }
             console.log('getProviderConnections', data);
          });
