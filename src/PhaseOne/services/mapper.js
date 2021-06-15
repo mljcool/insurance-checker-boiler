@@ -1,4 +1,4 @@
-const mapData = (clients) => {
+const mapDataForPost = (clients) => {
    return clients.map((client) => {
       return {
          Birthday: client.Birthday,
@@ -7,6 +7,22 @@ const mapData = (clients) => {
          BrowserId: client.BrowserId,
          InsurerName: client.InsurerName,
          InsurerId: client.InsurerId,
+      };
+   });
+};
+
+const mapDataForUI = (clients) => {
+   return clients.map((client) => {
+      return {
+         Birthday: client.Birthday,
+         FirstName: client.FirstName,
+         LastName: client.LastName,
+         BrowserId: client.BrowserId,
+         InsurerName: client.InsurerName,
+         InsurerId: client.InsurerId,
+         isLoadingScrape: true,
+         hasData: 'YES',
+         results: [],
       };
    });
 };
@@ -29,6 +45,9 @@ export const setScrappingStructure = (
          return client;
       });
 
-      resolve(mapData(setList));
+      resolve({
+         forPostData: mapDataForPost(setList),
+         forDisplayData: mapDataForUI(setList),
+      });
    });
 };

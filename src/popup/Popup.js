@@ -5,11 +5,13 @@ import '@polymer/paper-button/paper-button.js';
 import Header from 'PhaseOne/components/Header';
 import MainPage from 'PhaseOne/MainPage';
 import { insurerList } from 'constant/insurers';
-import { getProviderConnections } from 'PhaseOne/services/connect';
+import {
+   getProviderConnections,
+   onStartScraping,
+} from 'PhaseOne/services/connect';
 import { setScrappingStructure } from 'PhaseOne/services/mapper';
 import { AppContext } from '../context/AppContext';
 import { setChromeIdentity, GetStorageClient } from 'PhaseOne/storage';
-
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
 let setGlobalBrowserId = '';
@@ -18,15 +20,40 @@ const Popup = () => {
    const [clientList, setClientList] = useState([]);
    const [connectedInsurers, setConnectedInsurers] = useState([]);
    const [dataScraping, setDataScraping] = useState([]);
+   const [forDisplay, setForDisplay] = useState([]);
    const [insurerListRef, setInsurerListRef] = useState(insurerList);
    const [browserId, setBrowserId] = useState('');
 
    const [isToggle, setIsToggle] = useState(false);
    const [hasConnections, setHasConnections] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
+   const [isLoadingScrape, setIsLoadingScrape] = useState(false);
 
    const toggleSettings = () => {
       setIsToggle((toggle) => !toggle);
+   };
+
+   const onStartScrapingFromInsurer = () => {
+      if (dataScraping.length) {
+         console.log('response', dataScraping);
+         setIsLoadingScrape(true);
+         onStartScraping(dataScraping).then(
+            ({ succeeded, data, insurerId }) => {
+               console.log('response', succeeded);
+               if (succeeded) {
+                  setForDisplay(
+                     forDisplay.map((display) => {
+                        if (display.InsurerId === insurerId) {
+                           display.isLoadingScrape = false;
+                           display.hasData = !!data.length ? 'YES' : 'BLANK';
+                        }
+                        return display;
+                     }),
+                  );
+               }
+            },
+         );
+      }
    };
 
    const shapeDataScraping = () => {
@@ -34,9 +61,10 @@ const Popup = () => {
          setGlobaleClients,
          setGlobaleInsurers,
          setGlobalBrowserId,
-      ).then((setList) => {
-         setDataScraping(setList);
-         console.log('dataScraping', setList);
+      ).then(({ forPostData, forDisplayData }) => {
+         setDataScraping(forPostData);
+         setForDisplay(forDisplayData);
+         console.log('dataScraping', forDisplayData);
       });
    };
 
@@ -111,13 +139,16 @@ const Popup = () => {
             clientList,
             insurerList: insurerListRef,
             connectedInsurers,
+            forDisplay,
             isToggle,
             isLoading,
+            isLoadingScrape,
             hasConnections,
             dataScraping,
             toggleSettings,
             updateSetListConnection,
             recallConnect,
+            onStartScrapingFromInsurer,
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} isToggle={isToggle} />

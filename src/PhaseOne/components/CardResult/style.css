@@ -89,3 +89,21 @@
    font-weight: 600;
    color: #715985;
 }
+
+.blank_logo_label {
+   display: flex;
+   align-items: center;
+}
+
+.blank_results {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+
+.blank_label {
+   font-size: 14px;
+   font-weight: 600;
+   color: #715985;
+   margin-left: 5px;
+}

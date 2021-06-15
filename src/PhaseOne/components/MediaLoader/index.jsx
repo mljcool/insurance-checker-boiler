@@ -6,8 +6,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Skeleton from '@material-ui/lab/Skeleton';
 import Loader from 'PhaseOne/components/Loader';
+import ResultContent from 'PhaseOne/components/MediaLoader/ResultContent';
+import BlankResult from 'PhaseOne/components/MediaLoader/BlankResult';
 import Avatar from '@material-ui/core/Avatar';
 import { deepPurple } from '@material-ui/core/colors';
 
@@ -15,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
    card: {
       maxWidth: '100%',
       margin: theme.spacing(2),
+      height: 'auto !important',
    },
    purple: {
       color: theme.palette.getContrastText(deepPurple[500]),
@@ -28,12 +30,19 @@ const useStyles = makeStyles((theme) => ({
 
 const MediaLoading = ({ loading = false, userData = {} }) => {
    const classes = useStyles();
-   const { FirstName, LastName, InsurerName, InsurerId } = userData;
+   const {
+      FirstName,
+      LastName,
+      InsurerName,
+      InsurerId,
+      isLoadingScrape,
+      hasData,
+   } = userData;
 
    console.log(userData);
    return (
       <Card className={classes.card}>
-         <Loader isLoading={true} />
+         <Loader isLoading={isLoadingScrape} />
          <CardHeader
             className='card_resul_header'
             avatar={
@@ -59,57 +68,17 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
          />
 
          <CardContent>
-            <div className='main_label_header'>
-               <span>Insurance checker found 3 benefits from 1 insurer</span>
-            </div>
-            <div className='place_img_loading' style={{ marginBottom: 6 }}>
-               <img src={`img/insurers/${InsurerId}.png`} />
-               {false && (
-                  <span className='retreive_label'>
-                     Retrieving data from {InsurerName.toUpperCase()}...
-                  </span>
-               )}
-               {true && (
-                  <div className='info_insurer_label'>
-                     <span className='policy_number'>454546 -858</span>
-                     <span className='total_amount_policy'>
-                        $52,255 Monthly
-                     </span>
-                  </div>
-               )}
-            </div>
-            <div className='benefits_results'>
-               <div className='benefits_list'>
-                  <div className='benefits_logo_label'>
-                     <img
-                        className='b_logo'
-                        width='25px'
-                        height='25px'
-                        src={'img/benefit_icons/fp.svg'}
-                     />
-                     <span className='b_label'>Family Cover</span>
-                  </div>
-                  <div className='total_cover'>$15,000</div>
-               </div>
-            </div>
-            {/* <React.Fragment>
-               <Skeleton
-                  animation='wave'
-                  height={10}
-                  style={{ marginBottom: 6 }}
+            {hasData === 'YES' && isLoadingScrape && (
+               <ResultContent
+                  classes={classes}
+                  isLoadingScrape={isLoadingScrape}
+                  InsurerName={InsurerName}
+                  InsurerId={InsurerId}
                />
-               <Skeleton
-                  animation='wave'
-                  height={10}
-                  width='80%'
-                  style={{ marginBottom: 6 }}
-               />
-               <Skeleton
-                  animation='wave'
-                  variant='rect'
-                  className={classes.media}
-               />
-            </React.Fragment> */}
+            )}
+            {hasData === 'BLANK' && !isLoadingScrape && (
+               <BlankResult InsurerName={InsurerName} InsurerId={InsurerId} />
+            )}
          </CardContent>
       </Card>
    );

@@ -1,33 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import MediaLoading from 'PhaseOne/components/MediaLoader';
-import { onStartScraping } from 'PhaseOne/services/connect';
 import { AppContext } from 'context/AppContext';
 import './style.css';
 
 const CardResult = () => {
-   const { dataScraping } = useContext(AppContext);
-   const [isLoadingScrape, setIsLoadingScrape] = useState(false);
-   const [resultFromScrape, setResultFromScrape] = useState([]);
-   useEffect(() => {}, []);
-
-   const onCheck = () => {
-      if (dataScraping.length) {
-         setIsLoadingScrape(true);
-         onStartScraping(dataScraping).then(({ succeeded, data }) => {
-            console.log('response', response);
-            if (succeeded) {
-               setResultFromScrape(data);
-            }
-            setIsLoadingScrape(false);
-         });
-      }
-   };
+   const { forDisplay, onStartScrapingFromInsurer } = useContext(AppContext);
 
    return (
       <div className='card_result_list'>
-         {/* <button onClick={onCheck}>CHECKING</button> */}
-         {dataScraping.length &&
-            dataScraping.map((scrape, index) => (
+         <button onClick={onStartScrapingFromInsurer}>CHECKING</button>
+         {forDisplay.length &&
+            forDisplay.map((scrape, index) => (
                <MediaLoading userData={scrape} key={index} />
             ))}
       </div>
