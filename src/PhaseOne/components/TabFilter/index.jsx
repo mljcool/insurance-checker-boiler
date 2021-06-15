@@ -1,6 +1,6 @@
 import React from 'react';
 import './TabFilter.css';
-
+import Button from '@material-ui/core/Button';
 const filterTypes = [
    {
       id: 1,
@@ -20,12 +20,28 @@ const filterTypes = [
    },
 ];
 const TabFilter = () => {
+   const [selectedFilter, setSelectedFilter] = React.useState(1);
+
+   const onSelectFilter = (id) => {
+      setSelectedFilter(id);
+   };
+
+   const getSelectedFilter = (id) => {
+      return selectedFilter === id ? 'is_active' : '';
+   };
+
    return (
       <div className='header_filter'>
          {filterTypes.map((menu) => (
-            <div key={menu.id}>
+            <Button
+               size='small'
+               className={`buttons_filter ${getSelectedFilter(menu.id)}`}
+               onClick={() => {
+                  onSelectFilter(menu.id);
+               }}
+               key={menu.id}>
                <span>{menu.filterName}</span>
-            </div>
+            </Button>
          ))}
       </div>
    );
