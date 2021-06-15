@@ -16,6 +16,7 @@ const Popup = () => {
    const [connectedInsurers, setConnectedInsurers] = useState([]);
    const [hasConnections, setHasConnections] = useState(false);
    const [insurerListRef, setInsurerListRef] = useState(insurerList);
+   const [isLoading, setIsLoading] = useState(false);
    // const insurerListRef = useRef(insurerList);
 
    const toggleSettings = () => {
@@ -49,12 +50,18 @@ const Popup = () => {
    };
 
    const recallConnect = (paramBrowserId) => {
+      setIsLoading(true);
       getProviderConnections(browserId || paramBrowserId).then(
          ({ succeeded, data }) => {
+            setIsLoading(false);
             if (succeeded) {
                setConnectedInsurers(data);
                setHasConnections(!!data.length);
                setListConnection(data);
+
+               if (data.length === 1) {
+                  setIsToggle(false);
+               }
             }
             console.log('getProviderConnections', data);
          },
@@ -64,12 +71,8 @@ const Popup = () => {
    useEffect(() => {
       setChromeIdentity((chromeId) => {
          setBrowserId(chromeId);
-         getProviderConnections(chromeId).then(({ succeeded, data }) => {
-            if (succeeded) {
-               recallConnect(chromeId);
-            }
-            console.log('getProviderConnections', data);
-         });
+         recallConnect(chromeId);
+         console.log('getProviderConnections', data);
       });
 
       GetStorageClient().then(({ clientList }) => {
@@ -93,6 +96,7 @@ const Popup = () => {
             updateSetListConnection,
             recallConnect,
             insurerList: insurerListRef,
+            isLoading,
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} />

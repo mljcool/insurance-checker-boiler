@@ -82,7 +82,7 @@ const Settings = () => {
       updateSetListConnection,
       recallConnect,
    } = useContext(AppContext);
-   console.log('insurerList', insurerList);
+
    const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
    const [message, setMessage] = useState('');
    const [userName, setUserName] = useState('');
@@ -98,6 +98,7 @@ const Settings = () => {
 
    const onConnectAccount = () => {
       setIsConnecting(true);
+
       postConnectToInsurers({
          userName,
          browserId,
@@ -122,6 +123,7 @@ const Settings = () => {
 
    const onDisconnect = () => {
       setIsConnecting(true);
+
       onDisconnectInsurer({
          browserId,
          ...selectedInsurer,
