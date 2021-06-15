@@ -8,6 +8,20 @@ export const GetBrowserID = () => {
    return browser.storage.local.get('chromeId');
 };
 
+export const hasDoneScraping = () => {
+   return browser.storage.local.get('hasDoneScraping');
+};
+
+export const setHasDoneScraping = (isSet = false) => {
+   browser.storage.local
+      .set({
+         ['hasDoneScraping']: isSet,
+      })
+      .then(() => {
+         console.log(`Status Done for this client.`);
+      });
+};
+
 const setChromeToken = () => {
    var randomPool = new Uint8Array(32);
    crypto.getRandomValues(randomPool);

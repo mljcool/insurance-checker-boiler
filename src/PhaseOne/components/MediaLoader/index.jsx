@@ -35,6 +35,7 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
       <Card className={classes.card}>
          <Loader isLoading={true} />
          <CardHeader
+            className='card_resul_header'
             avatar={
                <Avatar className={classes.purple}>
                   {FirstName[0]}
@@ -51,21 +52,47 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
             title={<div className='insure_label'>Insured Person</div>}
             subheader={
                <div className='insure_people'>
-                  {FirstName}
-                  {LastName}
+                  <span className='f_name'>{FirstName}</span>
+                  <span className='l_name'>{LastName}</span>
                </div>
             }
          />
 
          <CardContent>
-            <React.Fragment>
-               <div className='place_img_loading'>
-                  <img src={`img/insurers/${InsurerId}.png`} />
+            <div className='main_label_header'>
+               <span>Insurance checker found 3 benefits from 1 insurer</span>
+            </div>
+            <div className='place_img_loading' style={{ marginBottom: 6 }}>
+               <img src={`img/insurers/${InsurerId}.png`} />
+               {false && (
                   <span className='retreive_label'>
                      Retrieving data from {InsurerName.toUpperCase()}...
                   </span>
+               )}
+               {true && (
+                  <div className='info_insurer_label'>
+                     <span className='policy_number'>454546 -858</span>
+                     <span className='total_amount_policy'>
+                        $52,255 Monthly
+                     </span>
+                  </div>
+               )}
+            </div>
+            <div className='benefits_results'>
+               <div className='benefits_list'>
+                  <div className='benefits_logo_label'>
+                     <img
+                        className='b_logo'
+                        width='25px'
+                        height='25px'
+                        src={'img/benefit_icons/fp.svg'}
+                     />
+                     <span className='b_label'>Family Cover</span>
+                  </div>
+                  <div className='total_cover'>$15,000</div>
                </div>
-
+            </div>
+            {/* <React.Fragment>
                <Skeleton
                   animation='wave'
                   height={10}
@@ -82,7 +109,7 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
                   variant='rect'
                   className={classes.media}
                />
-            </React.Fragment>
+            </React.Fragment> */}
          </CardContent>
       </Card>
    );

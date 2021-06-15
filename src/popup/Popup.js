@@ -29,7 +29,7 @@ const Popup = () => {
       setIsToggle((toggle) => !toggle);
    };
 
-   const shapeDataScraping = (browserId) => {
+   const shapeDataScraping = () => {
       setScrappingStructure(
          setGlobaleClients,
          setGlobaleInsurers,
@@ -76,8 +76,9 @@ const Popup = () => {
                if (data.length === 1) {
                   setIsToggle(false);
                }
-
-               shapeDataScraping(browserId);
+               if (data.length) {
+                  shapeDataScraping(browserId);
+               }
             }
          })
          .catch((err) => {
@@ -90,6 +91,7 @@ const Popup = () => {
          if (clientList.length) {
             setGlobaleClients = clientList;
             setClientList(clientList);
+            console.log('clientList', clientList);
          }
       });
 
@@ -118,7 +120,7 @@ const Popup = () => {
             recallConnect,
          }}>
          <div className='popup'>
-            <Header switchMenu={toggleSettings} />
+            <Header switchMenu={toggleSettings} isToggle={isToggle} />
             <MainPage />
          </div>
       </AppContext.Provider>

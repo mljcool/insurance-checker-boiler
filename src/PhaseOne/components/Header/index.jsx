@@ -1,7 +1,9 @@
 import React from 'react';
 import './Header.css';
 import Settings from '@material-ui/icons/Settings';
-const Header = ({ switchMenu }) => {
+import AssignmentReturnIcon from '@material-ui/icons/AssignmentReturn';
+
+const Header = ({ switchMenu, isToggle = false }) => {
    return (
       <div className='header_menu'>
          <div className='logo_sections'>
@@ -9,7 +11,8 @@ const Header = ({ switchMenu }) => {
             <span>Insurance Checker</span>
          </div>
          <div className='header_settings' onClick={switchMenu}>
-            <Settings color='disabled' />
+            {!isToggle && <Settings color='disabled' />}
+            {isToggle && <AssignmentReturnIcon color='disabled' />}
          </div>
       </div>
    );

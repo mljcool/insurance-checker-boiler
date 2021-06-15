@@ -30,5 +30,5 @@ export const onDisconnectInsurer = (params = {}) => {
 };
 
 export const onStartScraping = (dataParams = []) => {
-   return postMethod(baseURLScrape + 'insurer/search-clients', dataParams);
+   return postMethod('insurer/search-clients', dataParams);
 };
