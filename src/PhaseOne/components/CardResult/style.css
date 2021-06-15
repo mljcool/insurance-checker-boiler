@@ -4,3 +4,14 @@
    height: 440px;
    background: #f0f0f0;
 }
+
+.place_img_loading {
+   display: flex;
+   align-items: center;
+}
+.place_img_loading span {
+   margin-left: 6px;
+   font-size: 14;
+   font-weight: 600;
+   color: #505050;
+}

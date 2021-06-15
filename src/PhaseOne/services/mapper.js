@@ -6,6 +6,7 @@ const mapData = (clients) => {
          LastName: client.LastName,
          BrowserId: client.BrowserId,
          InsurerName: client.InsurerName,
+         InsurerId: client.InsurerId,
       };
    });
 };
@@ -21,6 +22,7 @@ export const setScrappingStructure = (
             client.Birthday = client.birthday;
             client.FirstName = client.firstName;
             client.LastName = client.lastName;
+            client.InsurerId = insurer.insurerId;
             (client.BrowserId = browserId),
                (client.InsurerName = (insurer.insurerName || '').toLowerCase());
          });

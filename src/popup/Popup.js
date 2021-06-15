@@ -33,7 +33,7 @@ const Popup = () => {
       setScrappingStructure(
          setGlobaleClients,
          setGlobaleInsurers,
-         browserId,
+         setGlobalBrowserId,
       ).then((setList) => {
          setDataScraping(setList);
          console.log('dataScraping', setList);
@@ -67,6 +67,7 @@ const Popup = () => {
       getProviderConnections(setGlobalBrowserId)
          .then(({ succeeded, data }) => {
             setIsLoading(false);
+            console.log('getProviderConnections', data);
             if (succeeded) {
                setGlobaleInsurers = data;
                setConnectedInsurers(data);
@@ -97,7 +98,7 @@ const Popup = () => {
          setBrowserId(chromeId);
          setTimeout(() => {
             recallConnect();
-         }, 3000);
+         }, 500);
       });
    }, []);
 
@@ -111,6 +112,7 @@ const Popup = () => {
             isToggle,
             isLoading,
             hasConnections,
+            dataScraping,
             toggleSettings,
             updateSetListConnection,
             recallConnect,
