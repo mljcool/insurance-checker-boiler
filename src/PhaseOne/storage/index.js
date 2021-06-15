@@ -8,7 +8,7 @@ export const GetBrowserID = () => {
    return browser.storage.local.get('chromeId');
 };
 
-export const hasDoneScraping = () => {
+export const hasStorageDoneScraping = () => {
    return browser.storage.local.get('hasDoneScraping');
 };
 

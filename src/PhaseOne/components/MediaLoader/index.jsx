@@ -10,6 +10,8 @@ import Loader from 'PhaseOne/components/Loader';
 import ResultContent from 'PhaseOne/components/MediaLoader/ResultContent';
 import BlankResult from 'PhaseOne/components/MediaLoader/BlankResult';
 import Avatar from '@material-ui/core/Avatar';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import LaunchIcon from '@material-ui/icons/Launch';
 import { deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +56,10 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
             action={
                loading ? null : (
                   <IconButton aria-label='settings'>
-                     <MoreVertIcon />
+                     {hasData === 'YES' && !isLoadingScrape && <LaunchIcon />}
+                     {hasData === 'BLANK' && !isLoadingScrape && (
+                        <RefreshIcon />
+                     )}
                   </IconButton>
                )
             }

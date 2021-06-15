@@ -11,7 +11,12 @@ import {
 } from 'PhaseOne/services/connect';
 import { setScrappingStructure } from 'PhaseOne/services/mapper';
 import { AppContext } from '../context/AppContext';
-import { setChromeIdentity, GetStorageClient } from 'PhaseOne/storage';
+import {
+   setChromeIdentity,
+   GetStorageClient,
+   setHasDoneScraping,
+   hasStorageDoneScraping,
+} from 'PhaseOne/storage';
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
 let setGlobalBrowserId = '';
@@ -40,6 +45,7 @@ const Popup = () => {
          onStartScraping(dataScraping).then(
             ({ succeeded, data, insurerId }) => {
                console.log('response', succeeded);
+               setHasDoneScraping(succeeded);
                if (succeeded) {
                   setForDisplay(
                      forDisplay.map((display) => {
@@ -64,6 +70,7 @@ const Popup = () => {
       ).then(({ forPostData, forDisplayData }) => {
          setDataScraping(forPostData);
          setForDisplay(forDisplayData);
+
          console.log('dataScraping', forDisplayData);
       });
    };
@@ -131,6 +138,15 @@ const Popup = () => {
          }, 500);
       });
    }, []);
+
+   useEffect(
+      () => {
+         hasStorageDoneScraping().then(({ hasDoneScraping }) => {
+            onStartScrapingFromInsurer();
+         });
+      },
+      [forDisplay.length],
+   );
 
    return (
       <AppContext.Provider
