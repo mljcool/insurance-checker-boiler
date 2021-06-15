@@ -14,14 +14,15 @@ let setGlobaleInsurers = [];
 let setGlobaleClients = [];
 
 const Popup = () => {
-   const [isToggle, setIsToggle] = useState(false);
    const [clientList, setClientList] = useState([]);
-   const [browserId, setBrowserId] = useState('');
    const [connectedInsurers, setConnectedInsurers] = useState([]);
-   const [hasConnections, setHasConnections] = useState(false);
-   const [insurerListRef, setInsurerListRef] = useState(insurerList);
-   const [isLoading, setIsLoading] = useState(false);
    const [dataScraping, setDataScraping] = useState([]);
+   const [insurerListRef, setInsurerListRef] = useState(insurerList);
+   const [browserId, setBrowserId] = useState('');
+
+   const [isToggle, setIsToggle] = useState(false);
+   const [hasConnections, setHasConnections] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
 
    const toggleSettings = () => {
       setIsToggle((toggle) => !toggle);
