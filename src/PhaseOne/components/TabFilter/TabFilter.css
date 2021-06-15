@@ -1,7 +1,8 @@
 .header_filter {
-   margin-top: 8px;
    display: flex;
    justify-content: space-around;
+   padding: 1rem 0;
+   border-bottom: 1px solid #e8e4e4;
 }
 
 .header_filter .is_active {

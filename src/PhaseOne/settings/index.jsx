@@ -35,7 +35,7 @@ const InsurerList = ({ onSelectInurance, insurerList = [] }) => {
             <AssignmentTurnedInIcon
                style={{ fontSize: '15px', color: green[500] }}
             />
-            <span>Connect your account</span>
+            <span className='connection_label'>Connect your account</span>
          </div>
          <div className='insurer_list list_wrapper'>
             <List component='nav' aria-label='main mailbox folders'>

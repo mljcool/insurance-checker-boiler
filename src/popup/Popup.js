@@ -12,6 +12,7 @@ import { setChromeIdentity, GetStorageClient } from 'PhaseOne/storage';
 
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
+let setGlobalBrowserId = '';
 
 const Popup = () => {
    const [clientList, setClientList] = useState([]);
@@ -40,61 +41,63 @@ const Popup = () => {
    };
 
    const updateSetListConnection = (id, status) => {
-      setInsurerListRef((prevState) => [
-         ...prevState,
+      setInsurerListRef(
          insurerList.map((insurer) => {
             if (insurer.id === id) {
                insurer.isConnected = status;
             }
             return insurer;
          }),
-      ]);
+      );
    };
 
    const setListConnection = (data) => {
-      setInsurerListRef((prevState) => [
-         ...prevState,
+      setInsurerListRef(
          insurerList.map((insurer) => {
             insurer.isConnected = data.some(
                (insurance) => insurance.insurerId === insurer.id,
             );
             return insurer;
          }),
-      ]);
+      );
    };
 
-   const recallConnect = (paramBrowserId) => {
-      const browserId = browserId || paramBrowserId;
+   const recallConnect = () => {
       setIsLoading(true);
-      getProviderConnections(browserId).then(({ succeeded, data }) => {
-         setIsLoading(false);
-         if (succeeded) {
-            setGlobaleInsurers = data;
-            setConnectedInsurers(data);
-            setHasConnections(!!data.length);
-            setListConnection(data);
-            if (data.length === 1) {
-               setIsToggle(false);
-            }
+      getProviderConnections(setGlobalBrowserId)
+         .then(({ succeeded, data }) => {
+            setIsLoading(false);
+            if (succeeded) {
+               setGlobaleInsurers = data;
+               setConnectedInsurers(data);
+               setHasConnections(!!data.length);
+               setListConnection(data);
+               if (data.length === 1) {
+                  setIsToggle(false);
+               }
 
-            shapeDataScraping(browserId);
-         }
-         console.log('getProviderConnections', data);
-      });
+               shapeDataScraping(browserId);
+            }
+         })
+         .catch((err) => {
+            setIsLoading(false);
+         });
    };
 
    useEffect(() => {
       GetStorageClient().then(({ clientList }) => {
          if (clientList.length) {
-            console.log(clientList);
             setGlobaleClients = clientList;
             setClientList(clientList);
          }
       });
 
       setChromeIdentity((chromeId) => {
+         setGlobalBrowserId = chromeId;
          setBrowserId(chromeId);
-         recallConnect(chromeId);
+         setTimeout(() => {
+            recallConnect();
+         }, 3000);
       });
    }, []);
 

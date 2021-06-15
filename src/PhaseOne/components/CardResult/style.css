@@ -1,0 +1,6 @@
+.card_result_list {
+   overflow-y: auto;
+   max-height: 440px;
+   height: 440px;
+   background: #f0f0f0;
+}

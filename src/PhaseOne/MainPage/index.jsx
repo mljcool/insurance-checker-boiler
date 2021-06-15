@@ -3,14 +3,17 @@ import './main.css';
 import PaperWrapper from 'PhaseOne/components/PaperWrapper';
 import TabFilter from 'PhaseOne/components/TabFilter';
 import GotoSettings from 'PhaseOne/components/GotoSettings';
-import MediaLoading from 'PhaseOne/components/MediaLoader';
+import CardResult from 'PhaseOne/components/CardResult';
+
 import Settings from 'PhaseOne/settings';
+import Loader from '../components/Loader';
 import { AppContext } from 'context/AppContext';
 
 const ReadyForScrapeWrapper = () => {
    return (
       <Fragment>
          <TabFilter switchMenu={true} />
+         <CardResult />
       </Fragment>
    );
 };
@@ -31,7 +34,7 @@ const MainPage = () => {
       <Fragment>
          {!isToggle && (
             <PaperWrapper isToggle={!isToggle}>
-               {isLoading && <MediaLoading loading={true} />}
+               <Loader isLoading={isLoading} />
 
                <SetUIDoneLoad
                   doneLoading={hasConnections && !isLoading}

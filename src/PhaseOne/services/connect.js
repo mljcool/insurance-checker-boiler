@@ -28,3 +28,7 @@ export const onDisconnectInsurer = (params = {}) => {
    };
    return postMethod('setup/delete-credential', details);
 };
+
+export const onStartScraping = (dataParams = []) => {
+   return postMethod(baseURLScrape + 'insurer/search-clients', dataParams);
+};
