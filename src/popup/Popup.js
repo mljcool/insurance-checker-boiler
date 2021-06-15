@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
 
@@ -6,8 +6,12 @@ import Header from 'PhaseOne/components/Header';
 import MainPage from 'PhaseOne/MainPage';
 import { insurerList } from 'constant/insurers';
 import { getProviderConnections } from 'PhaseOne/services/connect';
+import { setScrappingStructure } from 'PhaseOne/services/mapper';
 import { AppContext } from '../context/AppContext';
 import { setChromeIdentity, GetStorageClient } from 'PhaseOne/storage';
+
+let setGlobaleInsurers = [];
+let setGlobaleClients = [];
 
 const Popup = () => {
    const [isToggle, setIsToggle] = useState(false);
@@ -17,10 +21,21 @@ const Popup = () => {
    const [hasConnections, setHasConnections] = useState(false);
    const [insurerListRef, setInsurerListRef] = useState(insurerList);
    const [isLoading, setIsLoading] = useState(false);
-   // const insurerListRef = useRef(insurerList);
+   const [dataScraping, setDataScraping] = useState([]);
 
    const toggleSettings = () => {
       setIsToggle((toggle) => !toggle);
+   };
+
+   const shapeDataScraping = (browserId) => {
+      setScrappingStructure(
+         setGlobaleClients,
+         setGlobaleInsurers,
+         browserId,
+      ).then((setList) => {
+         setDataScraping(setList);
+         console.log('dataScraping', setList);
+      });
    };
 
    const updateSetListConnection = (id, status) => {
@@ -33,7 +48,6 @@ const Popup = () => {
             return insurer;
          }),
       ]);
-      console.log('setListConnection', insurerListRef);
    };
 
    const setListConnection = (data) => {
@@ -46,57 +60,56 @@ const Popup = () => {
             return insurer;
          }),
       ]);
-      console.log('setListConnection', insurerListRef);
    };
 
    const recallConnect = (paramBrowserId) => {
+      const browserId = browserId || paramBrowserId;
       setIsLoading(true);
-      getProviderConnections(browserId || paramBrowserId).then(
-         ({ succeeded, data }) => {
-            setIsLoading(false);
-            if (succeeded) {
-               setConnectedInsurers(data);
-               setHasConnections(!!data.length);
-               setListConnection(data);
-
-               if (data.length === 1) {
-                  setIsToggle(false);
-               }
+      getProviderConnections(browserId).then(({ succeeded, data }) => {
+         setIsLoading(false);
+         if (succeeded) {
+            setGlobaleInsurers = data;
+            setConnectedInsurers(data);
+            setHasConnections(!!data.length);
+            setListConnection(data);
+            if (data.length === 1) {
+               setIsToggle(false);
             }
-            console.log('getProviderConnections', data);
-         },
-      );
+
+            shapeDataScraping(browserId);
+         }
+         console.log('getProviderConnections', data);
+      });
    };
 
    useEffect(() => {
-      setChromeIdentity((chromeId) => {
-         setBrowserId(chromeId);
-         recallConnect(chromeId);
-         console.log('getProviderConnections', data);
-      });
-
       GetStorageClient().then(({ clientList }) => {
          if (clientList.length) {
             console.log(clientList);
+            setGlobaleClients = clientList;
             setClientList(clientList);
          }
+      });
+
+      setChromeIdentity((chromeId) => {
+         setBrowserId(chromeId);
+         recallConnect(chromeId);
       });
    }, []);
 
    return (
       <AppContext.Provider
          value={{
-            title: 'Sample',
+            browserId,
             clientList,
-            hasConnections,
+            insurerList: insurerListRef,
             connectedInsurers,
             isToggle,
+            isLoading,
+            hasConnections,
             toggleSettings,
-            browserId,
             updateSetListConnection,
             recallConnect,
-            insurerList: insurerListRef,
-            isLoading,
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} />
