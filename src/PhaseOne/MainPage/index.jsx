@@ -36,10 +36,12 @@ const MainPage = () => {
             <PaperWrapper isToggle={!isToggle}>
                <Loader isLoading={isLoading} />
 
-               <SetUIDoneLoad
-                  doneLoading={hasConnections && !isLoading}
-                  toggleSettings={toggleSettings}
-               />
+               {!isLoading && (
+                  <SetUIDoneLoad
+                     doneLoading={hasConnections && !isLoading}
+                     toggleSettings={toggleSettings}
+                  />
+               )}
             </PaperWrapper>
          )}
          {isToggle && (

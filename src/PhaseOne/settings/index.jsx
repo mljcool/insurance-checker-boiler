@@ -109,7 +109,7 @@ const Settings = () => {
          if (succeeded) {
             setUserName('');
             setPassword('');
-            recallConnect();
+            recallConnect(true);
          } else {
             setIsSomethingWrong(true);
             setMessage(

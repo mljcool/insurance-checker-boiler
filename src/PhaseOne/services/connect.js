@@ -5,14 +5,14 @@ export const getProviderConnections = (browserId = '') => {
 };
 
 export const postConnectToInsurers = (params = {}) => {
-   const { userName, password, providerName, id, browserId } = params;
+   const { userName, password, providerNameLowerCases, id, browserId } = params;
    const details = {
       userName,
       password,
       title: 'ADVISER',
       firstName: 'Sample',
       lastName: 'Sample',
-      insurerName: providerName,
+      insurerName: providerNameLowerCases,
       insurerId: id,
       browserId,
    };

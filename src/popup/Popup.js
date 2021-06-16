@@ -3,6 +3,7 @@ import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
 import Header from 'PhaseOne/components/Header';
 import MainPage from 'PhaseOne/MainPage';
+import EmptyClients from '../PhaseOne/components/EmptyClients';
 import { insurerList } from 'constant/insurers';
 import {
    getProviderConnections,
@@ -19,6 +20,7 @@ import {
    getFamilyIdStorage,
    getStoreDataScraping,
 } from 'PhaseOne/storage';
+
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
 let setGlobaleUIforDisplay = [];
@@ -41,6 +43,7 @@ const Popup = () => {
    const [hasConnections, setHasConnections] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
    const [isLoadingScraping, setIsLoadingScrape] = useState(false);
+   const [isNoClients, setIsNoClients] = useState(false);
 
    const toggleSettings = () => {
       setIsToggle((toggle) => !toggle);
@@ -111,6 +114,7 @@ const Popup = () => {
          setForDisplayPlaceHolder(forDisplayData);
 
          console.log('forDisplayData', forDisplayData);
+         console.log('forPostData', forPostData);
       });
    };
 
@@ -162,7 +166,7 @@ const Popup = () => {
       });
    };
 
-   const recallConnect = () => {
+   const recallConnect = (triggerCall = false) => {
       console.log('recallConnect');
       setIsLoading(true);
       getProviderConnections(setGlobalBrowserId)
@@ -179,6 +183,10 @@ const Popup = () => {
                }
                if (data.length) {
                   shapeDataScraping(browserId);
+               }
+               if (triggerCall && data.length >= 2) {
+                  setIsToggle(false);
+                  onStartScrapingFromInsurer();
                }
             }
          })
@@ -207,10 +215,13 @@ const Popup = () => {
    // set first all data
    useEffect(() => {
       GetStorageClient().then(({ clientList }) => {
+         console.log('clientList', clientList);
          if (clientList.length) {
             setGlobaleClients = clientList;
             setClientList(clientList);
             console.log('clientList', clientList);
+         } else {
+            setIsNoClients(true);
          }
       });
 
@@ -228,13 +239,12 @@ const Popup = () => {
 
    useEffect(
       () => {
-         setTimeout(() => {
-            if (dataScraping.length) {
-               checkOld();
-            }
-         }, 3000);
+         if (dataScraping.length) {
+            console.log('LAUNCH HERE........');
+            checkOld();
+         }
       },
-      [dataScraping.length],
+      [dataScraping],
    );
 
    return (
@@ -259,7 +269,8 @@ const Popup = () => {
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} isToggle={isToggle} />
-            <MainPage />
+            {!isNoClients && <MainPage />}
+            {isNoClients && <EmptyClients />}
          </div>
       </AppContext.Provider>
    );
