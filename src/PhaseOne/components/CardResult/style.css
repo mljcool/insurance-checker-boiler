@@ -97,7 +97,7 @@
 
 .blank_results {
    display: flex;
-   align-items: center;
+   flex-direction: column;
    justify-content: center;
 }
 
@@ -106,4 +106,20 @@
    font-weight: 600;
    color: #715985;
    margin-left: 5px;
+}
+
+.actual_message {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   background: #f0f0f0;
+   border-radius: 4px;
+   padding: 0.5rem;
+   margin-top: 10px;
+}
+.actual_message span {
+   font-size: 12px;
+   font-weight: 600;
+   color: #817b86;
 }

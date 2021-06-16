@@ -8,10 +8,10 @@ const CardResult = () => {
 
    return (
       <div className='card_result_list'>
-         {/* <button onClick={onStartScrapingFromInsurer}>CHECKING</button> */}
+         <button onClick={onStartScrapingFromInsurer}>CHECKING</button>
          {forDisplay.length &&
             forDisplay.map((scrape, index) => (
-               <MediaLoading userData={scrape} key={index} />
+               <MediaLoading dataScrape={scrape} key={index} />
             ))}
       </div>
    );

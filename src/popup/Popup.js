@@ -26,6 +26,7 @@ const Popup = () => {
    const [connectedInsurers, setConnectedInsurers] = useState([]);
    const [dataScraping, setDataScraping] = useState([]);
    const [forDisplay, setForDisplay] = useState([]);
+   // const [forDisplay, setForDisplayOrig] = useState([]);
    const [insurerListRef, setInsurerListRef] = useState(insurerList);
    const [browserId, setBrowserId] = useState('');
 
@@ -43,16 +44,34 @@ const Popup = () => {
          console.log('response', dataScraping);
          setIsLoadingScrape(true);
          onStartScraping(dataScraping).then(
-            ({ succeeded, data, insurerId }) => {
+            ({ succeeded, data, insurerId, messages }) => {
                console.log('response', succeeded);
                setHasDoneScraping(succeeded);
                if (succeeded) {
+                  if (data.length) {
+                     const setData = data.map((resp) => {
+                        resp.isLoadingScrape = false;
+                        resp.hasData = 'YES';
+                        return resp;
+                     });
+                     setForDisplay(setData);
+                     return;
+                  }
                   setForDisplay(
                      forDisplay.map((display) => {
                         if (display.InsurerId === insurerId) {
                            display.isLoadingScrape = false;
                            display.hasData = !!data.length ? 'YES' : 'BLANK';
                         }
+                        return display;
+                     }),
+                  );
+               } else {
+                  setForDisplay(
+                     forDisplay.map((display) => {
+                        display.isLoadingScrape = false;
+                        display.hasData = 'BLANK';
+                        display.message = messages;
                         return display;
                      }),
                   );
@@ -121,6 +140,10 @@ const Popup = () => {
          });
    };
 
+   const onFilterData = (filterType) => {
+      console.log('filterType', filterType);
+   };
+
    useEffect(() => {
       GetStorageClient().then(({ clientList }) => {
          if (clientList.length) {
@@ -139,14 +162,14 @@ const Popup = () => {
       });
    }, []);
 
-   useEffect(
-      () => {
-         hasStorageDoneScraping().then(({ hasDoneScraping }) => {
-            onStartScrapingFromInsurer();
-         });
-      },
-      [forDisplay.length],
-   );
+   // useEffect(
+   //    () => {
+   //       hasStorageDoneScraping().then(({ hasDoneScraping }) => {
+   //          onStartScrapingFromInsurer();
+   //       });
+   //    },
+   //    [forDisplay.length],
+   // );
 
    return (
       <AppContext.Provider
@@ -165,6 +188,7 @@ const Popup = () => {
             updateSetListConnection,
             recallConnect,
             onStartScrapingFromInsurer,
+            onFilterData,
          }}>
          <div className='popup'>
             <Header switchMenu={toggleSettings} isToggle={isToggle} />

@@ -1,30 +1,13 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import './TabFilter.css';
 import Button from '@material-ui/core/Button';
-const filterTypes = [
-   {
-      id: 1,
-      filterName: 'All',
-   },
-   {
-      id: 2,
-      filterName: 'In Force',
-   },
-   {
-      id: 3,
-      filterName: 'In Progress',
-   },
-   {
-      id: 4,
-      filterName: 'Lapsed',
-   },
-];
-const TabFilter = () => {
-   const [selectedFilter, setSelectedFilter] = React.useState(1);
+import { AppContext } from 'context/AppContext';
+import { FILTER_TYPES } from 'PhaseOne/constants';
 
-   const onSelectFilter = (id) => {
-      setSelectedFilter(id);
-   };
+const TabFilter = () => {
+   const { onFilterData } = useContext(AppContext);
+
+   const [selectedFilter, setSelectedFilter] = useState(1);
 
    const getSelectedFilter = (id) => {
       return selectedFilter === id ? 'is_active' : '';
@@ -32,12 +15,13 @@ const TabFilter = () => {
 
    return (
       <div className='header_filter'>
-         {filterTypes.map((menu) => (
+         {FILTER_TYPES.map((menu) => (
             <Button
                size='small'
                className={`buttons_filter ${getSelectedFilter(menu.id)}`}
                onClick={() => {
-                  onSelectFilter(menu.id);
+                  setSelectedFilter(menu.id);
+                  onFilterData(menu.filterName);
                }}
                key={menu.id}>
                <span>{menu.filterName}</span>

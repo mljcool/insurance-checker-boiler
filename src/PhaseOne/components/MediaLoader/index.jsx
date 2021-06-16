@@ -9,6 +9,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Loader from 'PhaseOne/components/Loader';
 import ResultContent from 'PhaseOne/components/MediaLoader/ResultContent';
 import BlankResult from 'PhaseOne/components/MediaLoader/BlankResult';
+import LoadingContent from 'PhaseOne/components/MediaLoader/LoadingContent';
 import Avatar from '@material-ui/core/Avatar';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import LaunchIcon from '@material-ui/icons/Launch';
@@ -30,18 +31,20 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-const MediaLoading = ({ loading = false, userData = {} }) => {
+const MediaLoading = ({ loading = false, dataScrape = {} }) => {
    const classes = useStyles();
    const {
-      FirstName,
-      LastName,
-      InsurerName,
-      InsurerId,
+      firstName,
+      lastName,
+      insurerName,
+      insurerId,
       isLoadingScrape,
       hasData,
-   } = userData;
+      message,
+      policies,
+   } = dataScrape;
 
-   console.log(userData);
+   console.log(dataScrape);
    return (
       <Card className={classes.card}>
          <Loader isLoading={isLoadingScrape} />
@@ -49,8 +52,8 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
             className='card_resul_header'
             avatar={
                <Avatar className={classes.purple}>
-                  {FirstName[0]}
-                  {LastName[0]}
+                  {firstName[0]}
+                  {lastName[0]}
                </Avatar>
             }
             action={
@@ -66,24 +69,37 @@ const MediaLoading = ({ loading = false, userData = {} }) => {
             title={<div className='insure_label'>Insured Person</div>}
             subheader={
                <div className='insure_people'>
-                  <span className='f_name'>{FirstName}</span>
-                  <span className='l_name'>{LastName}</span>
+                  <span className='f_name'>{firstName}</span>
+                  <span className='l_name'>{lastName}</span>
                </div>
             }
          />
 
          <CardContent>
             {hasData === 'YES' && isLoadingScrape && (
-               <ResultContent
+               <LoadingContent
                   classes={classes}
-                  isLoadingScrape={isLoadingScrape}
-                  InsurerName={InsurerName}
-                  InsurerId={InsurerId}
+                  insurerName={insurerName}
+                  insurerId={insurerId}
                />
             )}
             {hasData === 'BLANK' && !isLoadingScrape && (
-               <BlankResult InsurerName={InsurerName} InsurerId={InsurerId} />
+               <BlankResult
+                  insurerName={insurerName}
+                  insurerId={insurerId}
+                  message={message}
+               />
             )}
+
+            {hasData === 'YES' &&
+               isLoadingScrape &&
+               policies.map((policy) => (
+                  <ResultContent
+                     classes={classes}
+                     insurerName={insurerName}
+                     insurerId={insurerId}
+                  />
+               ))}
          </CardContent>
       </Card>
    );

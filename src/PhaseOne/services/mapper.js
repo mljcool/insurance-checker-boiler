@@ -14,14 +14,16 @@ const mapDataForPost = (clients) => {
 const mapDataForUI = (clients) => {
    return clients.map((client) => {
       return {
-         Birthday: client.Birthday,
-         FirstName: client.FirstName,
-         LastName: client.LastName,
-         BrowserId: client.BrowserId,
-         InsurerName: client.InsurerName,
-         InsurerId: client.InsurerId,
+         birthday: client.Birthday,
+         firstName: client.FirstName,
+         lastName: client.LastName,
+         browserId: client.BrowserId,
+         insurerName: client.InsurerName,
+         insurerId: client.InsurerId,
          isLoadingScrape: true,
          hasData: 'YES',
+         message: null,
+         policies: [],
          results: [],
       };
    });
