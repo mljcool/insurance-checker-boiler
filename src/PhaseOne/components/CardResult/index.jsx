@@ -5,23 +5,21 @@ import { AppContext } from 'context/AppContext';
 import './style.css';
 
 const CardResult = () => {
-   const { forDisplay, onStartScrapingFromInsurer, filterName } = useContext(
-      AppContext,
-   );
+  const { forDisplay, onStartScrapingFromInsurer, filterName } = useContext(
+    AppContext
+  );
 
-   useEffect(() => {}, [forDisplay.length]);
+  return (
+    <div className='card_result_list'>
+      {/* <button onClick={onStartScrapingFromInsurer}>CHECKING</button> */}
+      {!!forDisplay.length &&
+        forDisplay.map((scrape, index) => (
+          <MediaLoading dataScrape={scrape} key={index} />
+        ))}
 
-   return (
-      <div className='card_result_list'>
-         {/* <button onClick={onStartScrapingFromInsurer}>CHECKING</button> */}
-         {!!forDisplay.length &&
-            forDisplay.map((scrape, index) => (
-               <MediaLoading dataScrape={scrape} key={index} />
-            ))}
-
-         {!forDisplay.length && <EmptyFilter filterName={filterName} />}
-      </div>
-   );
+      {!forDisplay.length && <EmptyFilter filterName={filterName} />}
+    </div>
+  );
 };
 
 export default CardResult;
