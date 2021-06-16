@@ -24,6 +24,7 @@ import {
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
 let setGlobaleUIforDisplay = [];
+let setGlobalforPostData = [];
 let setGlobalBrowserId = '';
 let setGlobalfamilyId = '';
 
@@ -49,54 +50,68 @@ const Popup = () => {
   };
 
   const onStartScrapingFromInsurer = () => {
-    console.log('onStartScrapingFromInsurer', dataScraping);
-    if (dataScraping.length) {
-      setIsLoadingScrape(true);
-      onStartScraping(dataScraping).then(
-        ({ succeeded, data, insurerId, messages }) => {
-          if (succeeded) {
-            console.log('response', data);
-            if (data.length) {
-              console.log(`datahere1`, forDisplay);
-              const setData = data.map((resp) => {
-                resp.isLoadingScrape = false;
-                resp.hasData = 'YES';
-                return resp;
-              });
-              setForUIDisplay(setData);
-              setForDisplayPlaceHolder(setData);
-              setStoreDataScraping(JSON.stringify(setData));
-              return;
+    const startScraping = (scrapeParams) => {
+      console.log('onStartScrapingFromInsurer', scrapeParams);
+      setTimeout(() => {
+        setIsLoadingScrape(true);
+        onStartScraping(scrapeParams).then(
+          ({ succeeded, data, insurerId, messages }) => {
+            if (succeeded) {
+              console.log('response', data);
+              if (data.length) {
+                const setData = setGlobaleUIforDisplay.map((resp) => {
+                  if (resp.insurerId === insurerId) {
+                    resp.isLoadingScrape = false;
+                    resp.hasData = 'YES';
+                    resp.policies = data.find(
+                      (result) => result.insurerId === insurerId
+                    ).policies;
+                  }
+                  return resp;
+                });
+                console.log(`setData`, setData);
+                setForUIDisplay(setData);
+                setForDisplayPlaceHolder(setData);
+                setStoreDataScraping(JSON.stringify(setData));
+                return;
+              }
+
+              console.log(`datahere2`, forDisplay);
+              setForUIDisplay(
+                setGlobaleUIforDisplay.map((display) => {
+                  if (display.insurerId === insurerId) {
+                    display.isLoadingScrape = false;
+                    display.hasData = !!data.length ? 'YES' : 'BLANK';
+                  }
+                  return display;
+                })
+              );
+
+              setForDisplayPlaceHolder(forDisplay);
+              setStoreDataScraping(JSON.stringify(forDisplay));
+            } else {
+              setForUIDisplay(
+                setGlobaleUIforDisplay.map((display) => {
+                  if (display.insurerId === insurerId) {
+                    display.isLoadingScrape = false;
+                    display.hasData = 'BLANK';
+                    display.message = messages;
+                  }
+                  return display;
+                })
+              );
+              setForDisplayPlaceHolder(forDisplay);
+              setStoreDataScraping(JSON.stringify(forDisplay));
             }
-
-            console.log(`datahere2`, forDisplay);
-            setForUIDisplay(
-              setGlobaleUIforDisplay.map((display) => {
-                if (display.insurerId === insurerId) {
-                  display.isLoadingScrape = false;
-                  display.hasData = !!data.length ? 'YES' : 'BLANK';
-                }
-                return display;
-              })
-            );
-
-            setForDisplayPlaceHolder(forDisplay);
-            setStoreDataScraping(JSON.stringify(forDisplay));
-          } else {
-            setForUIDisplay(
-              setGlobaleUIforDisplay.map((display) => {
-                display.isLoadingScrape = false;
-                display.hasData = 'BLANK';
-                display.message = messages;
-                return display;
-              })
-            );
-            setForDisplayPlaceHolder(forDisplay);
-            setStoreDataScraping(JSON.stringify(forDisplay));
+            setHasDoneScraping(succeeded);
           }
-          setHasDoneScraping(succeeded);
-        }
-      );
+        );
+      }, 3000);
+    };
+    if (dataScraping.length) {
+      dataScraping.forEach((scrape) => {
+        startScraping([scrape]);
+      });
     }
   };
 
@@ -108,6 +123,7 @@ const Popup = () => {
       setGlobalfamilyId
     ).then(({ forPostData, forDisplayData }) => {
       setGlobaleUIforDisplay = forDisplayData;
+      setGlobalforPostData = forPostData;
       setDataAPIScraping(forPostData);
       setForUIDisplay(forDisplayData);
       setForDisplayPlaceHolder(forDisplayData);

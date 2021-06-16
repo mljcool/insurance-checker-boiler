@@ -4,57 +4,57 @@
 const crmBaseURL = 'https://api.sit.mycrm.finance/'; //SIT URL
 
 const crmRequest = (urlStr) => {
-   const mytime = JSON.parse(localStorage.getItem('mycrm-tokens'));
-   const settings = {
-      url: crmBaseURL + urlStr,
-      method: 'GET',
-      timeout: 0,
-      headers: {
-         Authorization: 'Bearer ' + ((mytime || {}).accessToken || {}).value,
-      },
-   };
-   return $.ajax(settings);
+  const mytime = JSON.parse(localStorage.getItem('mycrm-tokens'));
+  const settings = {
+    url: crmBaseURL + urlStr,
+    method: 'GET',
+    timeout: 0,
+    headers: {
+      Authorization: 'Bearer ' + ((mytime || {}).accessToken || {}).value,
+    },
+  };
+  return $.ajax(settings);
 };
 
 // getCLient Information
 
 const urlClientMyCRM = (familyId = '') => {
-   return 'contacts/ClientInformGet?familyId=' + familyId + '&clientId=null';
+  return 'contacts/ClientInformGet?familyId=' + familyId + '&clientId=null';
 };
 
 const setClientStorage = (clients = [], familyId) => {
-   chrome.storage.local.set({
-      clientList: clients,
-   });
-   chrome.storage.local.set({
-      familyId,
-   });
+  chrome.storage.local.set({
+    clientList: clients,
+  });
+  chrome.storage.local.set({
+    familyId,
+  });
 };
 
 const getClientInfo = (familyId) => {
-   setClientStorage([], familyId);
-   crmRequest(urlClientMyCRM(familyId)).done((response) => {
-      if (!!response.length) {
-         const clientInfo = mapClientsInfo(response.sort().reverse());
-         setClientStorage(clientInfo, familyId);
-      }
-   });
+  setClientStorage([], null);
+  crmRequest(urlClientMyCRM(familyId)).done((response) => {
+    if (!!response.length) {
+      const clientInfo = mapClientsInfo(response.sort().reverse());
+      setClientStorage(clientInfo, familyId);
+    }
+  });
 };
 
 const getAdviserInfo = () => {
-   crmRequest('GetUserInfo').done((response) => {
-      const adviserData = mapAdviserInfo(response);
-      setStorage({
-         adviserData,
-      });
-   });
+  crmRequest('GetUserInfo').done((response) => {
+    const adviserData = mapAdviserInfo(response);
+    setStorage({
+      adviserData,
+    });
+  });
 };
 
 const interceptMyCRM = () => {
-   urlSPliter().then(({ success, familyId }) => {
-      if (success) {
-         getClientInfo(familyId);
-         //  getAdviserInfo();
-      }
-   });
+  urlSPliter().then(({ success, familyId }) => {
+    if (success) {
+      getClientInfo(familyId);
+      //  getAdviserInfo();
+    }
+  });
 };
