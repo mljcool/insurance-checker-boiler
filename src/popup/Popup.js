@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Popup.css';
 import '@polymer/paper-button/paper-button.js';
-
 import Header from 'PhaseOne/components/Header';
 import MainPage from 'PhaseOne/MainPage';
 import { insurerList } from 'constant/insurers';
@@ -15,7 +14,6 @@ import {
    setChromeIdentity,
    GetStorageClient,
    setHasDoneScraping,
-   hasStorageDoneScraping,
    setStoreDataScraping,
    getFamilyId,
    getFamilyIdStorage,
@@ -23,51 +21,55 @@ import {
 } from 'PhaseOne/storage';
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
+let setGlobaleUIforDisplay = [];
 let setGlobalBrowserId = '';
 let setGlobalfamilyId = '';
+let noResults = '';
 
 const Popup = () => {
    const [clientList, setClientList] = useState([]);
    const [connectedInsurers, setConnectedInsurers] = useState([]);
-   const [dataScraping, setDataScraping] = useState([]);
-   const [forDisplay, setForDisplay] = useState([]);
-   const [forStorageDisplay, setForStorageDisplay] = useState([]);
+   const [dataScraping, setDataAPIScraping] = useState([]);
+   const [forDisplay, setForUIDisplay] = useState([]);
+   const [forDisplayPlaceHolder, setForDisplayPlaceHolder] = useState([]);
    const [insurerListRef, setInsurerListRef] = useState(insurerList);
    const [browserId, setBrowserId] = useState('');
    const [familyId, setFamilyId] = useState('');
+   const [filterName, setFilterName] = useState('');
 
    const [isToggle, setIsToggle] = useState(false);
    const [hasConnections, setHasConnections] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
-   const [isLoadingScrape, setIsLoadingScrape] = useState(false);
+   const [isLoadingScraping, setIsLoadingScrape] = useState(false);
 
    const toggleSettings = () => {
       setIsToggle((toggle) => !toggle);
    };
 
    const onStartScrapingFromInsurer = () => {
+      console.log('onStartScrapingFromInsurer', dataScraping);
       if (dataScraping.length) {
-         console.log('response', dataScraping);
          setIsLoadingScrape(true);
          onStartScraping(dataScraping).then(
             ({ succeeded, data, insurerId, messages }) => {
-               console.log('response', succeeded);
-               setHasDoneScraping(succeeded);
                if (succeeded) {
+                  console.log('response', data);
                   if (data.length) {
-                     console.log(`datahere1`);
+                     console.log(`datahere1`, forDisplay);
                      const setData = data.map((resp) => {
                         resp.isLoadingScrape = false;
                         resp.hasData = 'YES';
                         return resp;
                      });
-                     setForDisplay(setData);
+                     setForUIDisplay(setData);
+                     setForDisplayPlaceHolder(setData);
                      setStoreDataScraping(JSON.stringify(setData));
                      return;
                   }
-                  console.log(`datahere2`);
-                  setForDisplay(
-                     forDisplay.map((display) => {
+
+                  console.log(`datahere2`, forDisplay);
+                  setForUIDisplay(
+                     setGlobaleUIforDisplay.map((display) => {
                         if (display.insurerId === insurerId) {
                            display.isLoadingScrape = false;
                            display.hasData = !!data.length ? 'YES' : 'BLANK';
@@ -75,16 +77,22 @@ const Popup = () => {
                         return display;
                      }),
                   );
+
+                  setForDisplayPlaceHolder(forDisplay);
+                  setStoreDataScraping(JSON.stringify(forDisplay));
                } else {
-                  setForDisplay(
-                     forDisplay.map((display) => {
+                  setForUIDisplay(
+                     setGlobaleUIforDisplay.map((display) => {
                         display.isLoadingScrape = false;
                         display.hasData = 'BLANK';
                         display.message = messages;
                         return display;
                      }),
                   );
+                  setForDisplayPlaceHolder(forDisplay);
+                  setStoreDataScraping(JSON.stringify(forDisplay));
                }
+               setHasDoneScraping(succeeded);
             },
          );
       }
@@ -97,9 +105,12 @@ const Popup = () => {
          setGlobalBrowserId,
          setGlobalfamilyId,
       ).then(({ forPostData, forDisplayData }) => {
-         setDataScraping(forPostData);
-         setForDisplay(forDisplayData);
-         console.log('dataScraping', forDisplayData);
+         setGlobaleUIforDisplay = forDisplayData;
+         setDataAPIScraping(forPostData);
+         setForUIDisplay(forDisplayData);
+         setForDisplayPlaceHolder(forDisplayData);
+
+         console.log('forDisplayData', forDisplayData);
       });
    };
 
@@ -128,15 +139,23 @@ const Popup = () => {
    const getOldScrapingData = () => {
       getStoreDataScraping().then(({ storageScrape }) => {
          const parseList = JSON.parse(storageScrape);
-         setForDisplay(parseList);
+         console.log('getOldScrapingData', storageScrape);
+         if (!!parseList.length) {
+            setForDisplayPlaceHolder(parseList);
+            setForUIDisplay(parseList);
+         } else {
+            onStartScrapingFromInsurer();
+         }
       });
    };
 
    const checkOld = () => {
+      console.log('checkOld');
       getFamilyIdStorage().then(({ familyIdStorage }) => {
          const isSame = familyIdStorage === familyId;
          if (familyIdStorage && isSame) {
             getOldScrapingData();
+            console.log('checkOld111', isSame);
          } else {
             onStartScrapingFromInsurer();
          }
@@ -144,11 +163,12 @@ const Popup = () => {
    };
 
    const recallConnect = () => {
+      console.log('recallConnect');
       setIsLoading(true);
       getProviderConnections(setGlobalBrowserId)
          .then(({ succeeded, data }) => {
-            setIsLoading(false);
             console.log('getProviderConnections', data);
+            setIsLoading(false);
             if (succeeded) {
                setGlobaleInsurers = data;
                setConnectedInsurers(data);
@@ -160,7 +180,6 @@ const Popup = () => {
                if (data.length) {
                   shapeDataScraping(browserId);
                }
-               checkOld();
             }
          })
          .catch((err) => {
@@ -169,9 +188,23 @@ const Popup = () => {
    };
 
    const onFilterData = (filterType) => {
-      console.log('filterType', filterType);
+      setFilterName(filterType);
+      setForUIDisplay(forDisplayPlaceHolder);
+      console.log('filterType', forDisplay);
+      if (filterType === 'All') {
+         setForUIDisplay(forDisplayPlaceHolder);
+         return;
+      }
+      setForUIDisplay(
+         forDisplay.filter((policy) =>
+            policy.policies.some(
+               (insurer) => insurer.policyStatus === filterType,
+            ),
+         ),
+      );
    };
 
+   // set first all data
    useEffect(() => {
       GetStorageClient().then(({ clientList }) => {
          if (clientList.length) {
@@ -189,16 +222,19 @@ const Popup = () => {
       setChromeIdentity((chromeId) => {
          setGlobalBrowserId = chromeId;
          setBrowserId(chromeId);
+         recallConnect(chromeId);
       });
    }, []);
 
    useEffect(
       () => {
          setTimeout(() => {
-            recallConnect();
-         }, 500);
+            if (dataScraping.length) {
+               checkOld();
+            }
+         }, 3000);
       },
-      [browserId],
+      [dataScraping.length],
    );
 
    return (
@@ -211,9 +247,10 @@ const Popup = () => {
             forDisplay,
             isToggle,
             isLoading,
-            isLoadingScrape,
+            isLoadingScraping,
             hasConnections,
             dataScraping,
+            filterName,
             toggleSettings,
             updateSetListConnection,
             recallConnect,

@@ -6,6 +6,10 @@ const ResultContent = ({ insurerId, policies = [] }) => {
    const openViewLink = (link) => {
       window.open(link, '_blank').focus();
    };
+   const removeSpaces = (text = '') => {
+      const newText = (text || '').split(/\s/).join('');
+      return newText;
+   };
 
    return (
       policies.length &&
@@ -45,7 +49,13 @@ const ResultContent = ({ insurerId, policies = [] }) => {
                            className='b_logo'
                            width='25px'
                            height='25px'
-                           src={'img/benefit_icons/fp.svg'}
+                           src={`img/benefit_icons/${removeSpaces(
+                              product.productName,
+                           )}.svg`}
+                           onError={(e) => {
+                              e.target.src =
+                                 'img/benefit_icons/circle-svgrepo-com.svg';
+                           }}
                         />
                         <span className='b_label'>{product.productName}</span>
                      </div>

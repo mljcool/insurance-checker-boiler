@@ -127,3 +127,23 @@
 .view_new_tab {
    margin-left: auto;
 }
+
+.empty_filter {
+   display: block;
+   text-align: center;
+   margin-top: 3rem;
+}
+
+.empty_filter span {
+   font-weight: 700 !important;
+   font-family: Arial, Helvetica, sans-serif !important;
+   font-size: 15px;
+   color: #8a868d;
+}
+
+.place_img_loading {
+   margin-bottom: 6px;
+   background: #f0f0f0;
+   padding: 5px 8px;
+   border-radius: 5px;
+}
