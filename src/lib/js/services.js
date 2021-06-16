@@ -22,18 +22,21 @@ const urlClientMyCRM = (familyId = '') => {
    return 'contacts/ClientInformGet?familyId=' + familyId + '&clientId=null';
 };
 
-const setClientStorage = (clients = []) => {
+const setClientStorage = (clients = [], familyId) => {
    chrome.storage.local.set({
       clientList: clients,
+   });
+   chrome.storage.local.set({
+      familyId,
    });
 };
 
 const getClientInfo = (familyId) => {
-   setClientStorage([]);
+   setClientStorage([], familyId);
    crmRequest(urlClientMyCRM(familyId)).done((response) => {
       if (!!response.length) {
          const clientInfo = mapClientsInfo(response.sort().reverse());
-         setClientStorage(clientInfo);
+         setClientStorage(clientInfo, familyId);
       }
    });
 };

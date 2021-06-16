@@ -16,19 +16,25 @@ import {
    GetStorageClient,
    setHasDoneScraping,
    hasStorageDoneScraping,
+   setStoreDataScraping,
+   getFamilyId,
+   getFamilyIdStorage,
+   getStoreDataScraping,
 } from 'PhaseOne/storage';
 let setGlobaleInsurers = [];
 let setGlobaleClients = [];
 let setGlobalBrowserId = '';
+let setGlobalfamilyId = '';
 
 const Popup = () => {
    const [clientList, setClientList] = useState([]);
    const [connectedInsurers, setConnectedInsurers] = useState([]);
    const [dataScraping, setDataScraping] = useState([]);
    const [forDisplay, setForDisplay] = useState([]);
-   // const [forDisplay, setForDisplayOrig] = useState([]);
+   const [forStorageDisplay, setForStorageDisplay] = useState([]);
    const [insurerListRef, setInsurerListRef] = useState(insurerList);
    const [browserId, setBrowserId] = useState('');
+   const [familyId, setFamilyId] = useState('');
 
    const [isToggle, setIsToggle] = useState(false);
    const [hasConnections, setHasConnections] = useState(false);
@@ -49,17 +55,20 @@ const Popup = () => {
                setHasDoneScraping(succeeded);
                if (succeeded) {
                   if (data.length) {
+                     console.log(`datahere1`);
                      const setData = data.map((resp) => {
                         resp.isLoadingScrape = false;
                         resp.hasData = 'YES';
                         return resp;
                      });
                      setForDisplay(setData);
+                     setStoreDataScraping(JSON.stringify(setData));
                      return;
                   }
+                  console.log(`datahere2`);
                   setForDisplay(
                      forDisplay.map((display) => {
-                        if (display.InsurerId === insurerId) {
+                        if (display.insurerId === insurerId) {
                            display.isLoadingScrape = false;
                            display.hasData = !!data.length ? 'YES' : 'BLANK';
                         }
@@ -86,10 +95,10 @@ const Popup = () => {
          setGlobaleClients,
          setGlobaleInsurers,
          setGlobalBrowserId,
+         setGlobalfamilyId,
       ).then(({ forPostData, forDisplayData }) => {
          setDataScraping(forPostData);
          setForDisplay(forDisplayData);
-
          console.log('dataScraping', forDisplayData);
       });
    };
@@ -116,6 +125,24 @@ const Popup = () => {
       );
    };
 
+   const getOldScrapingData = () => {
+      getStoreDataScraping().then(({ storageScrape }) => {
+         const parseList = JSON.parse(storageScrape);
+         setForDisplay(parseList);
+      });
+   };
+
+   const checkOld = () => {
+      getFamilyIdStorage().then(({ familyIdStorage }) => {
+         const isSame = familyIdStorage === familyId;
+         if (familyIdStorage && isSame) {
+            getOldScrapingData();
+         } else {
+            onStartScrapingFromInsurer();
+         }
+      });
+   };
+
    const recallConnect = () => {
       setIsLoading(true);
       getProviderConnections(setGlobalBrowserId)
@@ -133,6 +160,7 @@ const Popup = () => {
                if (data.length) {
                   shapeDataScraping(browserId);
                }
+               checkOld();
             }
          })
          .catch((err) => {
@@ -153,23 +181,25 @@ const Popup = () => {
          }
       });
 
+      getFamilyId().then(({ familyId }) => {
+         setGlobalfamilyId = familyId;
+         setFamilyId(familyId);
+      });
+
       setChromeIdentity((chromeId) => {
          setGlobalBrowserId = chromeId;
          setBrowserId(chromeId);
-         setTimeout(() => {
-            recallConnect();
-         }, 500);
       });
    }, []);
 
-   // useEffect(
-   //    () => {
-   //       hasStorageDoneScraping().then(({ hasDoneScraping }) => {
-   //          onStartScrapingFromInsurer();
-   //       });
-   //    },
-   //    [forDisplay.length],
-   // );
+   useEffect(
+      () => {
+         setTimeout(() => {
+            recallConnect();
+         }, 500);
+      },
+      [browserId],
+   );
 
    return (
       <AppContext.Provider

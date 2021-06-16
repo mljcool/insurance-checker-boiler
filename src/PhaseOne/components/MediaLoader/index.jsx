@@ -42,7 +42,7 @@ const MediaLoading = ({ loading = false, dataScrape = {} }) => {
       policies,
    } = dataScrape;
 
-   console.log(dataScrape);
+   console.log('MediaLoading', dataScrape);
    return (
       <Card className={classes.card}>
          <Loader isLoading={isLoadingScrape} />

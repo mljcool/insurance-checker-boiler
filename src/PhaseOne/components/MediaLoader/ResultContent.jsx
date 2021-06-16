@@ -9,8 +9,8 @@ const ResultContent = ({ insurerId, policies = [] }) => {
 
    return (
       policies.length &&
-      policies.map((policy) => (
-         <React.Fragment>
+      policies.map((policy, index) => (
+         <React.Fragment key={index}>
             <div className='main_label_header'>
                <span>
                   Insurance checker found {policy.products.length} benefits from
@@ -38,8 +38,8 @@ const ResultContent = ({ insurerId, policies = [] }) => {
                </div>
             </div>
             <div className='benefits_results'>
-               {policy.products.map((product) => (
-                  <div className='benefits_list'>
+               {policy.products.map((product, key) => (
+                  <div className='benefits_list' key={key}>
                      <div className='benefits_logo_label'>
                         <img
                            className='b_logo'

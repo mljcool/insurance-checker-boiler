@@ -12,6 +12,14 @@ export const hasStorageDoneScraping = () => {
    return browser.storage.local.get('hasDoneScraping');
 };
 
+export const getFamilyId = () => {
+   return browser.storage.local.get('familyId');
+};
+
+export const getFamilyIdStorage = () => {
+   return browser.storage.local.get('familyIdStorage');
+};
+
 export const setHasDoneScraping = (isSet = false) => {
    browser.storage.local
       .set({
@@ -20,6 +28,23 @@ export const setHasDoneScraping = (isSet = false) => {
       .then(() => {
          console.log(`Status Done for this client.`);
       });
+};
+
+export const getStoreDataScraping = () => {
+   return browser.storage.local.get('storageScrape');
+};
+
+export const setStoreDataScraping = (scrape = []) => {
+   getFamilyId().then(({ familyId }) => {
+      browser.storage.local
+         .set({
+            ['storageScrape']: scrape,
+            ['familyIdStorage']: familyId,
+         })
+         .then(() => {
+            console.log(`storageScrape was saved`);
+         });
+   });
 };
 
 const setChromeToken = () => {

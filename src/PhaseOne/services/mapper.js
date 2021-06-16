@@ -20,6 +20,7 @@ const mapDataForUI = (clients) => {
          browserId: client.BrowserId,
          insurerName: client.InsurerName,
          insurerId: client.InsurerId,
+         familyId: client.familyId,
          isLoadingScrape: true,
          hasData: 'YES',
          message: null,
@@ -33,6 +34,7 @@ export const setScrappingStructure = (
    setGlobaleClients = [],
    setGlobaleInsurers = [],
    browserId,
+   familyId,
 ) => {
    return new Promise((resolve, reject) => {
       const setList = setGlobaleClients.map((client) => {
@@ -41,6 +43,7 @@ export const setScrappingStructure = (
             client.FirstName = client.firstName;
             client.LastName = client.lastName;
             client.InsurerId = insurer.insurerId;
+            client.familyId = familyId;
             (client.BrowserId = browserId),
                (client.InsurerName = (insurer.insurerName || '').toLowerCase());
          });
