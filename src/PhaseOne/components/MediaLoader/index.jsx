@@ -5,14 +5,12 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Loader from 'PhaseOne/components/Loader';
 import ResultContent from 'PhaseOne/components/MediaLoader/ResultContent';
 import BlankResult from 'PhaseOne/components/MediaLoader/BlankResult';
 import LoadingContent from 'PhaseOne/components/MediaLoader/LoadingContent';
 import Avatar from '@material-ui/core/Avatar';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import LaunchIcon from '@material-ui/icons/Launch';
 import { deepPurple } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,9 +55,9 @@ const MediaLoading = ({ loading = false, dataScrape = {} }) => {
                </Avatar>
             }
             action={
-               loading ? null : (
+               isLoadingScrape ? null : (
                   <IconButton aria-label='settings'>
-                     {hasData === 'YES' && !isLoadingScrape && <LaunchIcon />}
+                     {/* {hasData === 'YES' && !isLoadingScrape && <LaunchIcon />} */}
                      {hasData === 'BLANK' && !isLoadingScrape && (
                         <RefreshIcon />
                      )}
@@ -91,15 +89,14 @@ const MediaLoading = ({ loading = false, dataScrape = {} }) => {
                />
             )}
 
-            {hasData === 'YES' &&
-               isLoadingScrape &&
-               policies.map((policy) => (
-                  <ResultContent
-                     classes={classes}
-                     insurerName={insurerName}
-                     insurerId={insurerId}
-                  />
-               ))}
+            {hasData === 'YES' && !isLoadingScrape && (
+               <ResultContent
+                  classes={classes}
+                  insurerName={insurerName}
+                  insurerId={insurerId}
+                  policies={policies}
+               />
+            )}
          </CardContent>
       </Card>
    );
