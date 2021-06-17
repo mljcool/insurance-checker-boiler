@@ -116,39 +116,30 @@ const Popup = () => {
       console.log('responses', responses);
       responses.forEach((response) => {
         const { succeeded, data, insurerId, messages } = response;
-        if (succeeded) {
-          if (data.length) {
-            setDataForScraping(
-              setGlobalScrapingData.map((resp) => {
-                if (
-                  resp.insurerId === insurerId &&
-                  makeCleanString(resp.firstName) ===
-                    makeCleanString(data[0].firstName)
-                ) {
-                  resp.isLoadingScrape = false;
-                  resp.hasData = 'YES';
-                  resp.policies = data.find(
-                    (result) => result.insurerId === insurerId
-                  ).policies;
-                }
-                return resp;
-              })
-            );
-            return;
-          }
+        if (succeeded && data.length) {
           setDataForScraping(
-            setGlobalScrapingData.map((display) => {
-              if (display.insurerId === insurerId) {
-                display.isLoadingScrape = false;
-                display.hasData = !!data.length ? 'YES' : 'BLANK';
+            setGlobalScrapingData.map((resp) => {
+              if (
+                resp.insurerId === insurerId &&
+                makeCleanString(resp.firstName) ===
+                  makeCleanString(data[0].firstName)
+              ) {
+                resp.isLoadingScrape = false;
+                resp.hasData = 'YES';
+                resp.policies = data.find(
+                  (result) => result.insurerId === insurerId
+                ).policies;
               }
-              return display;
+              return resp;
             })
           );
+          console.log('if data.length', setGlobalScrapingData);
+          console.log('if data.length insurerId', insurerId);
         } else {
+          console.log('else null');
           setDataForScraping(
             setGlobalScrapingData.map((display) => {
-              if (display.insurerId === insurerId) {
+              if (display.insurerId === insurerId && !display.policies.length) {
                 display.isLoadingScrape = false;
                 display.hasData = 'BLANK';
                 display.message = messages;
@@ -165,6 +156,7 @@ const Popup = () => {
     const promises = [];
     setGlobalScrapingData.forEach((scrape, index) => {
       promises.push(onStartScrapingAPI([mapScrapeForAPI(scrape)]));
+
       if (isLastIndex(index, setGlobalScrapingData)) {
         onGetScraping(promises);
       }
