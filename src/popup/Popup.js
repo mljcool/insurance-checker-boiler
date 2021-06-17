@@ -15,10 +15,11 @@ import {
   zeroConnections,
   checkBeforeForProceed,
   filterizeConnections,
+  setScrapeStructure,
 } from 'FinalPhaseOne/util';
 import { setScrappingStructure } from 'FinalPhaseOne/services/mapper';
 
-const setGlobalScrapingData = [];
+let setGlobalScrapingData = [];
 
 const Popup = () => {
   const [isToggle, setIsToggle] = useState(false);
@@ -36,6 +37,7 @@ const Popup = () => {
     setIsToggle((toggle) => !toggle);
   };
   const onRecallConnect = (params) => {};
+  const onFilterData = (params) => {};
   const onUpdateSetListOfConnection = () => {
     getAllConnectedProviders(browserId);
   };
@@ -68,6 +70,22 @@ const Popup = () => {
     });
   };
 
+  const onFormDataScraping = () => {
+    const getConnectedOnly = filterizeConnections(insurerListRef);
+    setScrappingStructure(
+      clientList,
+      getConnectedOnly,
+      browserId,
+      familyID
+    ).then((response) => {
+      setScrapeStructure(response, (allSet) => {
+        setGlobalScrapingData = allSet;
+        setDataForScraping(allSet);
+        console.log('setGlobalScrapingData', allSet);
+      });
+    });
+  };
+
   /** LIFE CYCLE  **/
 
   useEffect(() => {
@@ -82,24 +100,19 @@ const Popup = () => {
   useEffect(
     () => {
       if (checkBeforeForProceed({ clientList, isZeroConnections })) {
-        const getConnectedOnly = filterizeConnections(insurerListRef);
-        setScrappingStructure(
-          clientList,
-          getConnectedOnly,
-          browserId,
-          familyID
-        ).then((response) => {
-          response.forEach((clients) => {
-            clients.forEach((scraping) => {
-              setDataForScraping((oldArray) => [...oldArray, scraping]);
-              setGlobalScrapingData.push(scraping);
-            });
-          });
-          console.log('setGlobalScrapingData', setGlobalScrapingData);
-        });
+        onFormDataScraping();
       }
     },
     [clientList.length, isZeroConnections]
+  );
+
+  useEffect(
+    () => {
+      if (dataForScraping.length) {
+        console.log('canProceed to scraping');
+      }
+    },
+    [dataForScraping.length]
   );
 
   return (

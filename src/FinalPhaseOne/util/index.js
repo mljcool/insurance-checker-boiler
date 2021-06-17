@@ -17,3 +17,15 @@ export const zeroConnections = (insurerListRef) =>
 export const checkBeforeForProceed = ({ clientList, isZeroConnections }) => {
   return !!(clientList.length && !isZeroConnections);
 };
+
+export const setScrapeStructure = (response = [], lasIndex) => {
+  const setData = [];
+  response.forEach((clients, index) => {
+    clients.forEach((scraping) => {
+      setData.push(scraping);
+    });
+    if (index === response.length - 1) {
+      lasIndex(setData);
+    }
+  });
+};

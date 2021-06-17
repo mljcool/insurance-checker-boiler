@@ -42,7 +42,6 @@ const ClientCardWrapper = ({ loading = false, dataScrape = {} }) => {
     policies,
   } = dataScrape;
 
-  console.log('ClientCardWrapper', dataScrape);
   return (
     <Card className={classes.card}>
       <Loader isLoading={isLoadingScrape} />
