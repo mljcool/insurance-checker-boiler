@@ -15,7 +15,7 @@ const setEachClients = (
         browserId: browserId,
         familyId,
         insurerId: insurer.id,
-        insurerName: (insurer.providerName || '').toLowerCase(),
+        insurerName: (insurer.providerNameLowerCases || '').toLowerCase(),
         isLoadingScrape: true,
         hasData: 'YES',
         message: null,
@@ -54,6 +54,5 @@ export const mapScrapeForAPI = (data) => {
     LastName: data.lastName,
     BrowserId: data.browserId,
     InsurerName: data.insurerName,
-    InsurerId: data.insurerId,
   };
 };

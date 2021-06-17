@@ -19,6 +19,7 @@ import {
   checkBeforeForProceed,
   filterizeConnections,
   setScrapeStructure,
+  makeCleanString,
 } from 'FinalPhaseOne/util';
 import {
   setScrappingStructure,
@@ -91,54 +92,54 @@ const Popup = () => {
     });
   };
 
-  const onSartScraping = (scrapeParams = []) => {
-    setTimeout(() => {
-      onStartScrapingAPI(scrapeParams).then(
-        ({ succeeded, data, insurerId, messages }) => {
-          if (succeeded) {
-            console.log('response', data);
-            if (data.length) {
-              console.log(`datahere1`, dataForScraping);
-              setDataScraping(
-                setGlobalScrapingData.map((resp) => {
-                  if (resp.insurerId === insurerId) {
-                    resp.isLoadingScrape = false;
-                    resp.hasData = 'YES';
-                    resp.policies = data.find(
-                      (result) => result.insurerId === insurerId
-                    ).policies;
-                  }
-                  return resp;
-                })
-              );
-              return;
-            }
-
-            console.log(`datahere2`, dataForScraping);
-            setDataScraping(
-              setGlobalScrapingData.map((display) => {
-                if (display.insurerId === insurerId) {
-                  display.isLoadingScrape = false;
-                  display.hasData = !!data.length ? 'YES' : 'BLANK';
+  const onGetScraping = (promises) => {
+    Promise.all(promises).then((responses) => {
+      console.log('responses', responses);
+      responses.forEach((response) => {
+        const { succeeded, data, insurerId, messages } = response;
+        if (succeeded) {
+          if (data.length) {
+            setDataForScraping(
+              setGlobalScrapingData.map((resp) => {
+                if (
+                  resp.insurerId === insurerId &&
+                  makeCleanString(resp.firstName) ===
+                    makeCleanString(data[0].firstName)
+                ) {
+                  resp.isLoadingScrape = false;
+                  resp.hasData = 'YES';
+                  resp.policies = data.find(
+                    (result) => result.insurerId === insurerId
+                  ).policies;
                 }
-                return display;
+                return resp;
               })
             );
-          } else {
-            setDataScraping(
-              setGlobalScrapingData.map((display) => {
-                if (display.insurerId === insurerId) {
-                  display.isLoadingScrape = false;
-                  display.hasData = 'BLANK';
-                  display.message = messages;
-                }
-                return display;
-              })
-            );
+            return;
           }
+          setDataForScraping(
+            setGlobalScrapingData.map((display) => {
+              if (display.insurerId === insurerId) {
+                display.isLoadingScrape = false;
+                display.hasData = !!data.length ? 'YES' : 'BLANK';
+              }
+              return display;
+            })
+          );
+        } else {
+          setDataForScraping(
+            setGlobalScrapingData.map((display) => {
+              if (display.insurerId === insurerId) {
+                display.isLoadingScrape = false;
+                display.hasData = 'BLANK';
+                display.message = messages;
+              }
+              return display;
+            })
+          );
         }
-      );
-    }, 3000);
+      });
+    });
   };
 
   /** LIFE CYCLE  **/
@@ -169,9 +170,13 @@ const Popup = () => {
   useEffect(
     () => {
       if (dataForScraping.length) {
-        setGlobalScrapingData.forEach((scrape) => {
-          console.log('setGlobalScrapingData', mapScrapeForAPI(scrape));
-          onSartScraping([mapScrapeForAPI(scrape)]);
+        const promises = [];
+        setGlobalScrapingData.forEach((scrape, index) => {
+          promises.push(onStartScrapingAPI([mapScrapeForAPI(scrape)]));
+          console.log('promises', promises);
+          if (index === setGlobalScrapingData.length - 1) {
+            onGetScraping(promises);
+          }
         });
         console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
       }

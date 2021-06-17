@@ -29,3 +29,7 @@ export const setScrapeStructure = (response = [], lasIndex) => {
     }
   });
 };
+
+export const makeCleanString = (string = '') => {
+  return string.replace(' ', '').toLowerCase();
+};

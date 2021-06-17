@@ -17,6 +17,7 @@ import {
 import SomethingWentWrong from '../SomethingWentWrong';
 import Loader from '../Loader';
 import { AppContext } from 'context/AppContext';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -86,15 +87,21 @@ const Settings = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
+  const [errorForm, setErrorForm] = useState(false);
   const [isSomethingWrong, setIsSomethingWrong] = useState(false);
   const classes = useStyles();
 
   const onSelectInurance = (insurance) => {
+    setErrorForm(false);
     setSelectedInsurer(insurance);
     setIsSomethingWrong(false);
   };
 
   const onConnectAccount = () => {
+    if (!userName || !password) {
+      setErrorForm(true);
+      return;
+    }
     setIsConnecting(true);
 
     postConnectToInsurers({
@@ -146,6 +153,7 @@ const Settings = () => {
         insurerList={insurerListRef}
       />
       <div className='insurer_login_form'>
+        {errorForm && <Alert severity='error'>Fields are required!</Alert>}
         <Loader isLoading={isConnecting} />
         <div className='login_details'>
           <img src={`img/insurers/${selectedInsurer.id}.png`} />
