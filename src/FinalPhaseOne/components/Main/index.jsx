@@ -8,21 +8,14 @@ import GotoSettings from 'FinalPhaseOne/components/GotoSettings';
 import { AppContext } from 'context/AppContext';
 
 const SubMain = () => {
-  const { isToggle, isLoading, insurerListRef } = useContext(AppContext);
-  const [isZeroConnections, setZeroConnections] = useState(true);
-
-  useEffect(() => {
-    console.log('SubMain');
-    const zeroConnections =
-      insurerListRef.filter((insurance) => insurance.isConnected).length === 0;
-    setZeroConnections(zeroConnections);
-  }, []);
+  const { isToggle, isLoading, isZeroConnections } = useContext(AppContext);
 
   return (
     !isToggle && (
       <PaperWrapper isToggle={!isToggle}>
-        {isZeroConnections && <GotoSettings />}
-        {!isZeroConnections && (
+        {isZeroConnections ? (
+          <GotoSettings />
+        ) : (
           <Fragment>
             <Loader isLoading={isLoading} />
             <TabFilter />

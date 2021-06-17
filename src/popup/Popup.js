@@ -10,6 +10,8 @@ import { getProviderConnections } from 'FinalPhaseOne/services/connect';
 const Popup = () => {
   const [isToggle, setIsToggle] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isZeroConnections, setZeroConnections] = useState(true);
+
   const [insurerListRef, setInsurerListRef] = useState(insurerList);
   const [browserId, setBrowserId] = useState('');
   /** FUNCTION REFERENCE HERE  **/
@@ -36,6 +38,16 @@ const Popup = () => {
             return insurer;
           })
         );
+
+        const zeroConnections =
+          insurerListRef.filter((insurance) => insurance.isConnected).length ===
+          0;
+
+        setZeroConnections(zeroConnections);
+
+        if (data.length === 1) {
+          setIsToggle(false);
+        }
       }
       setIsLoading(false);
     });
@@ -57,6 +69,7 @@ const Popup = () => {
         browserId,
         isLoading,
         isToggle,
+        isZeroConnections,
         insurerListRef,
         onToggleSettings,
         onRecallConnect,

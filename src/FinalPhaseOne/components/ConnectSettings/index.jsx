@@ -77,12 +77,9 @@ const InsurerList = ({ onSelectInurance, insurerList = [] }) => {
 };
 
 const Settings = () => {
-  const {
-    browserId,
-    insurerListRef,
-    onUpdateSetListOfConnection,
-    onRecallConnect,
-  } = useContext(AppContext);
+  const { browserId, insurerListRef, onUpdateSetListOfConnection } = useContext(
+    AppContext
+  );
 
   const [selectedInsurer, setSelectedInsurer] = useState(insurerListRef[0]);
   const [message, setMessage] = useState('');
@@ -110,7 +107,7 @@ const Settings = () => {
       if (succeeded) {
         setUserName('');
         setPassword('');
-        onRecallConnect(true);
+        onUpdateSetListOfConnection();
       } else {
         setIsSomethingWrong(true);
         setMessage(
@@ -130,8 +127,7 @@ const Settings = () => {
     }).then(({ succeeded, messages }) => {
       setIsConnecting(false);
       if (succeeded) {
-        onUpdateSetListOfConnection(selectedInsurer.id, false);
-        recallConnect();
+        onUpdateSetListOfConnection();
       } else {
         setIsSomethingWrong(true);
         setMessage(
