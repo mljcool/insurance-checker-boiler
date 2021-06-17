@@ -1,0 +1,71 @@
+.settings_page {
+   display: flex;
+}
+
+.insurer_icon {
+   display: flex;
+   align-items: center;
+}
+
+.insurer_login_form {
+   width: 100%;
+   height: 440px;
+   padding: 1rem;
+}
+
+.form_fields {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
+   padding: 1rem;
+}
+
+form {
+   padding: 1rem;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+
+.insurer_side_setting {
+   flex: 0 0 34%;
+}
+.login_details {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding-top: 1rem;
+}
+
+.login_details span {
+   margin-top: 1rem;
+   font-size: 14px;
+   font-weight: 500;
+}
+.selected_list {
+   background: #dbdbdb !important;
+}
+
+.login_paper {
+   width: 100%;
+}
+
+.is_connected_wrapper {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
+.is_connected_wrapper button {
+   margin-top: 1rem;
+}
+
+.is_connected_message {
+   margin-top: 1rem;
+   font-size: 14px;
+   font-weight: 600;
+}
+
+.connection_label {
+   white-space: nowrap;
+}

@@ -1,0 +1,19 @@
+.header_filter {
+   display: flex;
+   justify-content: space-around;
+   padding: 1rem 0;
+   border-bottom: 1px solid #e8e4e4;
+}
+
+.header_filter .is_active {
+   background: #44b3b4;
+   color: white !important;
+}
+
+.header_filter .buttons_filter {
+   font-size: 13px;
+   font-weight: 600;
+   border-radius: 5px;
+   color: #8d8d8d;
+   white-space: nowrap;
+}
