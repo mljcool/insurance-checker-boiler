@@ -7,5 +7,13 @@ export const filterInsurance = (insurerList, data) => {
   });
 };
 
+export const filterizeConnections = (insurerListRef) => {
+  return insurerListRef.filter((insurance) => insurance.isConnected);
+};
+
 export const zeroConnections = (insurerListRef) =>
-  insurerListRef.filter((insurance) => insurance.isConnected).length === 0;
+  filterizeConnections(insurerListRef).length === 0;
+
+export const checkBeforeForProceed = ({ clientList, isZeroConnections }) => {
+  return !!(clientList.length && !isZeroConnections);
+};

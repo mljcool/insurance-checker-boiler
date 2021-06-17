@@ -1,0 +1,151 @@
+.card_result_list {
+  overflow-y: auto;
+  max-height: 440px;
+  height: 440px;
+  background: #f0f0f0;
+}
+
+.place_img_loading {
+  display: flex;
+  align-items: center;
+}
+.place_img_loading .retreive_label {
+  margin-left: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #505050;
+}
+
+.insure_people .l_name {
+  margin-left: 5px;
+}
+
+.insure_label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #505050;
+}
+
+.insure_people > span {
+  font-size: 17px;
+  font-weight: 600;
+  color: #715985;
+}
+.main_label_header {
+  font-size: 14px;
+  font-weight: 600;
+  color: #715985;
+  margin-bottom: 8px;
+}
+
+.card_resul_header {
+  border-bottom: solid 1px #e8e4e4;
+}
+
+.info_insurer_label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 6px;
+}
+
+.total_amount_policy {
+  font-size: 18px;
+  font-weight: 600;
+  color: #715985;
+}
+
+.benefits_list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+}
+
+.policy_number {
+  font-size: 12px;
+  font-weight: 600 !important;
+  color: #715985;
+}
+
+.benefits_results {
+  margin-top: 1rem;
+  border-top: solid 1px #e8e4e4;
+  padding: 0.5rem 0;
+}
+
+.benefits_logo_label {
+  display: flex;
+  align-items: center;
+}
+
+.b_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #715985;
+  margin-left: 5px;
+}
+
+.total_cover {
+  font-size: 18px;
+  font-weight: 600;
+  color: #715985;
+}
+
+.blank_logo_label {
+  display: flex;
+  align-items: center;
+}
+
+.blank_results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.blank_label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #715985;
+  margin-left: 5px;
+}
+
+.actual_message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: #f0f0f0;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 10px;
+}
+.actual_message span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #817b86;
+}
+
+.view_new_tab {
+  margin-left: auto;
+}
+
+.empty_filter {
+  display: block;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.empty_filter span {
+  font-weight: 700 !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 15px;
+  color: #8a868d;
+}
+
+.place_img_loading {
+  margin-bottom: 6px;
+  background: #f0f0f0;
+  padding: 5px 8px;
+  border-radius: 5px;
+}

@@ -13,7 +13,7 @@ const setEachClients = (
         lastName: client.lastName,
         browserId: browserId,
         familyId,
-        insurerId: insurer.insurerId,
+        insurerId: insurer.id,
         InsurerName: (insurer.insurerName || '').toLowerCase(),
         isLoadingScrape: true,
         hasData: 'YES',
