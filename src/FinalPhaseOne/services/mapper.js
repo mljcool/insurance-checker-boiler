@@ -6,6 +6,7 @@ const setEachClients = (
 ) => {
   const allSet = [];
   connections.forEach((insurer) => {
+    console.log('>>>>>>>>>>>>', insurer);
     const newData = clients.map((client) => {
       return {
         birthday: client.birthday,
@@ -14,7 +15,7 @@ const setEachClients = (
         browserId: browserId,
         familyId,
         insurerId: insurer.id,
-        InsurerName: (insurer.insurerName || '').toLowerCase(),
+        insurerName: (insurer.providerName || '').toLowerCase(),
         isLoadingScrape: true,
         hasData: 'YES',
         message: null,
@@ -40,9 +41,19 @@ export const setScrappingStructure = (
       browserId,
       familyId
     );
-    console.log('>>>>>>>>>>>>', allSet);
     if (allSet.length) {
       resolve(allSet);
     }
   });
+};
+
+export const mapScrapeForAPI = (data) => {
+  return {
+    Birthday: data.birthday,
+    FirstName: data.firstName,
+    LastName: data.lastName,
+    BrowserId: data.browserId,
+    InsurerName: data.insurerName,
+    InsurerId: data.insurerId,
+  };
 };

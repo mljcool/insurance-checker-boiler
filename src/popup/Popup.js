@@ -9,7 +9,10 @@ import {
   GetStorageClient,
   getFamilyIdStorage,
 } from 'FinalPhaseOne/storage';
-import { getProviderConnections } from 'FinalPhaseOne/services/connect';
+import {
+  getProviderConnections,
+  onStartScrapingAPI,
+} from 'FinalPhaseOne/services/connect';
 import {
   filterInsurance,
   zeroConnections,
@@ -17,7 +20,10 @@ import {
   filterizeConnections,
   setScrapeStructure,
 } from 'FinalPhaseOne/util';
-import { setScrappingStructure } from 'FinalPhaseOne/services/mapper';
+import {
+  setScrappingStructure,
+  mapScrapeForAPI,
+} from 'FinalPhaseOne/services/mapper';
 
 let setGlobalScrapingData = [];
 
@@ -81,9 +87,58 @@ const Popup = () => {
       setScrapeStructure(response, (allSet) => {
         setGlobalScrapingData = allSet;
         setDataForScraping(allSet);
-        console.log('setGlobalScrapingData', allSet);
       });
     });
+  };
+
+  const onSartScraping = (scrapeParams = []) => {
+    setTimeout(() => {
+      onStartScrapingAPI(scrapeParams).then(
+        ({ succeeded, data, insurerId, messages }) => {
+          if (succeeded) {
+            console.log('response', data);
+            if (data.length) {
+              console.log(`datahere1`, dataForScraping);
+              setDataScraping(
+                setGlobalScrapingData.map((resp) => {
+                  if (resp.insurerId === insurerId) {
+                    resp.isLoadingScrape = false;
+                    resp.hasData = 'YES';
+                    resp.policies = data.find(
+                      (result) => result.insurerId === insurerId
+                    ).policies;
+                  }
+                  return resp;
+                })
+              );
+              return;
+            }
+
+            console.log(`datahere2`, dataForScraping);
+            setDataScraping(
+              setGlobalScrapingData.map((display) => {
+                if (display.insurerId === insurerId) {
+                  display.isLoadingScrape = false;
+                  display.hasData = !!data.length ? 'YES' : 'BLANK';
+                }
+                return display;
+              })
+            );
+          } else {
+            setDataScraping(
+              setGlobalScrapingData.map((display) => {
+                if (display.insurerId === insurerId) {
+                  display.isLoadingScrape = false;
+                  display.hasData = 'BLANK';
+                  display.message = messages;
+                }
+                return display;
+              })
+            );
+          }
+        }
+      );
+    }, 3000);
   };
 
   /** LIFE CYCLE  **/
@@ -94,6 +149,7 @@ const Popup = () => {
       getAllConnectedProviders(chromeId);
       getClientList();
       getStoreFamilyId();
+      console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
   }, []);
 
@@ -101,6 +157,10 @@ const Popup = () => {
     () => {
       if (checkBeforeForProceed({ clientList, isZeroConnections })) {
         onFormDataScraping();
+        console.log(
+          '%c On Form Data Scraping step - 2 success',
+          'color: #bada55'
+        );
       }
     },
     [clientList.length, isZeroConnections]
@@ -109,7 +169,11 @@ const Popup = () => {
   useEffect(
     () => {
       if (dataForScraping.length) {
-        console.log('canProceed to scraping');
+        setGlobalScrapingData.forEach((scrape) => {
+          console.log('setGlobalScrapingData', mapScrapeForAPI(scrape));
+          onSartScraping([mapScrapeForAPI(scrape)]);
+        });
+        console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
       }
     },
     [dataForScraping.length]
