@@ -9,18 +9,13 @@ import { AppContext } from 'context/AppContext';
 
 const SubMain = () => {
   const { isToggle, isLoading, isZeroConnections } = useContext(AppContext);
-
+  const beforeRender = !isLoading && isZeroConnections;
   return (
     !isToggle && (
       <PaperWrapper isToggle={!isToggle}>
-        {isZeroConnections ? (
-          <GotoSettings />
-        ) : (
-          <Fragment>
-            <Loader isLoading={isLoading} />
-            <TabFilter />
-          </Fragment>
-        )}
+        <Loader isLoading={isLoading} />
+        {beforeRender && <GotoSettings />}
+        {!beforeRender && <TabFilter />}
       </PaperWrapper>
     )
   );

@@ -6,6 +6,7 @@ import { insurerList } from 'constant/insurers';
 import { AppContext } from '../context/AppContext';
 import { setChromeIdentity } from 'FinalPhaseOne/storage';
 import { getProviderConnections } from 'FinalPhaseOne/services/connect';
+import { filterInsurance, zeroConnections } from 'FinalPhaseOne/util';
 
 const Popup = () => {
   const [isToggle, setIsToggle] = useState(false);
@@ -30,20 +31,8 @@ const Popup = () => {
     getProviderConnections(browserId).then(({ succeeded, data }) => {
       console.log('getProviderConnections', data);
       if (succeeded) {
-        setInsurerListRef(
-          insurerList.map((insurer) => {
-            insurer.isConnected = data.some(
-              (insurance) => insurance.insurerId === insurer.id
-            );
-            return insurer;
-          })
-        );
-
-        const zeroConnections =
-          insurerListRef.filter((insurance) => insurance.isConnected).length ===
-          0;
-
-        setZeroConnections(zeroConnections);
+        setInsurerListRef(filterInsurance(insurerList, data));
+        setZeroConnections(zeroConnections(insurerListRef));
 
         if (data.length === 1) {
           setIsToggle(false);
