@@ -79,12 +79,12 @@ const InsurerList = ({ onSelectInurance, insurerList = [] }) => {
 const Settings = () => {
   const {
     browserId,
-    insurerList,
-    updateSetListConnection,
-    recallConnect,
+    insurerListRef,
+    onUpdateSetListOfConnection,
+    onRecallConnect,
   } = useContext(AppContext);
 
-  const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
+  const [selectedInsurer, setSelectedInsurer] = useState(insurerListRef[0]);
   const [message, setMessage] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -110,7 +110,7 @@ const Settings = () => {
       if (succeeded) {
         setUserName('');
         setPassword('');
-        recallConnect(true);
+        onRecallConnect(true);
       } else {
         setIsSomethingWrong(true);
         setMessage(
@@ -124,14 +124,13 @@ const Settings = () => {
 
   const onDisconnect = () => {
     setIsConnecting(true);
-
     onDisconnectInsurer({
       browserId,
       ...selectedInsurer,
     }).then(({ succeeded, messages }) => {
       setIsConnecting(false);
       if (succeeded) {
-        updateSetListConnection(selectedInsurer.id, false);
+        onUpdateSetListOfConnection(selectedInsurer.id, false);
         recallConnect();
       } else {
         setIsSomethingWrong(true);
@@ -148,7 +147,7 @@ const Settings = () => {
     <div className='settings_page'>
       <InsurerList
         onSelectInurance={onSelectInurance}
-        insurerList={insurerList}
+        insurerList={insurerListRef}
       />
       <div className='insurer_login_form'>
         <Loader isLoading={isConnecting} />

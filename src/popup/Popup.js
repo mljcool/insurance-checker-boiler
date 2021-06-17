@@ -10,16 +10,30 @@ const Popup = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [insurerListRef, setInsurerListRef] = useState(insurerList);
 
-  const toggleSettings = () => {
+  // FUNCTION REFERENCE HERE
+  const onToggleSettings = () => {
     setIsToggle((toggle) => !toggle);
   };
+  const onRecallConnect = (params) => {};
+  const onUpdateSetListOfConnection = () => {};
+
+  // LIFE CYCLE HOOKS HERE
+
+  useEffect(() => {}, []);
 
   return (
     <AppContext.Provider
-      value={{ toggleSettings, isLoading, isToggle, insurerListRef }}
+      value={{
+        isLoading,
+        isToggle,
+        insurerListRef,
+        onToggleSettings,
+        onRecallConnect,
+        onUpdateSetListOfConnection,
+      }}
     >
       <div className='popup'>
-        <Header onSwitchMenu={toggleSettings} isToggle={isToggle} />
+        <Header onSwitchMenu={onToggleSettings} isToggle={isToggle} />
         <MainPage />
       </div>
     </AppContext.Provider>
