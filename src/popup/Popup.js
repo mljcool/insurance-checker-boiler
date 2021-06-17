@@ -116,23 +116,37 @@ const Popup = () => {
       console.log('responses', responses);
       responses.forEach((response) => {
         const { succeeded, data, insurerId, messages } = response;
-        if (succeeded && data.length) {
+        if (succeeded) {
+          if (data.length) {
+            setDataForScraping(
+              setGlobalScrapingData.map((resp) => {
+                if (
+                  resp.insurerId === insurerId &&
+                  makeCleanString(resp.firstName) ===
+                    makeCleanString(data[0].firstName)
+                ) {
+                  resp.isLoadingScrape = false;
+                  resp.hasData = 'YES';
+                  resp.policies = data.find(
+                    (result) => result.insurerId === insurerId
+                  ).policies;
+                }
+                return resp;
+              })
+            );
+            return;
+          }
           setDataForScraping(
-            setGlobalScrapingData.map((resp) => {
-              if (
-                resp.insurerId === insurerId &&
-                makeCleanString(resp.firstName) ===
-                  makeCleanString(data[0].firstName)
-              ) {
-                resp.isLoadingScrape = false;
-                resp.hasData = 'YES';
-                resp.policies = data.find(
-                  (result) => result.insurerId === insurerId
-                ).policies;
+            setGlobalScrapingData.map((display) => {
+              if (display.insurerId === insurerId && !display.policies.length) {
+                display.isLoadingScrape = false;
+                display.hasData = !!data.length ? 'YES' : 'BLANK';
+                display.message = messages;
               }
-              return resp;
+              return display;
             })
           );
+
           console.log('if data.length', setGlobalScrapingData);
           console.log('if data.length insurerId', insurerId);
         } else {
