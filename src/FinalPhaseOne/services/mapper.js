@@ -6,7 +6,6 @@ const setEachClients = (
 ) => {
   const allSet = [];
   connections.forEach((insurer) => {
-    console.log('>>>>>>>>>>>>', insurer);
     const newData = clients.map((client) => {
       return {
         birthday: client.birthday,

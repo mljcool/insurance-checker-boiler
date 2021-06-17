@@ -5,7 +5,7 @@ import { AppContext } from 'context/AppContext';
 import './style.css';
 
 const ClientList = () => {
-  const { dataForScraping } = React.useContext(AppContext);
+  const { dataForScraping, filterName } = React.useContext(AppContext);
   return (
     <div className='card_result_list'>
       {!!dataForScraping.length &&
@@ -13,7 +13,7 @@ const ClientList = () => {
           <ClientCardWrapper dataScrape={scrape} key={index} />
         ))}
 
-      {!dataForScraping.length && <EmptyFilter filterName={''} />}
+      {!dataForScraping.length && <EmptyFilter filterName={filterName} />}
     </div>
   );
 };

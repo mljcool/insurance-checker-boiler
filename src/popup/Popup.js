@@ -20,6 +20,8 @@ import {
   filterizeConnections,
   setScrapeStructure,
   makeCleanString,
+  filterSatus,
+  isLastIndex,
 } from 'FinalPhaseOne/util';
 import {
   setScrappingStructure,
@@ -36,21 +38,34 @@ const Popup = () => {
   const [clientList, setClientList] = useState([]);
   const [dataForScraping, setDataForScraping] = useState([]);
   const [insurerListRef, setInsurerListRef] = useState(insurerList);
+  const [countConnected, setCountConnected] = useState(0);
   const [browserId, setBrowserId] = useState('');
   const [familyID, setFamilyID] = useState('');
+  const [filterName, setFilterName] = useState('');
+
   /** FUNCTION REFERENCE HERE  **/
 
+  const onRecallConnect = (params) => {};
   const onToggleSettings = () => {
     setIsToggle((toggle) => !toggle);
   };
-  const onRecallConnect = (params) => {};
-  const onFilterData = (params) => {};
-  const onUpdateSetListOfConnection = () => {
-    getAllConnectedProviders(browserId);
+  const onFilteInsurances = (filterType) => {
+    setFilterName(filterType);
+
+    console.log('newResults', filterType);
+    const newResults = filterSatus(setGlobalScrapingData, filterType);
+    if (filterType === 'All') {
+      setDataForScraping(setGlobalScrapingData);
+      return;
+    }
+    setDataForScraping(newResults);
+  };
+  const onUpdateSetListOfConnection = (recall = false) => {
+    getAllConnectedProviders(browserId, recall);
   };
 
   /** Get ALl connected insurance and set connected status  **/
-  const getAllConnectedProviders = (browserId) => {
+  const getAllConnectedProviders = (browserId, recall = false) => {
     setIsLoading(true);
     getProviderConnections(browserId).then(({ succeeded, data }) => {
       if (succeeded) {
@@ -60,6 +75,10 @@ const Popup = () => {
         if (data.length === 1) {
           setIsToggle(false);
         }
+        if (recall) {
+          onStartSrcaping();
+        }
+        setCountConnected(data.length);
       }
       setIsLoading(false);
     });
@@ -67,7 +86,7 @@ const Popup = () => {
 
   const getClientList = () => {
     GetStorageClient().then(({ clientList }) => {
-      setClientList(clientList);
+      setClientList(clientList.sort().reverse());
     });
   };
 
@@ -142,12 +161,22 @@ const Popup = () => {
     });
   };
 
+  const onStartSrcaping = () => {
+    const promises = [];
+    setGlobalScrapingData.forEach((scrape, index) => {
+      promises.push(onStartScrapingAPI([mapScrapeForAPI(scrape)]));
+      if (isLastIndex(index, setGlobalScrapingData)) {
+        onGetScraping(promises);
+      }
+    });
+  };
+
   /** LIFE CYCLE  **/
 
   useEffect(() => {
     setChromeIdentity((chromeId) => {
       setBrowserId(chromeId);
-      getAllConnectedProviders(chromeId);
+      getAllConnectedProviders(chromeId, false);
       getClientList();
       getStoreFamilyId();
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
@@ -164,20 +193,13 @@ const Popup = () => {
         );
       }
     },
-    [clientList.length, isZeroConnections]
+    [clientList.length, isZeroConnections, countConnected]
   );
 
   useEffect(
     () => {
-      if (dataForScraping.length) {
-        const promises = [];
-        setGlobalScrapingData.forEach((scrape, index) => {
-          promises.push(onStartScrapingAPI([mapScrapeForAPI(scrape)]));
-          console.log('promises', promises);
-          if (index === setGlobalScrapingData.length - 1) {
-            onGetScraping(promises);
-          }
-        });
+      if (dataForScraping.length && !filterName) {
+        onStartSrcaping();
         console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
       }
     },
@@ -191,12 +213,14 @@ const Popup = () => {
         insurerListRef,
         dataForScraping,
         clientList,
+        filterName,
         isLoading,
         isToggle,
         isZeroConnections,
         onToggleSettings,
         onRecallConnect,
         onUpdateSetListOfConnection,
+        onFilteInsurances,
       }}
     >
       <div className='popup'>

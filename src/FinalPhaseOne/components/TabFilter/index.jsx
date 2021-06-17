@@ -5,7 +5,7 @@ import { AppContext } from 'context/AppContext';
 import { FILTER_TYPES } from 'PhaseOne/constants';
 
 const TabFilter = () => {
-  const { onFilterData } = useContext(AppContext);
+  const { onFilteInsurances } = useContext(AppContext);
 
   const [selectedFilter, setSelectedFilter] = useState(1);
 
@@ -21,7 +21,7 @@ const TabFilter = () => {
           className={`buttons_filter ${getSelectedFilter(menu.id)}`}
           onClick={() => {
             setSelectedFilter(menu.id);
-            onFilterData(menu.filterName);
+            onFilteInsurances(menu.filterName);
           }}
           key={menu.id}
         >

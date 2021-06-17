@@ -109,12 +109,13 @@ const Settings = () => {
       browserId,
       ...selectedInsurer,
       password,
-    }).then(({ succeeded, messages }) => {
+    }).then(({ succeeded, messages, data }) => {
+      console.log('postConnectToInsurers', succeeded);
       setIsConnecting(false);
-      if (succeeded) {
+      if (succeeded && data) {
         setUserName('');
         setPassword('');
-        onUpdateSetListOfConnection();
+        onUpdateSetListOfConnection(true);
       } else {
         setIsSomethingWrong(true);
         setMessage(
