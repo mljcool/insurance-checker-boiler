@@ -45,7 +45,7 @@ const Popup = () => {
 
   /** FUNCTION REFERENCE HERE  **/
 
-  const onRecallConnect = (params) => {};
+  const onRecallConnect = () => {};
   const onToggleSettings = () => {
     setIsToggle((toggle) => !toggle);
   };
@@ -85,8 +85,8 @@ const Popup = () => {
   };
 
   const getClientList = () => {
-    GetStorageClient().then(({ clientList }) => {
-      setClientList(clientList.sort().reverse());
+    GetStorageClient().then(({ clientList = [] }) => {
+      setClientList((clientList || []).sort().reverse());
     });
   };
 

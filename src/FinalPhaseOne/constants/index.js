@@ -1,4 +1,4 @@
-export const URL_SCRAPING = 'http://3.24.21.76/';
+export const URL_SCRAPING = 'https://policychecker.blackfin.tools/';
 export const FILTER_TYPES = [
   {
     id: 1,
