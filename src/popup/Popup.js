@@ -74,9 +74,10 @@ const Popup = () => {
 
         if (data.length === 1) {
           setIsToggle(false);
-        }
-        if (recall) {
-          onStartSrcaping();
+        } else {
+          if (recall) {
+            onStartSrcaping();
+          }
         }
         setCountConnected(data.length);
       }
@@ -177,9 +178,21 @@ const Popup = () => {
     });
   };
 
-  /** LIFE CYCLE  **/
+  const secondCoreFuntions = () => {
+    if (checkBeforeForProceed({ clientList, isZeroConnections })) {
+      onFormDataScraping();
+      console.log(
+        '%c On Form Data Scraping step - 2 success',
+        'color: #bada55'
+      );
+    }
+    if (dataForScraping.length && !filterName) {
+      onStartSrcaping();
+      console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
+    }
+  };
 
-  useEffect(() => {
+  const coreFunctions = () => {
     setChromeIdentity((chromeId) => {
       setBrowserId(chromeId);
       getAllConnectedProviders(chromeId, false);
@@ -187,6 +200,12 @@ const Popup = () => {
       getStoreFamilyId();
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
+  };
+
+  /** LIFE CYCLE  **/
+
+  useEffect(() => {
+    coreFunctions();
   }, []);
 
   useEffect(
