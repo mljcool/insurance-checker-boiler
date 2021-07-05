@@ -10,6 +10,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: true,
   },
   {
     id: 3,
@@ -22,6 +23,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: true,
   },
   {
     id: 4,
@@ -34,6 +36,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: true,
   },
   {
     id: 5,
@@ -46,6 +49,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: false,
   },
   {
     id: 6,
@@ -58,6 +62,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: true,
   },
   {
     id: 8,
@@ -70,6 +75,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: false,
   },
   {
     id: 9,
@@ -82,6 +88,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: true,
   },
   {
     id: 10,
@@ -94,6 +101,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: false,
   },
   {
     id: 11,
@@ -106,6 +114,7 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: false,
   },
   {
     id: 12,
@@ -118,5 +127,6 @@ export const insurerList = [
     message: '',
     name: '',
     showMessage: false,
+    isActive: true,
   },
 ];

@@ -69,7 +69,10 @@ const Popup = () => {
     setIsLoading(true);
     getProviderConnections(browserId).then(({ succeeded, data }) => {
       if (succeeded) {
-        setInsurerListRef(filterInsurance(insurerList, data));
+        const getOnlyActiveInsurance = insurerList.filter(
+          (insured) => insured.isActive
+        );
+        setInsurerListRef(filterInsurance(getOnlyActiveInsurance, data));
         setZeroConnections(zeroConnections(insurerListRef));
 
         if (data.length === 1) {
