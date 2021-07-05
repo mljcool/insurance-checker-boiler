@@ -57,7 +57,6 @@ const Popup = () => {
   const onFilteInsurances = (filterType) => {
     setFilterName(filterType);
 
-    console.log('newResults', filterType);
     const newResults = filterSatus(setGlobalScrapingData, filterType);
     if (filterType === 'All') {
       setDataForScraping(setGlobalScrapingData);
@@ -101,14 +100,12 @@ const Popup = () => {
 
   const getAdviserData = () => {
     GetStorageAdviser().then(({ adviserDetails = {} }) => {
-      console.log('getAdviserData', adviserDetails);
       setAdviserData(adviserDetails);
     });
   };
 
   const getJWTtokenData = () => {
     GetStorageToken().then(({ jwtToken = {} }) => {
-      console.log('jwtToken', jwtToken);
       setJWTtoken(jwtToken);
     });
   };
@@ -199,20 +196,6 @@ const Popup = () => {
         onGetScraping(promises);
       }
     });
-  };
-
-  const secondCoreFuntions = () => {
-    if (checkBeforeForProceed({ clientList, isZeroConnections })) {
-      onFormDataScraping();
-      console.log(
-        '%c On Form Data Scraping step - 2 success',
-        'color: #bada55'
-      );
-    }
-    if (dataForScraping.length && !filterName) {
-      onStartSrcaping();
-      console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
-    }
   };
 
   const coreFunctions = () => {

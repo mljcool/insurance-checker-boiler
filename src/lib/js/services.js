@@ -56,9 +56,7 @@ const getClientInfo = (familyId) => {
 const getAdviserInfo = () => {
   setAdviserStorage({});
   crmRequest('GetUserInfo').done((response) => {
-    console.log('GetUserInfo', response);
     const adviserData = mapAdviserInfo(response);
-    console.log('adviserData', adviserData);
     setAdviserStorage(adviserData);
   });
 };

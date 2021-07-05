@@ -40,7 +40,6 @@ export const setScrappingStructure = (
       browserId,
       familyId
     );
-    console.log('>>>>>>>>>>>>', allSet);
     if (allSet.length) {
       resolve(allSet);
     }
