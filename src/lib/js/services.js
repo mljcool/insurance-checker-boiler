@@ -1,7 +1,7 @@
 // const crmBaseURL = 'https://api.loanmarket.com.au/; //prodURL
-const crmBaseURL = 'https://api.nzfsg.co.nz/'; //prodURL
+// const crmBaseURL = 'https://api.nzfsg.co.nz/'; //prodURL
 // const crmBaseURL = 'https://api.nzfsg.co.nz/';
-// const crmBaseURL = 'https://api.sit.mycrm.finance/'; //SIT URL
+const crmBaseURL = 'https://api.sit.mycrm.finance/'; //SIT URL
 
 const crmRequest = (urlStr) => {
   const mytime = JSON.parse(localStorage.getItem('mycrm-tokens'));
@@ -31,6 +31,18 @@ const setClientStorage = (clients = [], familyId) => {
   });
 };
 
+const setAdviserStorage = (adviserDetails = {}) => {
+  chrome.storage.local.set({
+    adviserDetails,
+  });
+};
+
+const setJWTtokenStorage = (jwtToken = {}) => {
+  chrome.storage.local.set({
+    jwtToken,
+  });
+};
+
 const getClientInfo = (familyId) => {
   setClientStorage([], null);
   crmRequest(urlClientMyCRM(familyId)).done((response) => {
@@ -42,19 +54,22 @@ const getClientInfo = (familyId) => {
 };
 
 const getAdviserInfo = () => {
+  setAdviserStorage({});
   crmRequest('GetUserInfo').done((response) => {
+    console.log('GetUserInfo', response);
     const adviserData = mapAdviserInfo(response);
-    setStorage({
-      adviserData,
-    });
+    console.log('adviserData', adviserData);
+    setAdviserStorage(adviserData);
   });
 };
 
 const interceptMyCRM = () => {
   urlSPliter().then(({ success, familyId }) => {
     if (success) {
+      const mytime = JSON.parse(localStorage.getItem('mycrm-tokens'));
+      setJWTtokenStorage(((mytime || {}).accessToken || {}).value);
       getClientInfo(familyId);
-      //  getAdviserInfo();
+      getAdviserInfo();
     }
   });
 };

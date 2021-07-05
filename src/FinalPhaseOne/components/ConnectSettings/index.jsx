@@ -78,9 +78,13 @@ const InsurerList = ({ onSelectInurance, insurerList = [] }) => {
 };
 
 const Settings = () => {
-  const { browserId, insurerListRef, onUpdateSetListOfConnection } = useContext(
-    AppContext
-  );
+  const {
+    browserId,
+    insurerListRef,
+    adviserData,
+    jwtToken,
+    onUpdateSetListOfConnection,
+  } = useContext(AppContext);
 
   const [selectedInsurer, setSelectedInsurer] = useState(insurerListRef[0]);
   const [message, setMessage] = useState('');
@@ -103,12 +107,15 @@ const Settings = () => {
       return;
     }
     setIsConnecting(true);
-
+    const { firstName, lastName } = adviserData;
     postConnectToInsurers({
+      firstName,
+      lastName,
       userName,
       browserId,
       ...selectedInsurer,
       password,
+      jwtToken,
     }).then(({ succeeded, messages, data }) => {
       console.log('postConnectToInsurers', succeeded);
       setIsConnecting(false);

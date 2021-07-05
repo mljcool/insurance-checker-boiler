@@ -4,6 +4,14 @@ export const GetStorageClient = () => {
   return browser.storage.local.get('clientList');
 };
 
+export const GetStorageAdviser = () => {
+  return browser.storage.local.get('adviserDetails');
+};
+
+export const GetStorageToken = () => {
+  return browser.storage.local.get('jwtToken');
+};
+
 export const GetBrowserID = () => {
   return browser.storage.local.get('chromeId');
 };

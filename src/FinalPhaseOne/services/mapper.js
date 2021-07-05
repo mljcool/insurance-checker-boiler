@@ -48,6 +48,7 @@ export const setScrappingStructure = (
 
 export const mapScrapeForAPI = (data) => {
   return {
+    AccessToken: data.accessToken,
     Birthday: data.birthday,
     FirstName: data.firstName,
     LastName: data.lastName,

@@ -5,16 +5,27 @@ export const getProviderConnections = (browserId = '') => {
 };
 
 export const postConnectToInsurers = (params = {}) => {
-  const { userName, password, providerNameLowerCases, id, browserId } = params;
+  const {
+    userName,
+    password,
+    providerNameLowerCases,
+    id,
+    browserId,
+    firstName,
+    lastName,
+    jwtToken,
+  } = params;
+
   const details = {
     userName,
     password,
     title: 'ADVISER',
-    firstName: 'Sample',
-    lastName: 'Sample',
+    firstName,
+    lastName,
     insurerName: providerNameLowerCases,
     insurerId: id,
     browserId,
+    AccessToken: jwtToken,
   };
   return postMethod('setup/set-credential', details);
 };

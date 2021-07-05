@@ -8,6 +8,8 @@ import {
   setChromeIdentity,
   GetStorageClient,
   getFamilyIdStorage,
+  GetStorageAdviser,
+  GetStorageToken,
 } from 'FinalPhaseOne/storage';
 import {
   getProviderConnections,
@@ -42,6 +44,9 @@ const Popup = () => {
   const [browserId, setBrowserId] = useState('');
   const [familyID, setFamilyID] = useState('');
   const [filterName, setFilterName] = useState('');
+
+  const [adviserData, setAdviserData] = useState('');
+  const [jwtToken, setJWTtoken] = useState('');
 
   /** FUNCTION REFERENCE HERE  **/
 
@@ -91,6 +96,20 @@ const Popup = () => {
   const getClientList = () => {
     GetStorageClient().then(({ clientList = [] }) => {
       setClientList((clientList || []).sort().reverse());
+    });
+  };
+
+  const getAdviserData = () => {
+    GetStorageAdviser().then(({ adviserDetails = {} }) => {
+      console.log('getAdviserData', adviserDetails);
+      setAdviserData(adviserDetails);
+    });
+  };
+
+  const getJWTtokenData = () => {
+    GetStorageToken().then(({ jwtToken = {} }) => {
+      console.log('jwtToken', jwtToken);
+      setJWTtoken(jwtToken);
     });
   };
 
@@ -173,6 +192,7 @@ const Popup = () => {
   const onStartSrcaping = () => {
     const promises = [];
     setGlobalScrapingData.forEach((scrape, index) => {
+      scrape.accessToken = jwtToken;
       promises.push(onStartScrapingAPI([mapScrapeForAPI(scrape)]));
 
       if (isLastIndex(index, setGlobalScrapingData)) {
@@ -200,6 +220,8 @@ const Popup = () => {
       setBrowserId(chromeId);
       getAllConnectedProviders(chromeId, false);
       getClientList();
+      getAdviserData();
+      getJWTtokenData();
       getStoreFamilyId();
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
@@ -227,7 +249,9 @@ const Popup = () => {
   useEffect(
     () => {
       if (dataForScraping.length && !filterName) {
-        onStartSrcaping();
+        setTimeout(() => {
+          onStartSrcaping();
+        }, 2500);
         console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
       }
     },
@@ -245,6 +269,8 @@ const Popup = () => {
         isLoading,
         isToggle,
         isZeroConnections,
+        jwtToken,
+        adviserData,
         onToggleSettings,
         onRecallConnect,
         onUpdateSetListOfConnection,
