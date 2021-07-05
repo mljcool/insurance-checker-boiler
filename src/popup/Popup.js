@@ -147,6 +147,7 @@ const Popup = () => {
                 ) {
                   resp.keyId = index;
                   resp.isLoadingScrape = false;
+                  resp.resyncScrape = false;
                   resp.hasData = 'YES';
                   resp.policies = data.find(
                     (result) => result.insurerId === insurerId
@@ -162,6 +163,7 @@ const Popup = () => {
               if (display.insurerId === insurerId && !display.policies.length) {
                 display.keyId = index;
                 display.isLoadingScrape = false;
+                display.resyncScrape = false;
                 display.hasData = !!data.length ? 'YES' : 'BLANK';
                 display.message = messages;
               }
@@ -178,6 +180,7 @@ const Popup = () => {
               if (display.insurerId === insurerId && !display.policies.length) {
                 display.keyId = index;
                 display.isLoadingScrape = false;
+                display.resyncScrape = false;
                 display.hasData = 'BLANK';
                 display.message = messages;
               }
@@ -193,7 +196,7 @@ const Popup = () => {
     setDataForScraping(
       setGlobalScrapingData.map((display) => {
         if (display.keyId === keyId) {
-          display.isLoadingScrape = true;
+          display.resyncScrape = true;
           display.hasData = 'YES';
         }
         return display;
@@ -209,6 +212,7 @@ const Popup = () => {
           setDataForScraping(
             setGlobalScrapingData.map((resp) => {
               if (resp.keyId === keyId) {
+                resp.resyncScrape = false;
                 resp.isLoadingScrape = false;
                 resp.hasData = 'YES';
                 resp.policies = data.find(
@@ -223,6 +227,7 @@ const Popup = () => {
         setDataForScraping(
           setGlobalScrapingData.map((display) => {
             if (display.keyId === keyId && !display.policies.length) {
+              display.resyncScrape = false;
               display.isLoadingScrape = false;
               display.hasData = !!data.length ? 'YES' : 'BLANK';
               display.message = messages;
@@ -235,6 +240,7 @@ const Popup = () => {
           setGlobalScrapingData.map((display, index) => {
             if (display.keyId === keyId && !display.policies.length) {
               display.keyId = index;
+              display.resyncScrape = false;
               display.isLoadingScrape = false;
               display.hasData = 'BLANK';
               display.message = messages;
@@ -294,7 +300,7 @@ const Popup = () => {
       if (dataForScraping.length && !filterName) {
         setTimeout(() => {
           onStartSrcaping();
-        }, 2500);
+        }, 90);
         console.log('%c Ready To Scrape step - 3 success', 'color: #45ca4f');
       }
     },

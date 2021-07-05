@@ -38,7 +38,12 @@ const RefreshButton = ({ onRefresh }) => {
   );
 };
 
-const ClientCardWrapper = ({ loading = false, dataScrape = {}, idKey }) => {
+const ClientCardWrapper = ({
+  loading = false,
+  dataScrape = {},
+  idKey,
+  resyncable,
+}) => {
   const classes = useStyles();
   const {
     firstName,
@@ -46,6 +51,7 @@ const ClientCardWrapper = ({ loading = false, dataScrape = {}, idKey }) => {
     insurerName,
     insurerId,
     isLoadingScrape,
+    resyncScrape,
     hasData,
     message,
     policies,
@@ -83,32 +89,61 @@ const ClientCardWrapper = ({ loading = false, dataScrape = {}, idKey }) => {
           </div>
         }
       />
+      {!resyncable && (
+        <CardContent>
+          {hasData === 'YES' && isLoadingScrape && (
+            <LoadingContent
+              classes={classes}
+              insurerName={insurerName}
+              insurerId={insurerId}
+            />
+          )}
+          {hasData === 'BLANK' && !isLoadingScrape && (
+            <BlankResult
+              insurerName={insurerName}
+              insurerId={insurerId}
+              message={message}
+            />
+          )}
 
-      <CardContent>
-        {hasData === 'YES' && isLoadingScrape && (
-          <LoadingContent
-            classes={classes}
-            insurerName={insurerName}
-            insurerId={insurerId}
-          />
-        )}
-        {hasData === 'BLANK' && !isLoadingScrape && (
-          <BlankResult
-            insurerName={insurerName}
-            insurerId={insurerId}
-            message={message}
-          />
-        )}
+          {hasData === 'YES' && !isLoadingScrape && (
+            <ResultContent
+              classes={classes}
+              insurerName={insurerName}
+              insurerId={insurerId}
+              policies={policies}
+            />
+          )}
+        </CardContent>
+      )}
 
-        {hasData === 'YES' && !isLoadingScrape && (
-          <ResultContent
-            classes={classes}
-            insurerName={insurerName}
-            insurerId={insurerId}
-            policies={policies}
-          />
-        )}
-      </CardContent>
+      {resyncable && (
+        <CardContent>
+          {hasData === 'YES' && resyncScrape && (
+            <LoadingContent
+              classes={classes}
+              insurerName={insurerName}
+              insurerId={insurerId}
+            />
+          )}
+          {hasData === 'BLANK' && !resyncScrape && (
+            <BlankResult
+              insurerName={insurerName}
+              insurerId={insurerId}
+              message={message}
+            />
+          )}
+
+          {hasData === 'YES' && !resyncScrape && (
+            <ResultContent
+              classes={classes}
+              insurerName={insurerName}
+              insurerId={insurerId}
+              policies={policies}
+            />
+          )}
+        </CardContent>
+      )}
     </Card>
   );
 };

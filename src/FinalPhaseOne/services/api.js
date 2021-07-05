@@ -7,7 +7,11 @@ export const getMethod = (url) => {
   return fetch(URL_SCRAPING + url, {
     method: 'GET',
     headers: myHeaders,
-  }).then((response) => response.json());
+  })
+    .then((response) => response.json())
+    .catch((error) => {
+      console.log('getMethod -error', error);
+    });
 };
 
 export const postMethod = (url, dataParams = {}) => {

@@ -149,3 +149,19 @@
   padding: 5px 8px;
   border-radius: 5px;
 }
+
+.show_more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.show_btn {
+  padding: 0.9rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.show_btn:hover {
+  background: #e0e0e0;
+}

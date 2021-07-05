@@ -16,6 +16,7 @@ const setEachClients = (
         insurerId: insurer.id,
         insurerName: (insurer.providerNameLowerCases || '').toLowerCase(),
         isLoadingScrape: true,
+        resyncScrape: false,
         hasData: 'YES',
         message: null,
         policies: [],
