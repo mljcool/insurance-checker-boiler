@@ -12,6 +12,7 @@ import LoadingContent from './LoadingContent';
 import Avatar from '@material-ui/core/Avatar';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { deepPurple } from '@material-ui/core/colors';
+import { AppContext } from 'context/AppContext';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -29,7 +30,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ClientCardWrapper = ({ loading = false, dataScrape = {} }) => {
+const RefreshButton = ({ onRefresh }) => {
+  return (
+    <IconButton onClick={onRefresh} aria-label='settings'>
+      <RefreshIcon />
+    </IconButton>
+  );
+};
+
+const ClientCardWrapper = ({ loading = false, dataScrape = {}, idKey }) => {
   const classes = useStyles();
   const {
     firstName,
@@ -40,7 +49,13 @@ const ClientCardWrapper = ({ loading = false, dataScrape = {} }) => {
     hasData,
     message,
     policies,
+    keyId,
   } = dataScrape;
+  const { onRefreshsScraping } = React.useContext(AppContext);
+  const onRefreshScrape = () => {
+    console.log('Refresh button', dataScrape);
+    onRefreshsScraping(keyId);
+  };
 
   return (
     <Card className={classes.card}>
@@ -54,11 +69,11 @@ const ClientCardWrapper = ({ loading = false, dataScrape = {} }) => {
           </Avatar>
         }
         action={
-          isLoadingScrape ? null : (
-            <IconButton aria-label='settings'>
-              {hasData === 'BLANK' && !isLoadingScrape && <RefreshIcon />}
-            </IconButton>
-          )
+          isLoadingScrape
+            ? null
+            : hasData === 'BLANK' && (
+                <RefreshButton onRefresh={onRefreshScrape} />
+              )
         }
         title={<div className='insure_label'>Insured Person</div>}
         subheader={

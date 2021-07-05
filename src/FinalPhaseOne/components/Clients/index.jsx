@@ -10,7 +10,7 @@ const ClientList = () => {
     <div className='card_result_list'>
       {!!dataForScraping.length &&
         dataForScraping.map((scrape, index) => (
-          <ClientCardWrapper dataScrape={scrape} key={index} />
+          <ClientCardWrapper dataScrape={scrape} idKey={index} key={index} />
         ))}
 
       {!dataForScraping.length && <EmptyFilter filterName={filterName} />}

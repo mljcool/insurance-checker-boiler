@@ -139,12 +139,13 @@ const Popup = () => {
         if (succeeded) {
           if (data.length) {
             setDataForScraping(
-              setGlobalScrapingData.map((resp) => {
+              setGlobalScrapingData.map((resp, index) => {
                 if (
                   resp.insurerId === insurerId &&
                   makeCleanString(resp.firstName) ===
                     makeCleanString(data[0].firstName)
                 ) {
+                  resp.keyId = index;
                   resp.isLoadingScrape = false;
                   resp.hasData = 'YES';
                   resp.policies = data.find(
@@ -157,8 +158,9 @@ const Popup = () => {
             return;
           }
           setDataForScraping(
-            setGlobalScrapingData.map((display) => {
+            setGlobalScrapingData.map((display, index) => {
               if (display.insurerId === insurerId && !display.policies.length) {
+                display.keyId = index;
                 display.isLoadingScrape = false;
                 display.hasData = !!data.length ? 'YES' : 'BLANK';
                 display.message = messages;
@@ -172,8 +174,9 @@ const Popup = () => {
         } else {
           console.log('else null');
           setDataForScraping(
-            setGlobalScrapingData.map((display) => {
+            setGlobalScrapingData.map((display, index) => {
               if (display.insurerId === insurerId && !display.policies.length) {
+                display.keyId = index;
                 display.isLoadingScrape = false;
                 display.hasData = 'BLANK';
                 display.message = messages;
@@ -183,6 +186,63 @@ const Popup = () => {
           );
         }
       });
+    });
+  };
+
+  const onRefreshsScraping = (keyId) => {
+    setDataForScraping(
+      setGlobalScrapingData.map((display) => {
+        if (display.keyId === keyId) {
+          display.isLoadingScrape = true;
+          display.hasData = 'YES';
+        }
+        return display;
+      })
+    );
+    const getRevalueData = dataForScraping.find((data) => data.keyId === keyId);
+    const setForAPI = mapScrapeForAPI(getRevalueData);
+
+    onStartScrapingAPI([setForAPI]).then((response) => {
+      const { succeeded, data, insurerId, messages } = response;
+      if (succeeded) {
+        if (data.length) {
+          setDataForScraping(
+            setGlobalScrapingData.map((resp) => {
+              if (resp.keyId === keyId) {
+                resp.isLoadingScrape = false;
+                resp.hasData = 'YES';
+                resp.policies = data.find(
+                  (result) => result.insurerId === insurerId
+                ).policies;
+              }
+              return resp;
+            })
+          );
+          return;
+        }
+        setDataForScraping(
+          setGlobalScrapingData.map((display) => {
+            if (display.keyId === keyId && !display.policies.length) {
+              display.isLoadingScrape = false;
+              display.hasData = !!data.length ? 'YES' : 'BLANK';
+              display.message = messages;
+            }
+            return display;
+          })
+        );
+      } else {
+        setDataForScraping(
+          setGlobalScrapingData.map((display, index) => {
+            if (display.keyId === keyId && !display.policies.length) {
+              display.keyId = index;
+              display.isLoadingScrape = false;
+              display.hasData = 'BLANK';
+              display.message = messages;
+            }
+            return display;
+          })
+        );
+      }
     });
   };
 
@@ -258,6 +318,7 @@ const Popup = () => {
         onRecallConnect,
         onUpdateSetListOfConnection,
         onFilteInsurances,
+        onRefreshsScraping,
       }}
     >
       <div className='popup'>
