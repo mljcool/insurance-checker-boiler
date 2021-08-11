@@ -26,7 +26,7 @@ const LoginForm = ({ selectedInsurer }) => {
           <TextField id='outlined-basic' label='Username' variant='outlined' />
           <TextField id='outlined-basic' label='Password' variant='outlined' />
           <Button variant='contained' color='primary' disableElevation>
-            Login
+            Connect
           </Button>
         </form>
       </Paper>
