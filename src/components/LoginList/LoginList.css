@@ -7,3 +7,22 @@
 .form_list_wrapper .MuiCard-root:not(:first-child) {
   margin-top: 1rem;
 }
+
+.connected_account {
+  display: flex;
+}
+.connect_details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+
+.connect_details span {
+  font-size: 11px;
+  font-weight: 500;
+  color: #525252;
+}
+
+.menu_connect {
+  margin-left: auto;
+}

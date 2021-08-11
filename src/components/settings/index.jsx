@@ -83,6 +83,7 @@ const Settings = () => {
 
   const onSelectInurance = (insurance) => {
     setSelectedInsurer(insurance);
+    setIsToggle(false);
   };
 
   const onToggleSettings = () => {
