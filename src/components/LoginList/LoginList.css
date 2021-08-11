@@ -1,0 +1,9 @@
+.form_list_wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+.form_list_wrapper .MuiCard-root:not(:first-child) {
+  margin-top: 1rem;
+}
