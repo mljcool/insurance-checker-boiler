@@ -15,17 +15,6 @@ const useStyles = makeStyles({
   },
 });
 
-const sampleList = [
-  {
-    id: 1,
-    name: 'Jhon Doe',
-  },
-  {
-    id: 2,
-    name: 'Ann Doe',
-  },
-];
-
 const MenuConnect = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -62,27 +51,39 @@ const MenuConnect = () => {
   );
 };
 
-const Login = ({ selectedInsurer }) => {
+const EmptyList = () => (
+  <div className='empty_wrapper'>
+    <img className='empty_img_placeholder' src={'img/Group5.svg'} />
+  </div>
+);
+
+const Login = ({ selectedInsurer = [] }) => {
   const classes = useStyles();
   const { connectedInsurer } = useContext(AppContext);
   return (
     <div className='form_list_wrapper'>
-      {connectedInsurer
-        .filter((insurer) => insurer.insurerId === selectedInsurer.id)
-        .map((data, index) => (
-          <Card className={classes.root} key={index}>
-            <CardContent>
-              <div className='connected_account'>
-                <img src={`img/insurers/${data.insurerId}.png`} />
-                <div className='connect_details'>
-                  <span>{data.firstName}</span>
-                  <span>Date connected: {data.updatedDate}</span>
+      {!!connectedInsurer &&
+        connectedInsurer
+          .filter((insurer) => insurer.insurerId === selectedInsurer.id)
+          .map((data, index) => (
+            <Card className={classes.root} key={index}>
+              <CardContent>
+                <div className='connected_account'>
+                  <img src={`img/insurers/${data.insurerId}.png`} />
+                  <div className='connect_details'>
+                    <span>{data.firstName}</span>
+                    <span>Date connected: {data.updatedDate}</span>
+                  </div>
+                  <MenuConnect />
                 </div>
-                <MenuConnect />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+      {!!connectedInsurer &&
+        !connectedInsurer.filter(
+          (insurer) => insurer.insurerId === selectedInsurer.id
+        ).length && <EmptyList />}
+      {!connectedInsurer && <EmptyList />}
     </div>
   );
 };

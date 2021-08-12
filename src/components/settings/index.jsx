@@ -6,13 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import { green } from '@material-ui/core/colors';
 import { insurerList } from 'constant/insurers';
-import Button from '@material-ui/core/Button';
 import Login from '../LoginList/Login';
 import LoginForm from '../LoginForm/LoginForm';
 import Grow from '@material-ui/core/Grow';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core/styles';
 

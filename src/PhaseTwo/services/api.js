@@ -1,4 +1,4 @@
-import { URL_SCRAPING } from 'FinalPhaseOne/constants';
+import { URL_SCRAPING } from '../constants';
 
 const myHeaders = new Headers();
 myHeaders.append('Content-Type', 'application/json');

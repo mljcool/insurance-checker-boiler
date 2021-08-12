@@ -7,9 +7,17 @@
 .form_list_wrapper .MuiCard-root:not(:first-child) {
   margin-top: 1rem;
 }
+.form_list_wrapper .empty_wrapper {
+  display: flex;
+  margin-top: 5rem;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+}
 
 .connected_account {
   display: flex;
+  align-items: center;
 }
 .connect_details {
   display: flex;
