@@ -9,6 +9,7 @@ import Settings from 'components/settings';
 import Header from 'components/Header/Header';
 import { AppContext, reducer, initialState } from '../context/AppContext';
 import { insurerList } from 'constant/insurers';
+import { getProviderConnections } from 'PhaseTwo/services/connect';
 import {
   setChromeIdentity,
   GetStorageClient,
@@ -87,6 +88,12 @@ const Popup = () => {
     }
   };
 
+  const onGetAllConnectedProviders = (browserId) => {
+    getProviderConnections(browserId).then(({ succeeded, data }) => {
+      console.log('getProviderConnections', data);
+    });
+  };
+
   const getClientList = () => {
     GetStorageClient().then(({ clientList = [] }) => {
       setClientList((clientList || []).sort().reverse());
@@ -118,11 +125,11 @@ const Popup = () => {
   const coreFunctions = () => {
     setChromeIdentity((chromeId) => {
       setBrowserId(chromeId);
-      // getAllConnectedProviders(chromeId, false);
       getClientList();
       getAdviserData();
       getJWTtokenData();
       getStoreFamilyId();
+      onGetAllConnectedProviders(chromeId);
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
   };
