@@ -17,30 +17,6 @@ import {
   GetStorageToken,
 } from 'PhaseTwo/storage';
 
-const sampleClients = [
-  {
-    id: 1,
-    fname: 'John',
-    lname: 'Doe',
-    prefix: 'JD',
-    isSelected: false,
-  },
-  {
-    id: 2,
-    fname: 'Sarah',
-    lname: 'Doe',
-    prefix: 'SD',
-    isSelected: false,
-  },
-  {
-    id: 3,
-    fname: 'Forcewind',
-    lname: 'Cruiser',
-    prefix: 'FC',
-    isSelected: false,
-  },
-];
-
 const WrapperPapper = ({ isToggle = false, children }) => {
   return (
     <Grow in={isToggle}>
@@ -56,12 +32,12 @@ const Popup = () => {
   const [isSearching, setSearch] = useState(false);
   const [viewAll, setViewAll] = useState(false);
   const [resultList, setResultList] = useState([]);
-  const [clientList, setClientList] = useState(sampleClients);
+  const [clientList, setClientList] = useState([]);
   const [browserId, setBrowserId] = useState('');
-  const [count, dispatch] = useReducer(reducer, initialState);
   const [familyID, setFamilyID] = useState('');
   const [adviserData, setAdviserData] = useState('');
   const [jwtToken, setJWTtoken] = useState('');
+  const [count, dispatch] = useReducer(reducer, initialState);
 
   // START All FUNCTIONS HERE
 
@@ -114,25 +90,28 @@ const Popup = () => {
   const getClientList = () => {
     GetStorageClient().then(({ clientList = [] }) => {
       setClientList((clientList || []).sort().reverse());
-      console.log(clientList);
+      console.log('clientList', clientList);
     });
   };
 
   const getAdviserData = () => {
     GetStorageAdviser().then(({ adviserDetails = {} }) => {
       setAdviserData(adviserDetails);
+      console.log('adviserDetails', adviserDetails);
     });
   };
 
   const getJWTtokenData = () => {
     GetStorageToken().then(({ jwtToken = {} }) => {
       setJWTtoken(jwtToken);
+      console.log('jwtToken', jwtToken);
     });
   };
 
   const getStoreFamilyId = () => {
     getFamilyIdStorage().then(({ familyIdStorage }) => {
       setFamilyID(familyIdStorage);
+      console.log('familyIdStorage', familyIdStorage);
     });
   };
 
@@ -163,6 +142,10 @@ const Popup = () => {
         resultList,
         clientList,
         viewAll,
+        browserId,
+        familyID,
+        adviserData,
+        jwtToken,
       }}
     >
       <div className='popup'>

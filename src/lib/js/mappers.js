@@ -20,6 +20,7 @@ const mapClientsInfo = (clientList = []) => {
           ? safeKeys(setKeys('Email')[0])('EmailAddress')
           : null,
       reSyncData: false,
+      isSelected: false,
     };
   };
 

@@ -57,8 +57,8 @@ const ClientSide = () => {
       <Loader isLoading={false} />
       <div className='client_list list_wrapper'>
         <List component='nav' aria-label='main mailbox folders'>
-          {clientList.map((client) => (
-            <Fragment key={client.personId}>
+          {clientList.map((client, index) => (
+            <Fragment key={index}>
               <ListItem
                 button
                 className={client.isSelected ? 'selected_list' : ''}
