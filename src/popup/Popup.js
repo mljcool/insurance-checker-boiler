@@ -34,6 +34,7 @@ const Popup = () => {
   const [viewAll, setViewAll] = useState(false);
   const [resultList, setResultList] = useState([]);
   const [clientList, setClientList] = useState([]);
+  const [connectedInsurer, setConnectedInsurer] = useState([]);
   const [browserId, setBrowserId] = useState('');
   const [familyID, setFamilyID] = useState('');
   const [adviserData, setAdviserData] = useState('');
@@ -91,6 +92,7 @@ const Popup = () => {
   const onGetAllConnectedProviders = (browserId) => {
     getProviderConnections(browserId).then(({ succeeded, data }) => {
       console.log('getProviderConnections', data);
+      setConnectedInsurer(data);
     });
   };
 
@@ -145,6 +147,7 @@ const Popup = () => {
         dispatch,
         setToggleSearch,
         onFilterSelectedClient,
+        connectedInsurer,
         isSearching,
         resultList,
         clientList,

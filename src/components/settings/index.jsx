@@ -104,7 +104,7 @@ const Settings = () => {
         {!isToggle && (
           <WrapperPapper isToggle={!isToggle}>
             <div className='list_section'>
-              <Login />
+              <Login selectedInsurer={selectedInsurer} />
             </div>
           </WrapperPapper>
         )}

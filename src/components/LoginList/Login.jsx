@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './LoginList.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -7,6 +7,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
+import { AppContext } from 'context/AppContext';
 
 const useStyles = makeStyles({
   root: {
@@ -61,24 +62,27 @@ const MenuConnect = () => {
   );
 };
 
-const Login = () => {
+const Login = ({ selectedInsurer }) => {
   const classes = useStyles();
+  const { connectedInsurer } = useContext(AppContext);
   return (
     <div className='form_list_wrapper'>
-      {sampleList.map((data) => (
-        <Card className={classes.root} key={data.id}>
-          <CardContent>
-            <div className='connected_account'>
-              <img src={`img/insurers/${data.id}.png`} />
-              <div className='connect_details'>
-                <span>{data.name}</span>
-                <span>Date connected: August 05, 2021 11:55 PM</span>
+      {connectedInsurer
+        .filter((insurer) => insurer.insurerId === selectedInsurer.id)
+        .map((data, index) => (
+          <Card className={classes.root} key={index}>
+            <CardContent>
+              <div className='connected_account'>
+                <img src={`img/insurers/${data.insurerId}.png`} />
+                <div className='connect_details'>
+                  <span>{data.firstName}</span>
+                  <span>Date connected: {data.updatedDate}</span>
+                </div>
+                <MenuConnect />
               </div>
-              <MenuConnect />
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        ))}
     </div>
   );
 };
