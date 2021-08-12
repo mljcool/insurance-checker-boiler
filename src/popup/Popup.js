@@ -99,21 +99,8 @@ const Popup = () => {
   };
 
   const onStartScraping = () => {
-    //  Promise.all(globalConnectedInsurer).then((responses) => {
-    //    console.log('onStartScraping', responses);
-    //    //   const scrapingListPayLoad
-    //    // const setForAPI = mapScrapeForAPI(getRevalueData);
-    //    // onStartScrapingAPI([setForAPI]).then((response) => {
-    //    //    const { succeeded, data, insurerId, messages } = response;
-    //    //  });
-    //  });
-    onStartScrapingAPI([scrapingListPayLoad]).then((responses) => {
+    Promise.all(globalConnectedInsurer).then((responses) => {
       console.log('onStartScraping', responses);
-      //    //   const scrapingListPayLoad
-      //    // const setForAPI = mapScrapeForAPI(getRevalueData);
-      //    // onStartScrapingAPI([setForAPI]).then((response) => {
-      //    //    const { succeeded, data, insurerId, messages } = response;
-      //    //  });
     });
   };
 
@@ -123,7 +110,7 @@ const Popup = () => {
         BrowserId: data.browserId,
         InsurerId: data.insurerId,
         InsurerName: data.insurerName,
-        Email: 'sample@gmail.com',
+        Email: data.email,
         AccessToken: globalJwtToken,
         Clients: globalClientList,
       };
@@ -136,14 +123,16 @@ const Popup = () => {
   };
 
   const onGetAllConnectedProviders = (browserId) => {
+    setSearch(true);
     setTimeout(() => {
       getProviderConnections(browserId).then((response) => {
         const { succeeded, data } = response;
+        setConnectedInsurer(data.insurerAcount);
+        onUpdateInsuranceList(data.insurerAcount);
+        setSearch(false);
         console.log('getProviderConnections', response);
-        setConnectedInsurer(data);
-        onUpdateInsuranceList(data);
       });
-    }, 3000);
+    }, 250);
   };
 
   const getClientList = () => {
@@ -188,7 +177,9 @@ const Popup = () => {
       getAdviserData();
       getJWTtokenData();
       getStoreFamilyId();
-      onGetAllConnectedProviders(chromeId);
+      onGetAllConnectedProviders(
+        '839e98c3ee15cdead5ea80864380f6c0c0a0cf63266aa17b6db2934a59901d'
+      );
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
   };

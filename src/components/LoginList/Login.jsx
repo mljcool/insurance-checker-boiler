@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import moment from 'moment';
 import './LoginList.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -71,8 +72,15 @@ const Login = ({ selectedInsurer = [] }) => {
                 <div className='connected_account'>
                   <img src={`img/insurers/${data.insurerId}.png`} />
                   <div className='connect_details'>
-                    <span>{data.firstName}</span>
-                    <span>Date connected: {data.updatedDate}</span>
+                    <span>
+                      {data.firstName} {data.lastName} - ( {data.email})
+                    </span>
+                    <span>
+                      Date connected:{' '}
+                      {moment(new Date(data.updatedDate)).format(
+                        'MMMM Do YYYY, h:mm:ss a'
+                      )}
+                    </span>
                   </div>
                   <MenuConnect />
                 </div>
