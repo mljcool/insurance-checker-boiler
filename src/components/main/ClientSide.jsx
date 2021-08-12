@@ -13,95 +13,97 @@ import Loader from '../Loader';
 import { AppContext } from 'context/AppContext';
 
 const useStyles = makeStyles((theme) => ({
-   purple: {
-      color: theme.palette.getContrastText(deepPurple[500]),
-      backgroundColor: '#8d76a0',
-      fontSize: '15px',
-   },
-   crmTheme: {
-      color: '#8d76a0',
-   },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: '#8d76a0',
+    fontSize: '15px',
+  },
+  crmTheme: {
+    color: '#8d76a0',
+  },
 }));
 
 const ClientHeader = () => {
-   return (
-      <div className='client_header header_section'>
-         <GroupIcon style={{ fontSize: '15px', color: green[500] }} />
-         <span>Insured Clients</span>
-      </div>
-   );
+  return (
+    <div className='client_header header_section'>
+      <GroupIcon style={{ fontSize: '15px', color: green[500] }} />
+      <span>Insured Clients</span>
+    </div>
+  );
 };
 
 const ClientFooter = () => {
-   const classes = useStyles();
-   return (
-      <div className='client_footer'>
-         <span>Re-sync all client data</span>
-         <IconButton color='primary' aria-label='add to shopping cart'>
-            <RefreshIcon className={classes.crmTheme} size={'small'} />
-         </IconButton>
-      </div>
-   );
+  const classes = useStyles();
+  return (
+    <div className='client_footer'>
+      <span>Re-sync all client data</span>
+      <IconButton color='primary' aria-label='add to shopping cart'>
+        <RefreshIcon className={classes.crmTheme} size={'small'} />
+      </IconButton>
+    </div>
+  );
 };
 
 const ClientSide = () => {
-   const classes = useStyles();
-   const { clientList, onFilterSelectedClient, viewAll } = useContext(
-      AppContext,
-   );
-   const [clientID, setClientID] = React.useState(0);
+  const classes = useStyles();
+  const { clientList, onFilterSelectedClient, viewAll } = useContext(
+    AppContext
+  );
+  const [clientID, setClientID] = React.useState(0);
 
-   return (
-      <div className='client_side'>
-         <ClientHeader />
-         <Loader isLoading={false} />
-         <div className='client_list list_wrapper'>
-            <List component='nav' aria-label='main mailbox folders'>
-               {clientList.map((client) => (
-                  <Fragment key={client.id}>
-                     <ListItem
-                        button
-                        className={client.isSelected ? 'selected_list' : ''}
-                        onClick={() => {
-                           onFilterSelectedClient(client.id);
-                           setClientID(client.id);
-                           // setViewAll(true);
-                        }}>
-                        <div className='client_details'>
-                           <div className='prefix'>
-                              <Avatar className={classes.purple}>
-                                 {client.prefix}
-                              </Avatar>
-                              <span>
-                                 {client.fname} {client.lname}
-                              </span>
-                           </div>
-                        </div>
-                     </ListItem>
-                     <Divider />
-                  </Fragment>
-               ))}
-               {viewAll && (
-                  <Fragment key={'12-2222asaz'}>
-                     <ListItem
-                        button
-                        className={clientID === 'ALL' ? 'selected_list' : ''}
-                        onClick={() => {
-                           onFilterSelectedClient('ALL');
-                           setClientID('ALL');
-                        }}>
-                        <div className='client_details view_all'>
-                           <span>View All</span>
-                        </div>
-                     </ListItem>
-                     <Divider />
-                  </Fragment>
-               )}
-            </List>
-         </div>
-         <ClientFooter />
+  return (
+    <div className='client_side'>
+      <ClientHeader />
+      <Loader isLoading={false} />
+      <div className='client_list list_wrapper'>
+        <List component='nav' aria-label='main mailbox folders'>
+          {clientList.map((client) => (
+            <Fragment key={client.personId}>
+              <ListItem
+                button
+                className={client.isSelected ? 'selected_list' : ''}
+                onClick={() => {
+                  onFilterSelectedClient(client.id);
+                  setClientID(client.id);
+                  // setViewAll(true);
+                }}
+              >
+                <div className='client_details'>
+                  <div className='prefix'>
+                    <Avatar className={classes.purple}>
+                      {client.initialName}
+                    </Avatar>
+                    <span>
+                      {client.fname} {client.fullName}
+                    </span>
+                  </div>
+                </div>
+              </ListItem>
+              <Divider />
+            </Fragment>
+          ))}
+          {viewAll && (
+            <Fragment key={'12-2222asaz'}>
+              <ListItem
+                button
+                className={clientID === 'ALL' ? 'selected_list' : ''}
+                onClick={() => {
+                  onFilterSelectedClient('ALL');
+                  setClientID('ALL');
+                }}
+              >
+                <div className='client_details view_all'>
+                  <span>View All</span>
+                </div>
+              </ListItem>
+              <Divider />
+            </Fragment>
+          )}
+        </List>
       </div>
-   );
+      <ClientFooter />
+    </div>
+  );
 };
 
 export default ClientSide;
