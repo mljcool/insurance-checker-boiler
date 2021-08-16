@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import './settings.css';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,6 +13,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { makeStyles } from '@material-ui/core/styles';
+import { AppContext } from 'context/AppContext';
 
 const InsurerList = ({ onSelectInurance }) => {
   const [selectedInsurer, setSelectedInsurer] = useState(1);
@@ -77,6 +78,7 @@ const Settings = () => {
   const classes = useStyles();
 
   const [selectedInsurer, setSelectedInsurer] = useState(insurerList[0]);
+  const { onRegetConnectedProviders } = useContext(AppContext);
   const [isToggle, setIsToggle] = useState(false);
 
   const onSelectInurance = (insurance) => {
@@ -88,6 +90,10 @@ const Settings = () => {
     setIsToggle((toggle) => !toggle);
   };
 
+  const onBackToList = () => {
+    setIsToggle(true);
+    onRegetConnectedProviders();
+  };
   return (
     <div className='settings_page'>
       <InsurerList onSelectInurance={onSelectInurance} />
@@ -95,7 +101,10 @@ const Settings = () => {
         {isToggle && (
           <WrapperPapper isToggle={isToggle}>
             <div className='login_section'>
-              <LoginForm selectedInsurer={selectedInsurer} />
+              <LoginForm
+                selectedInsurer={selectedInsurer}
+                onBackToList={onBackToList}
+              />
             </div>
           </WrapperPapper>
         )}

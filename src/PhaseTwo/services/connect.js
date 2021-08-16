@@ -35,6 +35,10 @@ export const postConnectToInsurers = (params = {}) => {
   return postMethod('setup/set-credential', newDetails);
 };
 
+export const onDeleteConnections = (params = {}) => {
+  return postMethod('setup/delete-credential', params);
+};
+
 export const onDisconnectInsurer = (params = {}) => {
   const { providerNameLowerCases, id, browserId } = params;
   const details = {

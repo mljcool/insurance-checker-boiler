@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const LoginForm = ({ selectedInsurer }) => {
+const LoginForm = ({ selectedInsurer, onBackToList }) => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
@@ -55,7 +55,9 @@ const LoginForm = ({ selectedInsurer }) => {
         setIsSuccess(true);
         setUserName('');
         setPassword('');
-        onUpdateSetListOfConnection(true);
+        setTimeout(() => {
+          onBackToList();
+        }, 1000);
       } else {
         setIsSomethingWrong(true);
         setAPImessage(messages);

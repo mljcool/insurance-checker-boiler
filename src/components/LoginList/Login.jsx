@@ -9,6 +9,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'context/AppContext';
+import { onDeleteConnections } from 'PhaseTwo/services/connect';
 
 const useStyles = makeStyles({
   root: {
@@ -16,15 +17,34 @@ const useStyles = makeStyles({
   },
 });
 
-const MenuConnect = () => {
+const MenuConnect = ({ providerData, browserId, onRefreshData }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (isDelete) => {
     setAnchorEl(null);
+    if (isDelete) {
+      const { email, insurerName, insurerId } = providerData;
+      const newData = {
+        browserId: browserId,
+        insurerAcount: {
+          insurerId: insurerId,
+          insurerName: insurerName,
+          email: email,
+        },
+      };
+      onDeleteConnections(newData).then(({ succeeded }) => {
+        console.log('onDeleteConnections', response);
+        if (succeeded) {
+          onRefreshData();
+        }
+      });
+      return;
+    }
+    console.log('event');
   };
 
   return (
@@ -45,8 +65,20 @@ const MenuConnect = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
-        <MenuItem onClick={handleClose}>Update</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose(true);
+          }}
+        >
+          Delete
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose(false);
+          }}
+        >
+          Active
+        </MenuItem>
       </Menu>
     </div>
   );
@@ -60,7 +92,12 @@ const EmptyList = () => (
 
 const Login = ({ selectedInsurer = [] }) => {
   const classes = useStyles();
-  const { connectedInsurer } = useContext(AppContext);
+  const { connectedInsurer, browserId, onRegetConnectedProviders } = useContext(
+    AppContext
+  );
+  const onRefreshData = () => {
+    onRegetConnectedProviders();
+  };
   return (
     <div className='form_list_wrapper'>
       {!!connectedInsurer &&
@@ -82,7 +119,11 @@ const Login = ({ selectedInsurer = [] }) => {
                       )}
                     </span>
                   </div>
-                  <MenuConnect />
+                  <MenuConnect
+                    providerData={data}
+                    browserId={browserId}
+                    onRefreshData={onRefreshData}
+                  />
                 </div>
               </CardContent>
             </Card>

@@ -63,8 +63,9 @@ const ClientSide = () => {
                 button
                 className={client.isSelected ? 'selected_list' : ''}
                 onClick={() => {
-                  onFilterSelectedClient(client.id);
-                  setClientID(client.id);
+                  console.log('isSelected', client);
+                  onFilterSelectedClient(client.personId);
+                  setClientID(client.personId);
                   // setViewAll(true);
                 }}
               >

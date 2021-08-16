@@ -155,7 +155,7 @@ const EmptyWrapper = ({ onStartScrapingAction }) => {
           onStartScrapingAction();
         }}
       >
-        Check Now
+        Test Now
       </Button>
     </div>
   );

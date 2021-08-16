@@ -34,6 +34,7 @@ const WrapperPapper = ({ isToggle = false, children }) => {
 let scrapingListPayLoad = [];
 let globalConnectedInsurer = [];
 let globalClientList = [];
+let globalSuccededList = [];
 let globalJwtToken = '';
 let globalBrowserId = '';
 
@@ -69,7 +70,7 @@ const Popup = () => {
         return client;
       });
       setResultList(setNewClient);
-    }, 2100);
+    }, 500);
   };
 
   const onFilterSelectedClient = (id) => {
@@ -80,26 +81,28 @@ const Popup = () => {
           return client;
         })
       );
+      setSuccededResultList(globalSuccededList);
       setViewAll(false);
       return;
     }
-    if (resultList.length) {
-      setResultList(
-        clientList.filter((client) => {
-          if (client.id === id) {
-            client.isSelected = !client.isSelected;
-            return client;
-          } else {
-            client.isSelected = false;
-          }
-        })
+    console.log('onFilterSelectedClient', id);
+    if (succededResultList.length) {
+      setSuccededResultList(
+        globalSuccededList.filter((client) => client.clientId === id)
       );
 
+      setClientList(
+        clientList.map((client) => {
+          client.isSelected = client.personId === id;
+          return client;
+        })
+      );
       setViewAll(true);
     }
   };
 
   const onStartScraping = () => {
+    setSearch(true);
     Promise.all(globalConnectedInsurer).then((responses = []) => {
       if (responses.length) {
         console.log('>>>>>>>>>>', responses);
@@ -116,8 +119,10 @@ const Popup = () => {
           })
           .flat();
         setSuccededResultList(getSuccededData);
+        globalSuccededList = getSuccededData;
         console.log('getSuccededData', getSuccededData);
       }
+      setSearch(false);
     });
   };
 
@@ -151,6 +156,10 @@ const Popup = () => {
         console.log('getProviderConnections', response);
       });
     }, 100);
+  };
+
+  const onRegetConnectedProviders = () => {
+    onGetAllConnectedProviders(globalBrowserId);
   };
 
   const getClientList = () => {
@@ -213,6 +222,7 @@ const Popup = () => {
         setToggleSearch,
         onFilterSelectedClient,
         onStartScraping,
+        onRegetConnectedProviders,
         succededResultList,
         connectedInsurer,
         isSearching,
