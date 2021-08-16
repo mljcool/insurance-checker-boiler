@@ -17,19 +17,22 @@ export const postConnectToInsurers = (params = {}) => {
     jwtToken,
   } = params;
 
-  const details = {
-    email,
-    userName,
-    password,
-    title: 'ADVISER',
-    firstName,
-    lastName,
-    insurerName: providerNameLowerCases,
-    insurerId: id,
-    browserId,
+  const newDetails = {
+    BrowserId: browserId,
     AccessToken: jwtToken,
+    InsurerAcount: {
+      InsurerId: id,
+      InsurerName: providerNameLowerCases,
+      UserName: userName,
+      Password: password,
+      FirstName: firstName,
+      LastName: lastName,
+      Title: 'Adviser',
+      Email: email,
+    },
   };
-  return postMethod('setup/set-credential', details);
+
+  return postMethod('setup/set-credential', newDetails);
 };
 
 export const onDisconnectInsurer = (params = {}) => {

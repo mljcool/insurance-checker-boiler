@@ -71,8 +71,8 @@ const InsurersSide = () => {
       <Loader isLoading={isSearching} />
       <div className='insurer_list list_wrapper'>
         <List component='nav' aria-label='main mailbox folders'>
-          {connectedInsurer.map((insurer) => (
-            <Fragment key={insurer.insurerId}>
+          {connectedInsurer.map((insurer, index) => (
+            <Fragment key={index}>
               <ListItem
                 button
                 className={

@@ -1,128 +1,139 @@
 .result_list_header {
-   justify-content: space-between;
+  justify-content: space-between;
 }
 
 .resul_banner {
-   display: flex;
+  display: flex;
 }
 
 .result_list {
-   background: #dcdcdc;
+  background: #dcdcdc;
 }
 .result_list.empty_list {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .empty_img_placeholder {
-   width: 7rem;
+  width: 7rem;
 }
 
 .result_list_header span {
-   font-size: 11px;
-   font-weight: 500;
-   margin-left: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 4px;
 }
 
 .result_list_footer {
-   display: flex;
-   align-items: center;
-   justify-content: flex-end;
-   border-top: 1px solid #e3e4e6;
-   background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #e3e4e6;
+  background: #f8fafc;
 }
 .result_list_footer span {
-   white-space: nowrap;
-   font-size: 10px;
-   font-weight: 500;
-   text-transform: uppercase;
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 .main_result_list {
-   height: auto;
-   margin: 1rem;
+  height: auto;
+  margin: 1rem;
 }
 
 .main_result_list .MuiPaper-root {
-   background: #f4f1f8;
-   border-radius: 9px !important;
-   padding: 10px !important;
+  background: #f4f1f8;
+  border-radius: 9px !important;
+  padding: 10px !important;
 }
 
 .paper_client_details {
-   padding: 0.8rem 8px;
-   position: relative;
+  padding: 0.8rem 8px;
+  position: relative;
 }
 
 .topright {
-   position: absolute;
-   top: 8px;
-   right: 8px;
-   cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
 }
 
 .client_full_name {
-   font-size: 14px;
-   font-weight: 600;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .client_result_sections {
-   margin-top: 15px;
+  margin-top: 15px;
+}
+.client_result_sections .MuiButtonBase-root {
+  margin-left: 5px;
+}
+
+.client_result_sections span {
+  white-space: nowrap;
 }
 
 .client_provider_results {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
 }
 
 .result_policy {
-   display: flex;
-   flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .details_place {
-   display: flex;
+  display: flex;
 }
 
 .details_place img {
-   margin-top: 3px;
+  margin-top: 3px;
 }
 
 .ic_card_premium {
-   font-weight: bold;
-   color: #8d76a0;
-   font-size: 15px;
-   padding-top: 1px;
-   white-space: nowrap;
-   margin-left: 5px;
+  font-weight: bold;
+  color: #8d76a0;
+  font-size: 15px;
+  padding-top: 1px;
+  white-space: nowrap;
+  margin-left: 5px;
 }
 
 .ic_card_policy {
-   font-size: 13px;
-   color: #8d76a0;
-   font-weight: 400;
-   white-space: nowrap;
-   margin-left: 5px;
+  font-size: 13px;
+  color: #8d76a0;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-left: 5px;
 }
 
 .client_cover_sections {
-   display: flex;
-   align-items: center;
-   justify-content: space-between;
-   white-space: nowrap;
-   margin-top: 1rem;
-   border-top: 1px solid #cccccc;
-   border-bottom: 1px solid #cccccc;
-   padding: 0.8rem 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  margin-top: 10px;
+  border-top: 1px solid #cccccc;
+  padding: 2px 3px;
 }
 
 .ic_card_cover_label {
-   display: flex;
+  display: flex;
+  margin-top: 5px;
+}
+
+.cover_detail {
+  margin-top: 5px;
 }
 
 .ic_card_cover_label span {
-   margin-left: 4px;
+  margin-left: 4px;
 }

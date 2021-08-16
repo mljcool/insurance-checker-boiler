@@ -19,6 +19,11 @@ const getInsurerConnected = insurerList.filter(
   (insurer) => insurer.isConnected
 );
 
+const removeSpaces = (text = '') => {
+  const newText = (text || '').split(/\s/).join('');
+  return newText;
+};
+
 const useStyles = makeStyles(() => ({
   crmTheme: {
     color: '#8d76a0',
@@ -74,23 +79,26 @@ const TopRightButton = ({ crmTheme }) => {
   );
 };
 
-const InsurancesDetails = ({ insurer }) => {
+const InsurancesDetails = ({ insurerData, insurerId }) => {
   return (
     <div className='client_result_sections'>
       <span>Insurance Checker found 1 benefits from 1 Insurer</span>
       <div className='client_provider_results'>
         <div className='details_place'>
           <img
-            src={`img/insurers/${insurer.id}.png`}
+            src={`img/insurers/${insurerId}.png`}
             width='65px'
             height='35px'
           />
           <div className='result_policy'>
-            <span className='ic_card_policy'>236729</span>
-            <span className='ic_card_premium'>$205.95 Monthly</span>
+            <span className='ic_card_policy'>{insurerData.policyNumber}</span>
+            <span className='ic_card_premium'>
+              {insurerData.premium} {insurerData.frequency}
+            </span>
           </div>
         </div>
         <ColorButton
+          className='view_link_btn'
           size='small'
           variant='contained'
           color='primary'
@@ -103,17 +111,27 @@ const InsurancesDetails = ({ insurer }) => {
   );
 };
 
-const CoverListItem = () => {
+const CoverListItem = ({ products }) => {
   return (
-    <div className='client_cover_sections'>
-      <div class='ic_card_cover_label'>
-        <img src={'img/benefit_icons/tc.svg'} width='18px' height='18px' />
-        <span>Life Cover</span>
+    products.length &&
+    products.map((product, index) => (
+      <div className='client_cover_sections' key={index}>
+        <div className='ic_card_cover_label'>
+          <img
+            width='18px'
+            height='18px'
+            src={`img/benefit_icons/${removeSpaces(product.productName)}.svg`}
+            onError={(e) => {
+              e.target.src = 'img/benefit_icons/circle-svgrepo-com.svg';
+            }}
+          />
+          <span>{product.productName}</span>
+        </div>
+        <div className='cover_detail'>
+          <div className='ic_card_cover_amount'>{product.amount}</div>
+        </div>
       </div>
-      <div className='cover_detail'>
-        <div class='ic_card_cover_amount'>$538,611.00</div>
-      </div>
-    </div>
+    ))
   );
 };
 
@@ -145,41 +163,51 @@ const EmptyWrapper = ({ onStartScrapingAction }) => {
 
 const ResultSide = () => {
   const classes = useStyles();
-  const { isSearching, resultList, onStartScraping } = useContext(AppContext);
-  const emptyList = !resultList.length;
+  const {
+    isSearching,
+    resultList,
+    onStartScraping,
+    succededResultList,
+  } = useContext(AppContext);
+  const emptyList = !succededResultList.length;
   const appendClass = emptyList ? 'empty_list' : '';
   return (
     <div className='result_side'>
       <ResultHeader />
       <Loader isLoading={isSearching} />
       <div className={`result_list list_wrapper ${appendClass}`}>
-        {!!resultList.length &&
-          resultList.map((insurer) => (
-            <Fragment key={insurer.id}>
+        {!!succededResultList.length &&
+          succededResultList.map((insurer, index) => (
+            <Fragment key={index}>
               <div className='main_result_list'>
-                <Paper
-                  className='paper_client_details'
-                  elevation={1}
-                  key={insurer.id}
-                >
+                <Paper className='paper_client_details' elevation={1}>
                   <div className={'client_details'}>
                     <div className='prefix'>
                       <Avatar className={classes.crmThemeAvatar}>
-                        {insurer.prefix}
+                        {insurer.firstName[0]}
+                        {insurer.lastName[0]}
                       </Avatar>
                       <span className='client_full_name'>
-                        {insurer.fname} {insurer.lname}
+                        {insurer.firstName} {insurer.lastName}
                       </span>
                     </div>
                   </div>
                   <TopRightButton crmTheme={classes.crmTheme} />
-                  <InsurancesDetails insurer={insurer.insurerDetails} />
-                  <CoverListItem />
+                  {insurer.policies.map((policy, idx) => (
+                    <Fragment>
+                      <InsurancesDetails
+                        key={idx}
+                        insurerData={policy}
+                        insurerId={insurer.insurerId}
+                      />
+                      <CoverListItem products={policy.products} />
+                    </Fragment>
+                  ))}
                 </Paper>
               </div>
             </Fragment>
           ))}
-        {!resultList.length && (
+        {!succededResultList.length && (
           <EmptyWrapper onStartScrapingAction={onStartScraping} />
         )}
       </div>

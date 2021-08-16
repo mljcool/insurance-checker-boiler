@@ -25,6 +25,7 @@ const LoginForm = ({ selectedInsurer }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [errorForm, setErrorForm] = useState(false);
   const [isSomethingWrong, setIsSomethingWrong] = useState(false);
   const [apiMessage, setAPImessage] = useState('');
@@ -51,6 +52,7 @@ const LoginForm = ({ selectedInsurer }) => {
       console.log('postConnectToInsurers', succeeded);
       setIsConnecting(false);
       if (succeeded && data) {
+        setIsSuccess(true);
         setUserName('');
         setPassword('');
         onUpdateSetListOfConnection(true);
@@ -70,6 +72,9 @@ const LoginForm = ({ selectedInsurer }) => {
     <div className='form_fields'>
       <Paper elevation={1}>
         {isSomethingWrong && <Alert severity='error'>{apiMessage}</Alert>}
+        {isSuccess && (
+          <Alert severity='success'>Account succesfully connected</Alert>
+        )}
         <div className='login_details'>
           <img src={`img/insurers/${selectedInsurer.id}.png`} />
           <span>Login to your {selectedInsurer.providerName} account</span>
