@@ -20,6 +20,7 @@ import {
   GetStorageAdviser,
   GetStorageToken,
 } from 'PhaseTwo/storage';
+import { filterSatus } from 'PhaseTwo/util';
 
 const WrapperPapper = ({ isToggle = false, children }) => {
   return (
@@ -99,6 +100,15 @@ const Popup = () => {
       );
       setViewAll(true);
     }
+  };
+
+  const onFilteInsurances = (filterType) => {
+    const newResults = filterSatus(globalSuccededList, filterType);
+    if (filterType === 'All') {
+      setSuccededResultList(globalSuccededList);
+      return;
+    }
+    setSuccededResultList(newResults);
   };
 
   const onStartScraping = () => {
@@ -223,6 +233,7 @@ const Popup = () => {
         onFilterSelectedClient,
         onStartScraping,
         onRegetConnectedProviders,
+        onFilteInsurances,
         succededResultList,
         connectedInsurer,
         isSearching,
