@@ -71,26 +71,27 @@ const InsurersSide = () => {
       <Loader isLoading={isSearching} />
       <div className='insurer_list list_wrapper'>
         <List component='nav' aria-label='main mailbox folders'>
-          {connectedInsurer.map((insurer, index) => (
-            <Fragment key={index}>
-              <ListItem
-                button
-                className={
-                  insurerId === insurer.insurerId ? 'selected_list' : ''
-                }
-                onClick={() => {
-                  setToggleSearch(insurer.insurerId);
-                  setInsurerId(insurer.insurerId);
-                }}
-              >
-                <div className='insurer_icon' key={insurer.insurerId}>
-                  <img src={`img/insurers/${insurer.insurerId}.png`} />
-                  <span>{insurer.email}</span>
-                </div>
-              </ListItem>
-              <Divider />
-            </Fragment>
-          ))}
+          {!!connectedInsurer &&
+            connectedInsurer.map((insurer, index) => (
+              <Fragment key={index}>
+                <ListItem
+                  button
+                  className={
+                    insurerId === insurer.insurerId ? 'selected_list' : ''
+                  }
+                  onClick={() => {
+                    setToggleSearch(insurer.insurerId);
+                    setInsurerId(insurer.insurerId);
+                  }}
+                >
+                  <div className='insurer_icon' key={insurer.insurerId}>
+                    <img src={`img/insurers/${insurer.insurerId}.png`} />
+                    <span>{insurer.email}</span>
+                  </div>
+                </ListItem>
+                <Divider />
+              </Fragment>
+            ))}
         </List>
       </div>
       <InsurerFooter state={state} handleChange={handleChange} />

@@ -14,19 +14,27 @@ import Button from '@material-ui/core/Button';
 import Loader from '../Loader';
 import { AppContext } from 'context/AppContext';
 import RefreshIcon from '@material-ui/icons/Refresh';
+import LoadingContent from '../LoadingSkeleton/LoadingContent';
 
 const getInsurerConnected = insurerList.filter(
   (insurer) => insurer.isConnected
 );
+
+const openViewLink = (link) => {
+  window.open(link, '_blank').focus();
+};
 
 const removeSpaces = (text = '') => {
   const newText = (text || '').split(/\s/).join('');
   return newText;
 };
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   crmTheme: {
     color: '#8d76a0',
+  },
+  margin: {
+    margin: theme.spacing(1),
   },
   crmThemeAvatar: {
     backgroundColor: '#8d76a0',
@@ -64,17 +72,25 @@ const ResultsFooter = () => {
   return (
     <div className='result_list_footer'>
       <span>Re-check all</span>
-      <IconButton color='primary' aria-label='add to shopping cart'>
+      <IconButton color='primary' aria-label='reysnc data'>
         <RestorePageIcon className={classes.crmTheme} />
       </IconButton>
     </div>
   );
 };
 
-const TopRightButton = ({ crmTheme }) => {
+const TopRightButton = ({ crmTheme, onResync }) => {
+  const classes = useStyles();
   return (
     <div className='topright'>
-      <CachedIcon className={crmTheme} />
+      <IconButton
+        aria-label='reysnc data'
+        className={classes.margin}
+        size='small'
+        onClick={onResync}
+      >
+        <CachedIcon className={crmTheme} fontSize='inherit' />
+      </IconButton>
     </div>
   );
 };
@@ -102,6 +118,9 @@ const InsurancesDetails = ({ insurerData, insurerId }) => {
           size='small'
           variant='contained'
           color='primary'
+          onClick={() => {
+            openViewLink(insurerData.link);
+          }}
           disableElevation
         >
           View
@@ -168,6 +187,7 @@ const ResultSide = () => {
     resultList,
     onStartScraping,
     succededResultList,
+    onResyncResult,
   } = useContext(AppContext);
   const emptyList = !succededResultList.length;
   const appendClass = emptyList ? 'empty_list' : '';
@@ -181,28 +201,40 @@ const ResultSide = () => {
             <Fragment key={index}>
               <div className='main_result_list'>
                 <Paper className='paper_client_details' elevation={1}>
-                  <div className={'client_details'}>
-                    <div className='prefix'>
-                      <Avatar className={classes.crmThemeAvatar}>
-                        {insurer.firstName[0]}
-                        {insurer.lastName[0]}
-                      </Avatar>
-                      <span className='client_full_name'>
-                        {insurer.firstName} {insurer.lastName}
-                      </span>
-                    </div>
-                  </div>
-                  <TopRightButton crmTheme={classes.crmTheme} />
-                  {insurer.policies.map((policy, idx) => (
+                  {insurer.isSync && (
+                    <LoadingContent insurerId={insurer.insurerId} />
+                  )}
+                  {!insurer.isSync && (
                     <Fragment>
-                      <InsurancesDetails
-                        key={idx}
-                        insurerData={policy}
-                        insurerId={insurer.insurerId}
+                      <div className={'client_details'}>
+                        <div className='prefix'>
+                          <Avatar className={classes.crmThemeAvatar}>
+                            {insurer.firstName[0]}
+                            {insurer.lastName[0]}
+                          </Avatar>
+                          <span className='client_full_name'>
+                            {insurer.firstName} {insurer.lastName}
+                          </span>
+                        </div>
+                      </div>
+                      <TopRightButton
+                        onResync={() => {
+                          onResyncResult(insurer);
+                        }}
+                        crmTheme={classes.crmTheme}
                       />
-                      <CoverListItem products={policy.products} />
+                      {insurer.policies.map((policy, idx) => (
+                        <Fragment>
+                          <InsurancesDetails
+                            key={idx}
+                            insurerData={policy}
+                            insurerId={insurer.insurerId}
+                          />
+                          <CoverListItem products={policy.products} />
+                        </Fragment>
+                      ))}
                     </Fragment>
-                  ))}
+                  )}
                 </Paper>
               </div>
             </Fragment>

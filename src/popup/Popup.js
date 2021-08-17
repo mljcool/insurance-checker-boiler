@@ -20,7 +20,7 @@ import {
   GetStorageAdviser,
   GetStorageToken,
 } from 'PhaseTwo/storage';
-import { filterSatus } from 'PhaseTwo/util';
+import { filterSatus, setSyncID } from 'PhaseTwo/util';
 
 const WrapperPapper = ({ isToggle = false, children }) => {
   return (
@@ -111,6 +111,29 @@ const Popup = () => {
     setSuccededResultList(newResults);
   };
 
+  const onResyncResult = (insuranceDetails = {}) => {
+    const { syncID } = insuranceDetails;
+    setSuccededResultList(
+      globalSuccededList.map((insurance) => {
+        if (insurance.syncID === syncID) {
+          insurance.isSync = true;
+        }
+        return insurance;
+      })
+    );
+
+    // setTimeout(() => {
+    //   setSuccededResultList(
+    //     globalSuccededList.map((insurance) => {
+    //       if (insurance.syncID === syncID) {
+    //         insurance.isSync = false;
+    //       }
+    //       return insurance;
+    //     })
+    //   );
+    // }, 2000);
+  };
+
   const onStartScraping = () => {
     setSearch(true);
     Promise.all(globalConnectedInsurer).then((responses = []) => {
@@ -124,6 +147,8 @@ const Popup = () => {
           .map((arrange) => {
             return arrange.clients.map((client) => {
               client.insurerId = arrange.insurerId;
+              client.syncID = setSyncID();
+              client.isSync = false;
               return client;
             });
           })
@@ -160,8 +185,8 @@ const Popup = () => {
     setTimeout(() => {
       getProviderConnections(browserId).then((response) => {
         const { succeeded, data } = response;
-        setConnectedInsurer(data.insurerAcount);
-        onUpdateInsuranceList(data.insurerAcount);
+        setConnectedInsurer((data || {}).insurerAcount);
+        onUpdateInsuranceList((data || {}).insurerAcount);
         setSearch(false);
         console.log('getProviderConnections', response);
       });
@@ -216,6 +241,7 @@ const Popup = () => {
       getJWTtokenData();
       getStoreFamilyId();
       onGetAllConnectedProviders(chromeId);
+      console.log('chromeId', chromeId);
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
   };
@@ -234,6 +260,7 @@ const Popup = () => {
         onStartScraping,
         onRegetConnectedProviders,
         onFilteInsurances,
+        onResyncResult,
         succededResultList,
         connectedInsurer,
         isSearching,

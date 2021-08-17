@@ -10,3 +10,12 @@ export const filterSatus = (insurances, filterType) => {
     )
   );
 };
+
+export const setSyncID = () => {
+  return (
+    '_' +
+    Math.random()
+      .toString(36)
+      .substr(2, 9)
+  );
+};
