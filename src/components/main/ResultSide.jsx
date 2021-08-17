@@ -15,6 +15,8 @@ import Loader from '../Loader';
 import { AppContext } from 'context/AppContext';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import LoadingContent from '../LoadingSkeleton/LoadingContent';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 const getInsurerConnected = insurerList.filter(
   (insurer) => insurer.isConnected
@@ -39,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   crmThemeAvatar: {
     backgroundColor: '#8d76a0',
     fontSize: '15px',
+  },
+  button: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -95,10 +100,13 @@ const TopRightButton = ({ crmTheme, onResync }) => {
   );
 };
 
-const InsurancesDetails = ({ insurerData, insurerId }) => {
+const InsurancesDetails = ({ insurerData, insurerId, isNumber }) => {
   return (
     <div className='client_result_sections'>
-      <span>Insurance Checker found 1 benefits from 1 Insurer</span>
+      {!!isNumber && (
+        <span>Insurance Checker found {isNumber} benefits from 1 Insurer</span>
+      )}
+      {!isNumber && <span>Insurance Checker found {isNumber} benefits</span>}
       <div className='client_provider_results'>
         <div className='details_place'>
           <img
@@ -113,18 +121,20 @@ const InsurancesDetails = ({ insurerData, insurerId }) => {
             </span>
           </div>
         </div>
-        <ColorButton
-          className='view_link_btn'
-          size='small'
-          variant='contained'
-          color='primary'
-          onClick={() => {
-            openViewLink(insurerData.link);
-          }}
-          disableElevation
-        >
-          View
-        </ColorButton>
+        {!!isNumber && (
+          <ColorButton
+            className='view_link_btn'
+            size='small'
+            variant='contained'
+            color='primary'
+            onClick={() => {
+              openViewLink(insurerData.link);
+            }}
+            disableElevation
+          >
+            View
+          </ColorButton>
+        )}
       </div>
     </div>
   );
@@ -180,13 +190,36 @@ const EmptyWrapper = ({ onStartScrapingAction }) => {
   );
 };
 
+const ShowMoreIcon = ({ showMore }) => {
+  return !showMore ? (
+    <ArrowDownwardIcon fontSize='inherit' />
+  ) : (
+    <ArrowUpwardIcon fontSize='inherit' />
+  );
+};
+
 const ResultSide = () => {
   const classes = useStyles();
+
+  const [showMore, setShowMore] = React.useState(false);
+  const messagesEndRef = React.useRef(null);
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({
+          block: 'end',
+          behavior: 'smooth',
+        });
+      }
+    }, 300);
+  };
+
   const {
     isSearching,
-    resultList,
+    onResyncResultUnsuccessData,
     onStartScraping,
     succededResultList,
+    unSuccededResultList,
     onResyncResult,
   } = useContext(AppContext);
   const emptyList = !succededResultList.length;
@@ -223,23 +256,101 @@ const ResultSide = () => {
                         }}
                         crmTheme={classes.crmTheme}
                       />
-                      {insurer.policies.map((policy, idx) => (
-                        <Fragment>
-                          <InsurancesDetails
-                            key={idx}
-                            insurerData={policy}
-                            insurerId={insurer.insurerId}
-                          />
-                          <CoverListItem products={policy.products} />
-                        </Fragment>
-                      ))}
+                      {!!insurer.policies &&
+                        insurer.policies.map((policy, idx) => (
+                          <Fragment>
+                            <InsurancesDetails
+                              key={idx}
+                              insurerData={policy}
+                              insurerId={insurer.insurerId}
+                              isNumber={1}
+                            />
+                            <CoverListItem products={policy.products} />
+                          </Fragment>
+                        ))}
                     </Fragment>
                   )}
                 </Paper>
               </div>
             </Fragment>
           ))}
-        {!succededResultList.length && (
+
+        {/* unsuccesResultlist */}
+        {!!unSuccededResultList.length && (
+          <div className='separator_no_result'>
+            <span className='no_result_label'>
+              {unSuccededResultList.length} other insurers did not return any
+              results
+            </span>
+            <div>
+              <Button
+                variant='contained'
+                color='primary'
+                size='small'
+                className={classes.button}
+                startIcon={<ShowMoreIcon showMore={showMore} />}
+                onClick={() => {
+                  setShowMore((istoggled) => !istoggled);
+                  if (!showMore) {
+                    scrollToBottom();
+                  }
+                }}
+              >
+                {!showMore ? 'Show' : 'Hide'}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {showMore &&
+          !!unSuccededResultList.length &&
+          unSuccededResultList.map((insurer, index) => (
+            <Fragment key={index}>
+              <div className='main_result_list'>
+                <Paper className='paper_client_details' elevation={1}>
+                  {insurer.isSync && (
+                    <LoadingContent insurerId={insurer.insurerId} />
+                  )}
+                  {!insurer.isSync && (
+                    <Fragment>
+                      <div className={'client_details'}>
+                        <div className='prefix'>
+                          <Avatar className={classes.crmThemeAvatar}>
+                            {insurer.firstName[0]}
+                            {insurer.lastName[0]}
+                          </Avatar>
+                          <span className='client_full_name'>
+                            {insurer.firstName} {insurer.lastName}
+                          </span>
+                        </div>
+                      </div>
+                      <TopRightButton
+                        onResync={() => {
+                          onResyncResultUnsuccessData(insurer);
+                        }}
+                        crmTheme={classes.crmTheme}
+                      />
+                      <Fragment>
+                        <InsurancesDetails
+                          key={1}
+                          isNumber={0}
+                          insurerData={{
+                            policyNumber: '(000000)',
+                            frequency: ' ___________________',
+                            premium: '$0.00',
+                            link: '',
+                          }}
+                          insurerId={insurer.insurerId}
+                        />
+                      </Fragment>
+                    </Fragment>
+                  )}
+                </Paper>
+              </div>
+              <div ref={messagesEndRef} />
+            </Fragment>
+          ))}
+        {!succededResultList.length && !unSuccededResultList.length && (
           <EmptyWrapper onStartScrapingAction={onStartScraping} />
         )}
       </div>

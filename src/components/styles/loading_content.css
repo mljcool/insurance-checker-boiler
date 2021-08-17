@@ -1,0 +1,10 @@
+.place_img_loading {
+  display: flex;
+  align-items: center;
+}
+.place_img_loading .retreive_label {
+  margin-left: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #505050;
+}

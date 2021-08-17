@@ -40,13 +40,13 @@ const InsurerHeader = () => {
 const InsurerFooter = ({ state, handleChange }) => {
   return (
     <div className='insurer_list_footer'>
-      <span>Auto check all</span>
-      <PurpleSwitch
+      <span> </span>
+      {/* <PurpleSwitch
         checked={state.checkedB}
         onChange={handleChange}
         size={'small'}
         name='checkedB'
-      />
+      /> */}
     </div>
   );
 };

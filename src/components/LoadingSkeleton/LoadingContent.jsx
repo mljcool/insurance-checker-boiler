@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styles/loading_content.css';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { insurerList } from 'constant/insurers';
 
@@ -23,6 +24,7 @@ const LoadingContent = ({ insurerId, insurerName = '', classes = {} }) => {
         <Skeleton
           animation='wave'
           variant='rect'
+          height={200}
           className={(classes || { media: '' }).media}
         />
       </React.Fragment>

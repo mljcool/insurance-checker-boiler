@@ -36,6 +36,7 @@ let scrapingListPayLoad = [];
 let globalConnectedInsurer = [];
 let globalClientList = [];
 let globalSuccededList = [];
+let globalUnSuccededList = [];
 let globalJwtToken = '';
 let globalBrowserId = '';
 
@@ -44,6 +45,7 @@ const Popup = () => {
   const [isSearching, setSearch] = useState(false);
   const [viewAll, setViewAll] = useState(false);
   const [succededResultList, setSuccededResultList] = useState([]);
+  const [unSuccededResultList, setUnSuccededResultList] = useState([]);
   const [resultList, setResultList] = useState([]);
   const [clientList, setClientList] = useState([]);
   const [connectedInsurer, setConnectedInsurer] = useState([]);
@@ -122,43 +124,90 @@ const Popup = () => {
       })
     );
 
-    // setTimeout(() => {
-    //   setSuccededResultList(
-    //     globalSuccededList.map((insurance) => {
-    //       if (insurance.syncID === syncID) {
-    //         insurance.isSync = false;
-    //       }
-    //       return insurance;
-    //     })
-    //   );
-    // }, 2000);
+    setTimeout(() => {
+      setSuccededResultList(
+        globalSuccededList.map((insurance) => {
+          if (insurance.syncID === syncID) {
+            insurance.isSync = false;
+          }
+          return insurance;
+        })
+      );
+    }, 2000);
+  };
+
+  const onResyncResultUnsuccessData = (insuranceDetails = {}) => {
+    const { syncID } = insuranceDetails;
+    setUnSuccededResultList(
+      globalUnSuccededList.map((insurance) => {
+        if (insurance.syncID === syncID) {
+          insurance.isSync = true;
+        }
+        return insurance;
+      })
+    );
+
+    setTimeout(() => {
+      setUnSuccededResultList(
+        globalUnSuccededList.map((insurance) => {
+          if (insurance.syncID === syncID) {
+            insurance.isSync = false;
+          }
+          return insurance;
+        })
+      );
+    }, 2000);
   };
 
   const onStartScraping = () => {
     setSearch(true);
-    Promise.all(globalConnectedInsurer).then((responses = []) => {
-      if (responses.length) {
-        console.log('>>>>>>>>>>', responses);
-        const getSuccededData = responses
-          .filter((scrapeData) => scrapeData.succeeded)
-          .map((dataResult) => {
-            return dataResult.data;
-          })
-          .map((arrange) => {
-            return arrange.clients.map((client) => {
-              client.insurerId = arrange.insurerId;
-              client.syncID = setSyncID();
-              client.isSync = false;
-              return client;
-            });
-          })
-          .flat();
-        setSuccededResultList(getSuccededData);
-        globalSuccededList = getSuccededData;
-        console.log('getSuccededData', getSuccededData);
-      }
-      setSearch(false);
-    });
+    Promise.all(globalConnectedInsurer)
+      .then((responses = []) => {
+        if (!!responses.length) {
+          console.log('>>>>>>>>>>', responses);
+          setSearch(false);
+          const getSuccededData = responses
+            .filter((scrapeData) => scrapeData.succeeded)
+            .map((dataResult) => {
+              return dataResult.data;
+            })
+            .map((arrange) => {
+              return arrange.clients.map((client) => {
+                client.insurerId = arrange.insurerId;
+                client.syncID = setSyncID();
+                client.isSync = false;
+                return client;
+              });
+            })
+            .flat();
+          setSuccededResultList(getSuccededData);
+          globalSuccededList = getSuccededData;
+          console.log('getSuccededData', getSuccededData);
+
+          // unsucceededData
+          const getUnSuccededData = responses
+            .filter((scrapeData) => !scrapeData.succeeded)
+            .map((dataResult) => {
+              return dataResult.data;
+            })
+            .map((arrange) => {
+              return arrange.clients.map((client) => {
+                client.insurerId = arrange.insurerId;
+                client.syncID = setSyncID();
+                client.isSync = false;
+                return client;
+              });
+            })
+            .flat();
+          setUnSuccededResultList(getUnSuccededData);
+          globalUnSuccededList = getUnSuccededData;
+          console.log('globalUnSuccededList', globalUnSuccededList);
+        }
+      })
+      .catch((error) => {
+        console.log('error', error);
+        setSearch(false);
+      });
   };
 
   const onUpdateInsuranceList = (dataInsured = []) => {
@@ -183,13 +232,17 @@ const Popup = () => {
   const onGetAllConnectedProviders = (browserId) => {
     setSearch(true);
     setTimeout(() => {
-      getProviderConnections(browserId).then((response) => {
-        const { succeeded, data } = response;
-        setConnectedInsurer((data || {}).insurerAcount);
-        onUpdateInsuranceList((data || {}).insurerAcount);
-        setSearch(false);
-        console.log('getProviderConnections', response);
-      });
+      getProviderConnections(browserId)
+        .then((response) => {
+          const { succeeded, data } = response;
+          setConnectedInsurer((data || {}).insurerAcount);
+          onUpdateInsuranceList((data || {}).insurerAcount);
+          setSearch(false);
+          console.log('getProviderConnections', response);
+        })
+        .catch((error) => {
+          console.log('error', error);
+        });
     }, 100);
   };
 
@@ -259,8 +312,10 @@ const Popup = () => {
         onFilterSelectedClient,
         onStartScraping,
         onRegetConnectedProviders,
+        onResyncResultUnsuccessData,
         onFilteInsurances,
         onResyncResult,
+        unSuccededResultList,
         succededResultList,
         connectedInsurer,
         isSearching,

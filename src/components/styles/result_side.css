@@ -40,6 +40,7 @@
 }
 
 .main_result_list {
+  width: -webkit-fill-available;
   height: auto;
   margin: 1rem;
 }
@@ -48,6 +49,19 @@
   background: #f4f1f8;
   border-radius: 9px !important;
   padding: 10px !important;
+}
+
+.separator_no_result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 5px;
+}
+.separator_no_result .no_result_label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #565656;
 }
 
 .paper_client_details {
