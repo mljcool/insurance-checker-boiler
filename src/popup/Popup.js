@@ -20,7 +20,12 @@ import {
   GetStorageAdviser,
   GetStorageToken,
 } from 'PhaseTwo/storage';
-import { filterSatus, setSyncID } from 'PhaseTwo/util';
+import {
+  filterSatus,
+  setSyncID,
+  getInsurerNameAPIFormat,
+  createNotify,
+} from 'PhaseTwo/util';
 
 const WrapperPapper = ({ isToggle = false, children }) => {
   return (
@@ -114,7 +119,16 @@ const Popup = () => {
   };
 
   const onResyncResult = (insuranceDetails = {}) => {
-    const { syncID } = insuranceDetails;
+    const {
+      syncID,
+      insurerId,
+      birthday,
+      clientId,
+      firstName,
+      lastName,
+      email,
+    } = insuranceDetails;
+    console.log('onResyncResult', insuranceDetails);
     setSuccededResultList(
       globalSuccededList.map((insurance) => {
         if (insurance.syncID === syncID) {
@@ -124,7 +138,43 @@ const Popup = () => {
       })
     );
 
-    setTimeout(() => {
+    const resyncPayLoad = {
+      BrowserId: globalBrowserId,
+      InsurerId: insurerId,
+      InsurerName: getInsurerNameAPIFormat(insurerId),
+      Email: email,
+      AccessToken: globalJwtToken,
+      Clients: [
+        {
+          ClientId: clientId,
+          FirstName: firstName,
+          LastName: lastName,
+          Birthday: birthday,
+        },
+      ],
+    };
+    // createNotify(`${firstName} ${lastName}`);
+    onStartScrapingAPI(resyncPayLoad).then((response) => {
+      console.log('onStartScrapingAPI_onResyncResult', response);
+      const { succeeded, data } = response;
+      if (succeeded) {
+        console.log('here>>>>>>.');
+        setSuccededResultList(
+          globalSuccededList.map((insurance) => {
+            if (insurance.syncID === syncID) {
+              insurance.isSync = false;
+
+              return {
+                ...insurance,
+                ...data.clients[0],
+              };
+            } else {
+              return insurance;
+            }
+          })
+        );
+        return;
+      }
       setSuccededResultList(
         globalSuccededList.map((insurance) => {
           if (insurance.syncID === syncID) {
@@ -133,11 +183,21 @@ const Popup = () => {
           return insurance;
         })
       );
-    }, 2000);
+    });
   };
 
   const onResyncResultUnsuccessData = (insuranceDetails = {}) => {
-    const { syncID } = insuranceDetails;
+    const {
+      syncID,
+      insurerId,
+      birthday,
+      clientId,
+      firstName,
+      lastName,
+      email,
+    } = insuranceDetails;
+
+    console.log('onResyncResultUnsuccessData', insuranceDetails);
     setUnSuccededResultList(
       globalUnSuccededList.map((insurance) => {
         if (insurance.syncID === syncID) {
@@ -147,7 +207,23 @@ const Popup = () => {
       })
     );
 
-    setTimeout(() => {
+    const resyncPayLoad = {
+      BrowserId: globalBrowserId,
+      InsurerId: insurerId,
+      InsurerName: getInsurerNameAPIFormat(insurerId),
+      Email: email,
+      AccessToken: globalJwtToken,
+      Clients: [
+        {
+          ClientId: clientId,
+          FirstName: firstName,
+          LastName: lastName,
+          Birthday: birthday,
+        },
+      ],
+    };
+    onStartScrapingAPI(resyncPayLoad).then((response) => {
+      console.log('onResyncResultUnsuccessData', response);
       setUnSuccededResultList(
         globalUnSuccededList.map((insurance) => {
           if (insurance.syncID === syncID) {
@@ -156,7 +232,7 @@ const Popup = () => {
           return insurance;
         })
       );
-    }, 2000);
+    });
   };
 
   const onStartScraping = () => {
@@ -174,6 +250,7 @@ const Popup = () => {
             .map((arrange) => {
               return arrange.clients.map((client) => {
                 client.insurerId = arrange.insurerId;
+                client.email = arrange.email;
                 client.syncID = setSyncID();
                 client.isSync = false;
                 return client;
@@ -193,6 +270,7 @@ const Popup = () => {
             .map((arrange) => {
               return arrange.clients.map((client) => {
                 client.insurerId = arrange.insurerId;
+                client.email = arrange.email;
                 client.syncID = setSyncID();
                 client.isSync = false;
                 return client;

@@ -30,6 +30,7 @@
   },
   "permissions": [
     "storage",
+    "notifications",
     "unlimitedStorage",
     "https://mycrm.nzfsg.co.nz/*",
     "https://sit-mycrm.nzfsg.co.nz/*"

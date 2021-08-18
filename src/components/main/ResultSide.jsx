@@ -258,7 +258,7 @@ const ResultSide = () => {
                       />
                       {!!insurer.policies &&
                         insurer.policies.map((policy, idx) => (
-                          <Fragment>
+                          <Fragment key={idx}>
                             <InsurancesDetails
                               key={idx}
                               insurerData={policy}
