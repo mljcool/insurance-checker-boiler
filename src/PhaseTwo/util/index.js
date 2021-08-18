@@ -37,25 +37,22 @@ export const getInsurerNameAPIFormat = (insurerId) => {
 
 export const clearStatusNotifications = () => {
   let mySetTimeout = null;
-
   mySetTimeout = setTimeout(() => {
-    const clearing = browser.notifications.clear('ON');
-    clearing.then(() => {
-      console.log('cleared');
-    });
+    chrome.notifications.clear('ON', (status) => {});
+    chrome.notifications.clear('SYNC_STATUS', (status) => {});
     clearTimeout(mySetTimeout);
-  }, 3000);
+  }, 1600);
 };
 
 export const createNotify = (message) => {
   const opt = {
     type: 'basic',
-    title: 'Insurance Checker Re-fetching ',
+    title: 'Insurance Checker',
     message,
     priority: 1,
-    iconUrl: './icons/icon48.png',
+    iconUrl: 'img/icons/icon48.png',
   };
-
-  browser.notifications.create('ON', opt);
-  clearStatusNotifications();
+  chrome.notifications.create('ON', opt, (id) => {
+    clearStatusNotifications();
+  });
 };

@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginForm = ({ selectedInsurer, onBackToList }) => {
   const classes = useStyles();
-  const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
@@ -40,7 +39,6 @@ const LoginForm = ({ selectedInsurer, onBackToList }) => {
     setIsConnecting(true);
     const { firstName, lastName } = adviserData;
     postConnectToInsurers({
-      email,
       firstName,
       lastName,
       userName,
@@ -82,16 +80,6 @@ const LoginForm = ({ selectedInsurer, onBackToList }) => {
           <span>Login to your {selectedInsurer.providerName} account</span>
         </div>
         <form className={classes.root} noValidate autoComplete='off'>
-          <TextField
-            id='outlined-basic'
-            label='Email'
-            variant='outlined'
-            type='email'
-            fullWidth
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
           <TextField
             id='outlined-basic'
             label='Username'

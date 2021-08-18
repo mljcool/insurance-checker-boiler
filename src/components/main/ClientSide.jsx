@@ -10,6 +10,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple, green } from '@material-ui/core/colors';
 import Loader from '../Loader';
+import Alert from '@material-ui/lab/Alert';
 import { AppContext } from 'context/AppContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +37,10 @@ const ClientFooter = () => {
   const classes = useStyles();
   return (
     <div className='client_footer'>
-      <span>Re-sync all client data</span>
-      <IconButton color='primary' aria-label='add to shopping cart'>
+      <span>{''}</span>
+      {/* <IconButton color='primary' aria-label='add to shopping cart'>
         <RefreshIcon className={classes.crmTheme} size={'small'} />
-      </IconButton>
+      </IconButton> */}
     </div>
   );
 };
@@ -101,7 +102,13 @@ const ClientSide = () => {
             </Fragment>
           )}
         </List>
+        {!!clientList.lenght && (
+          <Alert severity='warning'>
+            unable to acquire the myCRM client API try to reload the page.
+          </Alert>
+        )}
       </div>
+
       <ClientFooter />
     </div>
   );

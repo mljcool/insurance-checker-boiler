@@ -86,7 +86,7 @@ const InsurersSide = () => {
                 >
                   <div className='insurer_icon' key={insurer.insurerId}>
                     <img src={`img/insurers/${insurer.insurerId}.png`} />
-                    <span>{insurer.email}</span>
+                    <span>{insurer.userName}</span>
                   </div>
                 </ListItem>
                 <Divider />

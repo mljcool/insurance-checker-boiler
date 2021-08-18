@@ -9,7 +9,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import { AppContext } from 'context/AppContext';
-import { onDeleteConnections } from 'PhaseTwo/services/connect';
+import {
+  onDeleteConnections,
+  onActivateConnections,
+} from 'PhaseTwo/services/connect';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles({
   root: {
@@ -27,13 +32,13 @@ const MenuConnect = ({ providerData, browserId, onRefreshData }) => {
   const handleClose = (isDelete) => {
     setAnchorEl(null);
     if (isDelete) {
-      const { email, insurerName, insurerId } = providerData;
+      const { userName, insurerName, insurerId } = providerData;
       const newData = {
         browserId: browserId,
         insurerAcount: {
           insurerId: insurerId,
           insurerName: insurerName,
-          email: email,
+          UserName: userName,
         },
       };
       onDeleteConnections(newData).then(({ succeeded }) => {
@@ -44,6 +49,24 @@ const MenuConnect = ({ providerData, browserId, onRefreshData }) => {
       });
       return;
     }
+
+    const activateData = {
+      browserId: browserId,
+      insurerAcount: {
+        InsurerId: insurerId,
+        insurerName: insurerName,
+        UserName: userName,
+        IsActive: false,
+      },
+    };
+
+    onActivateConnections(activateData).then(({ succeeded }) => {
+      console.log('onActivateConnections', response);
+      if (succeeded) {
+        onRefreshData();
+      }
+    });
+
     console.log('event');
   };
 
@@ -110,7 +133,7 @@ const Login = ({ selectedInsurer = [] }) => {
                   <img src={`img/insurers/${data.insurerId}.png`} />
                   <div className='connect_details'>
                     <span>
-                      {data.firstName} {data.lastName} - ( {data.email})
+                      {data.firstName} {data.lastName} - ( {data.userName})
                     </span>
                     <span>
                       Date connected:{' '}
@@ -119,6 +142,16 @@ const Login = ({ selectedInsurer = [] }) => {
                       )}
                     </span>
                   </div>
+                  {data.isActive && (
+                    <CheckCircleIcon
+                      style={{
+                        fontSize: '20px',
+                        color: green[500],
+                        marginLeft: '1rem',
+                      }}
+                    />
+                  )}
+
                   <MenuConnect
                     providerData={data}
                     browserId={browserId}

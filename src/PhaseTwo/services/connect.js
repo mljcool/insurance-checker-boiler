@@ -6,7 +6,6 @@ export const getProviderConnections = (browserId = '') => {
 
 export const postConnectToInsurers = (params = {}) => {
   const {
-    email,
     userName,
     password,
     providerNameLowerCases,
@@ -28,11 +27,15 @@ export const postConnectToInsurers = (params = {}) => {
       FirstName: firstName,
       LastName: lastName,
       Title: 'Adviser',
-      Email: email,
+      IsActive: true,
     },
   };
 
   return postMethod('setup/set-credential', newDetails);
+};
+
+export const onActivateConnections = (params = {}) => {
+  return postMethod('setup/isactivate-credential', params);
 };
 
 export const onDeleteConnections = (params = {}) => {

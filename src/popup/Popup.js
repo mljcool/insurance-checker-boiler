@@ -126,7 +126,7 @@ const Popup = () => {
       clientId,
       firstName,
       lastName,
-      email,
+      userName,
     } = insuranceDetails;
     console.log('onResyncResult', insuranceDetails);
     setSuccededResultList(
@@ -142,7 +142,7 @@ const Popup = () => {
       BrowserId: globalBrowserId,
       InsurerId: insurerId,
       InsurerName: getInsurerNameAPIFormat(insurerId),
-      Email: email,
+      UserName: userName,
       AccessToken: globalJwtToken,
       Clients: [
         {
@@ -153,7 +153,9 @@ const Popup = () => {
         },
       ],
     };
-    // createNotify(`${firstName} ${lastName}`);
+
+    createNotify(`Checking: ${firstName} ${lastName}`);
+
     onStartScrapingAPI(resyncPayLoad).then((response) => {
       console.log('onStartScrapingAPI_onResyncResult', response);
       const { succeeded, data } = response;
@@ -194,7 +196,7 @@ const Popup = () => {
       clientId,
       firstName,
       lastName,
-      email,
+      userName,
     } = insuranceDetails;
 
     console.log('onResyncResultUnsuccessData', insuranceDetails);
@@ -211,7 +213,7 @@ const Popup = () => {
       BrowserId: globalBrowserId,
       InsurerId: insurerId,
       InsurerName: getInsurerNameAPIFormat(insurerId),
-      Email: email,
+      UserName: userName,
       AccessToken: globalJwtToken,
       Clients: [
         {
@@ -222,8 +224,30 @@ const Popup = () => {
         },
       ],
     };
+
+    createNotify(`Checking: ${firstName} ${lastName}`);
+
     onStartScrapingAPI(resyncPayLoad).then((response) => {
       console.log('onResyncResultUnsuccessData', response);
+      const { succeeded, data } = response;
+      if (succeeded) {
+        console.log('here>>>>>>.');
+        setSuccededResultList(
+          globalSuccededList.map((insurance) => {
+            if (insurance.syncID === syncID) {
+              insurance.isSync = false;
+
+              return {
+                ...insurance,
+                ...data.clients[0],
+              };
+            } else {
+              return insurance;
+            }
+          })
+        );
+        return;
+      }
       setUnSuccededResultList(
         globalUnSuccededList.map((insurance) => {
           if (insurance.syncID === syncID) {
@@ -236,6 +260,7 @@ const Popup = () => {
   };
 
   const onStartScraping = () => {
+    createNotify('is already in progress');
     setSearch(true);
     Promise.all(globalConnectedInsurer)
       .then((responses = []) => {
@@ -250,7 +275,7 @@ const Popup = () => {
             .map((arrange) => {
               return arrange.clients.map((client) => {
                 client.insurerId = arrange.insurerId;
-                client.email = arrange.email;
+                client.userName = arrange.userName;
                 client.syncID = setSyncID();
                 client.isSync = false;
                 return client;
@@ -270,7 +295,7 @@ const Popup = () => {
             .map((arrange) => {
               return arrange.clients.map((client) => {
                 client.insurerId = arrange.insurerId;
-                client.email = arrange.email;
+                client.userName = arrange.userName;
                 client.syncID = setSyncID();
                 client.isSync = false;
                 return client;
@@ -290,19 +315,21 @@ const Popup = () => {
 
   const onUpdateInsuranceList = (dataInsured = []) => {
     console.log('onUpdateInsuranceList', dataInsured);
-    dataInsured.forEach((data) => {
-      const properPayload = {
-        BrowserId: globalBrowserId,
-        InsurerId: data.insurerId,
-        InsurerName: data.insurerName,
-        Email: data.email,
-        AccessToken: globalJwtToken,
-        Clients: globalClientList,
-      };
-      scrapingListPayLoad = properPayload;
-      globalConnectedInsurer.push(onStartScrapingAPI(scrapingListPayLoad));
-      console.log('properPayload', properPayload);
-    });
+    dataInsured
+      .filter((insured) => insured.isActive)
+      .forEach((data) => {
+        const properPayload = {
+          BrowserId: globalBrowserId,
+          InsurerId: data.insurerId,
+          InsurerName: data.insurerName,
+          UserName: data.userName,
+          AccessToken: globalJwtToken,
+          Clients: globalClientList,
+        };
+        scrapingListPayLoad = properPayload;
+        globalConnectedInsurer.push(onStartScrapingAPI(scrapingListPayLoad));
+        console.log('properPayload', properPayload);
+      });
 
     console.log('globalConnectedInsurer', globalConnectedInsurer);
   };
@@ -312,10 +339,13 @@ const Popup = () => {
     setTimeout(() => {
       getProviderConnections(browserId)
         .then((response) => {
+          setSearch(false);
           const { succeeded, data } = response;
           setConnectedInsurer((data || {}).insurerAcount);
           onUpdateInsuranceList((data || {}).insurerAcount);
-          setSearch(false);
+          if (data && succeeded) {
+            onStartScraping();
+          }
           console.log('getProviderConnections', response);
         })
         .catch((error) => {

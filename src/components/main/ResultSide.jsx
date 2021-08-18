@@ -13,7 +13,8 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Loader from '../Loader';
 import { AppContext } from 'context/AppContext';
-import RefreshIcon from '@material-ui/icons/Refresh';
+import Alert from '@material-ui/lab/Alert';
+
 import LoadingContent from '../LoadingSkeleton/LoadingContent';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -72,12 +73,18 @@ const ResultHeader = () => {
   );
 };
 
-const ResultsFooter = () => {
+const ResultsFooter = ({ onStartScrapingAction }) => {
   const classes = useStyles();
   return (
     <div className='result_list_footer'>
       <span>Re-check all</span>
-      <IconButton color='primary' aria-label='reysnc data'>
+      <IconButton
+        color='primary'
+        aria-label='reysnc data'
+        onClick={() => {
+          onStartScrapingAction();
+        }}
+      >
         <RestorePageIcon className={classes.crmTheme} />
       </IconButton>
     </div>
@@ -175,7 +182,7 @@ const EmptyWrapper = ({ onStartScrapingAction }) => {
   return (
     <div className='empty_wrapper'>
       <img className='empty_img_placeholder' src={'img/Group5.svg'} />
-      <Button
+      {/* <Button
         variant='contained'
         color='primary'
         className={classes.button}
@@ -185,7 +192,7 @@ const EmptyWrapper = ({ onStartScrapingAction }) => {
         }}
       >
         Test Now
-      </Button>
+      </Button> */}
     </div>
   );
 };
@@ -221,6 +228,7 @@ const ResultSide = () => {
     succededResultList,
     unSuccededResultList,
     onResyncResult,
+    clientList,
   } = useContext(AppContext);
   const emptyList = !succededResultList.length;
   const appendClass = emptyList ? 'empty_list' : '';
@@ -278,10 +286,10 @@ const ResultSide = () => {
         {/* unsuccesResultlist */}
         {!!unSuccededResultList.length && (
           <div className='separator_no_result'>
-            <span className='no_result_label'>
+            <Alert severity='info'>
               {unSuccededResultList.length} other insurers did not return any
               results
-            </span>
+            </Alert>
             <div>
               <Button
                 variant='contained'
@@ -353,8 +361,15 @@ const ResultSide = () => {
         {!succededResultList.length && !unSuccededResultList.length && (
           <EmptyWrapper onStartScrapingAction={onStartScraping} />
         )}
+        {!clientList.length && (
+          <div className='empty_client_list'>
+            <Alert severity='info'>
+              Extension can't detect any clients try to reload the page.
+            </Alert>
+          </div>
+        )}
       </div>
-      <ResultsFooter />
+      <ResultsFooter onStartScrapingAction={onStartScraping} />
     </div>
   );
 };
