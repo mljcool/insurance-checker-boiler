@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "manifest_version": 2,
-  "name": "MyCRM Inurance Checker",
+  "name": "MyCRM Insurance Checker",
   "description": "Insurance Checker for Firefox and Chrome extensions.",
 
   "content_scripts": [
