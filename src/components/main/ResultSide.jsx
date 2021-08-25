@@ -243,7 +243,7 @@ const ResultSide = () => {
         {hasIssueClientData && (
           <Alert severity='warning' className='client_alert'>
             There was an error on clients data. Please check the follow required
-            data (First and Last Name and Birthday)
+            data (First,Last Name and Birthday)
           </Alert>
         )}
         {!!succededResultList.length &&
