@@ -150,24 +150,26 @@ const InsurancesDetails = ({ insurerData, insurerId, isNumber }) => {
 const CoverListItem = ({ products }) => {
   return (
     products.length &&
-    products.map((product, index) => (
-      <div className='client_cover_sections' key={index}>
-        <div className='ic_card_cover_label'>
-          <img
-            width='18px'
-            height='18px'
-            src={`img/benefit_icons/${removeSpaces(product.productName)}.svg`}
-            onError={(e) => {
-              e.target.src = 'img/benefit_icons/circle-svgrepo-com.svg';
-            }}
-          />
-          <span>{product.productName}</span>
+    products
+      .filter((product) => product.amount)
+      .map((product, index) => (
+        <div className='client_cover_sections' key={index}>
+          <div className='ic_card_cover_label'>
+            <img
+              width='18px'
+              height='18px'
+              src={`img/benefit_icons/${removeSpaces(product.productName)}.svg`}
+              onError={(e) => {
+                e.target.src = 'img/benefit_icons/circle-svgrepo-com.svg';
+              }}
+            />
+            <span>{product.productName}</span>
+          </div>
+          <div className='cover_detail'>
+            <div className='ic_card_cover_amount'>{product.amount}</div>
+          </div>
         </div>
-        <div className='cover_detail'>
-          <div className='ic_card_cover_amount'>{product.amount}</div>
-        </div>
-      </div>
-    ))
+      ))
   );
 };
 
@@ -223,6 +225,7 @@ const ResultSide = () => {
 
   const {
     isSearching,
+    hasIssueClientData,
     onResyncResultUnsuccessData,
     onStartScraping,
     succededResultList,
@@ -237,6 +240,12 @@ const ResultSide = () => {
       <ResultHeader />
       <Loader isLoading={isSearching} />
       <div className={`result_list list_wrapper ${appendClass}`}>
+        {hasIssueClientData && (
+          <Alert severity='warning' className='client_alert'>
+            There was an error on clients data. Please check the follow required
+            data (First and Last Name and Birthday)
+          </Alert>
+        )}
         {!!succededResultList.length &&
           succededResultList.map((insurer, index) => (
             <Fragment key={index}>

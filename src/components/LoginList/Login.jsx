@@ -42,7 +42,7 @@ const MenuConnect = ({ providerData, browserId, onRefreshData }) => {
         },
       };
       onDeleteConnections(newData).then(({ succeeded }) => {
-        console.log('onDeleteConnections', response);
+        // console.log('onDeleteConnections', response);
         if (succeeded) {
           onRefreshData();
         }

@@ -46,6 +46,7 @@ let globalJwtToken = '';
 let globalBrowserId = '';
 
 const Popup = () => {
+  const [hasIssueClientData, setHasIssueClientData] = useState(false);
   const [isToggle, setIsToggle] = useState(false);
   const [isSearching, setSearch] = useState(false);
   const [viewAll, setViewAll] = useState(false);
@@ -156,7 +157,7 @@ const Popup = () => {
 
     createNotify(`Checking: ${firstName} ${lastName}`);
 
-    onStartScrapingAPI(resyncPayLoad).then((response) => {
+    onStartScrapingAPI(resyncPayLoad, true).then((response) => {
       console.log('onStartScrapingAPI_onResyncResult', response);
       const { succeeded, data } = response;
       if (succeeded) {
@@ -227,7 +228,7 @@ const Popup = () => {
 
     createNotify(`Checking: ${firstName} ${lastName}`);
 
-    onStartScrapingAPI(resyncPayLoad).then((response) => {
+    onStartScrapingAPI(resyncPayLoad, true).then((response) => {
       console.log('onResyncResultUnsuccessData', response);
       const { succeeded, data } = response;
       if (succeeded) {
@@ -282,9 +283,15 @@ const Popup = () => {
               });
             })
             .flat();
-          setSuccededResultList(getSuccededData);
-          globalSuccededList = getSuccededData;
-          console.log('getSuccededData', getSuccededData);
+
+          if (getSuccededData.length) {
+            const polish = getSuccededData.filter((client) => client.policies);
+            globalSuccededList = [];
+            setSuccededResultList([]);
+            setSuccededResultList(polish);
+            globalSuccededList = polish;
+            console.log('getSuccededData', polish);
+          }
 
           // unsucceededData
           const getUnSuccededData = responses
@@ -302,9 +309,17 @@ const Popup = () => {
               });
             })
             .flat();
-          setUnSuccededResultList(getUnSuccededData);
-          globalUnSuccededList = getUnSuccededData;
-          console.log('globalUnSuccededList', globalUnSuccededList);
+          getUnSuccededData.push(
+            getSuccededData.find((client) => !client.policies)
+          );
+          if (getUnSuccededData.length) {
+            globalUnSuccededList = [];
+            setUnSuccededResultList([]);
+            console.log('clear_globalUnSuccededList', getUnSuccededData);
+            setUnSuccededResultList(getUnSuccededData);
+            globalUnSuccededList = getUnSuccededData;
+            console.log('globalUnSuccededList', globalUnSuccededList);
+          }
         }
       })
       .catch((error) => {
@@ -341,6 +356,8 @@ const Popup = () => {
         .then((response) => {
           setSearch(false);
           const { succeeded, data } = response;
+          setConnectedInsurer([]);
+          onUpdateInsuranceList([]);
           setConnectedInsurer((data || {}).insurerAcount);
           onUpdateInsuranceList((data || {}).insurerAcount);
           if (data && succeeded) {
@@ -367,6 +384,15 @@ const Popup = () => {
         LastName: client.lastName,
         Birthday: client.birthday,
       }));
+      const check = clientList.some(
+        (clients) =>
+          !clients.ClientId ||
+          !clients.FirstName ||
+          !clients.LastName ||
+          !clients.Birthday
+      );
+      setHasIssueClientData(check);
+      console.log('setHasIssueClientData', check);
       console.log('clientList', globalClientList);
     });
   };
@@ -427,6 +453,7 @@ const Popup = () => {
         succededResultList,
         connectedInsurer,
         isSearching,
+        hasIssueClientData,
         resultList,
         clientList,
         viewAll,

@@ -52,6 +52,9 @@ export const onDisconnectInsurer = (params = {}) => {
   return postMethod('setup/delete-credential', details);
 };
 
-export const onStartScrapingAPI = (dataParams = []) => {
-  return postMethod('insurer/search-clients', dataParams);
+export const onStartScrapingAPI = (dataParams = [], isResync = false) => {
+  const urlIsResync = 'insurer/search-clients?isResync=' + isResync;
+  const urlIsNormal = 'insurer/search-clients';
+
+  return postMethod(isResync ? urlIsResync : urlIsNormal, dataParams);
 };
