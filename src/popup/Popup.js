@@ -384,7 +384,7 @@ const Popup = () => {
         LastName: client.lastName,
         Birthday: client.birthday,
       }));
-      const check = clientList.some(
+      const check = globalClientList.some(
         (clients) =>
           !clients.ClientId ||
           !clients.FirstName ||
