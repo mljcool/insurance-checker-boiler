@@ -23,7 +23,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import parse from 'html-react-parser';
 
 const getInsurerConnected = insurerList.filter(
   (insurer) => insurer.isConnected
