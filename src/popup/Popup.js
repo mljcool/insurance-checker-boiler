@@ -263,10 +263,25 @@ const Popup = () => {
   const onStartScraping = () => {
     createNotify('is already in progress');
     setSearch(true);
+
     Promise.all(globalConnectedInsurer)
       .then((responses = []) => {
         if (!!responses.length) {
           console.log('>>>>>>>>>>', responses);
+
+          const uniqueArray = (a) =>
+            a.filter((e, i) => {
+              return (
+                a.findIndex((x) => {
+                  return (
+                    x.clientId == e.clientId &&
+                    x.insurerId == e.insurerId &&
+                    x.userName == e.userName
+                  );
+                }) == i
+              );
+            });
+
           setSearch(false);
           const getSuccededData = responses
             .filter((scrapeData) => scrapeData.succeeded)
@@ -285,9 +300,9 @@ const Popup = () => {
             .flat();
 
           if (getSuccededData.length) {
-            const polish = getSuccededData.filter((client) => client.policies);
-            globalSuccededList = [];
-            setSuccededResultList([]);
+            const newSetOFclients = uniqueArray(getSuccededData);
+            const polish = newSetOFclients.filter((client) => client.policies);
+
             setSuccededResultList(polish);
             globalSuccededList = polish;
             console.log('getSuccededData', polish);
@@ -309,16 +324,23 @@ const Popup = () => {
               });
             })
             .flat();
-          getUnSuccededData.push(
-            getSuccededData.find((client) => !client.policies)
-          );
+
+          // force to add if product is empty
+          if (getSuccededData.length) {
+            const newSetOFclients = uniqueArray(getSuccededData);
+            getUnSuccededData.push(
+              newSetOFclients.find((client) => !client.policies)
+            );
+          }
+
           if (getUnSuccededData.length) {
-            globalUnSuccededList = [];
-            setUnSuccededResultList([]);
             console.log('clear_globalUnSuccededList', getUnSuccededData);
-            setUnSuccededResultList(getUnSuccededData);
-            globalUnSuccededList = getUnSuccededData;
-            console.log('globalUnSuccededList', globalUnSuccededList);
+            const newSetOFclients = uniqueArray(
+              getUnSuccededData.filter((x) => x !== undefined)
+            );
+            setUnSuccededResultList(newSetOFclients);
+            globalUnSuccededList = newSetOFclients;
+            console.log('globalUnSuccededList', newSetOFclients);
           }
         }
       })

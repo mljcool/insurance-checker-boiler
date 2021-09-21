@@ -143,6 +143,19 @@
   display: flex;
   margin-top: 5px;
 }
+.health_labels {
+  display: flex;
+  flex-direction: column;
+}
+.insured_name {
+  font-size: 9px;
+  font-style: italic;
+}
+
+.loading_label {
+  font-size: 9px;
+  font-style: italic;
+}
 
 .cover_detail {
   margin-top: 5px;
@@ -150,4 +163,31 @@
 
 .ic_card_cover_label span {
   margin-left: 4px;
+}
+
+/* loading css */
+.loading_state {
+  display: flex;
+  align-items: center;
+}
+
+.loading_info {
+  font-size: 12px;
+  color: #fbf04b;
+}
+
+.client_top_details {
+  position: sticky;
+  top: 0;
+  background: white;
+  box-shadow: 0px 6px 21px -7px rgba(0, 0, 0, 0.48);
+  -webkit-box-shadow: 0px 6px 21px -7px rgba(0, 0, 0, 0.48);
+  -moz-box-shadow: 0px 6px 21px -7px rgba(0, 0, 0, 0.48);
+  padding: 5px 10px;
+}
+
+.client_top_details > span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #565656;
 }

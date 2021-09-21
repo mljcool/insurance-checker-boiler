@@ -18,6 +18,12 @@ import Alert from '@material-ui/lab/Alert';
 import LoadingContent from '../LoadingSkeleton/LoadingContent';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import InfoIcon from '@material-ui/icons/Info';
+import Tooltip from '@material-ui/core/Tooltip';
+import Chip from '@material-ui/core/Chip';
+import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
+import parse from 'html-react-parser';
 
 const getInsurerConnected = insurerList.filter(
   (insurer) => insurer.isConnected
@@ -147,28 +153,127 @@ const InsurancesDetails = ({ insurerData, insurerId, isNumber }) => {
   );
 };
 
-const CoverListItem = ({ products }) => {
+const HealhtCover = ({ healthCover = [] }) => {
   return (
-    products.length &&
+    !!(healthCover || []).length &&
+    healthCover.map((health, index) => (
+      <div className='client_cover_sections' key={index}>
+        <div className='ic_card_cover_label'>
+          <Tooltip
+            title={`Health Cover insured person: ${health.insuredPerson}`}
+          >
+            <img width='18px' height='18px' src={`img/benefit_icons/hc.svg`} />
+          </Tooltip>
+          <div className='health_labels'>
+            <span>{health.productName}</span>
+            <span className='insured_name'>({health.insuredPerson})</span>
+          </div>
+        </div>
+        <div className='cover_detail'>
+          <Tooltip title={`Excess amount`}>
+            <div className='ic_card_cover_amount'>{health.excess}</div>
+          </Tooltip>
+        </div>
+      </div>
+    ))
+  );
+};
+
+const useStylesTypography = makeStyles((theme) => ({
+  typography: {
+    padding: theme.spacing(2),
+  },
+}));
+const CoverListItem = ({ products = [], insurerDetails = {} }) => {
+  const classes = useStylesTypography();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const clientName = `${(insurerDetails || { firstName }).firstName} ${
+    (insurerDetails || { lastName }).lastName
+  }`;
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  return (
+    !!(products || []).length &&
     products
       .filter((product) => product.amount)
       .map((product, index) => (
-        <div className='client_cover_sections' key={index}>
-          <div className='ic_card_cover_label'>
-            <img
-              width='18px'
-              height='18px'
-              src={`img/benefit_icons/${removeSpaces(product.productName)}.svg`}
-              onError={(e) => {
-                e.target.src = 'img/benefit_icons/circle-svgrepo-com.svg';
-              }}
-            />
-            <span>{product.productName}</span>
+        <Fragment key={index}>
+          <div className='client_cover_sections'>
+            <div className='ic_card_cover_label'>
+              <img
+                width='18px'
+                height='18px'
+                src={`img/benefit_icons/${removeSpaces(
+                  product.productName
+                )}.svg`}
+                onError={(e) => {
+                  e.target.src = 'img/benefit_icons/circle-svgrepo-com.svg';
+                }}
+              />
+              <span>{product.productName}</span>
+              <div className='loading_state'>
+                <span className='loading_label'>
+                  (Loading: {product.loadingFormatted})
+                </span>
+              </div>
+            </div>
+            <div className='cover_detail'>
+              <div className='ic_card_cover_amount'>{product.amount}</div>
+            </div>
           </div>
-          <div className='cover_detail'>
-            <div className='ic_card_cover_amount'>{product.amount}</div>
-          </div>
-        </div>
+          {!!product.exclusion && (
+            <Fragment>
+              <Chip
+                icon={
+                  <InfoIcon
+                    className='loading_info'
+                    style={{ color: '#edab26' }}
+                  />
+                }
+                label='Exclusion'
+                size='small'
+                onClick={handleClick}
+                variant='outlined'
+                style={{
+                  marginTop: 4,
+                }}
+              />
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                style={{
+                  width: '80%',
+                }}
+              >
+                <div className='client_top_details'>
+                  <span>Exclusion: {clientName}</span>
+                </div>
+                <Typography variant='subtitle1' className={classes.typography}>
+                  {product.exclusion}
+                </Typography>
+              </Popover>
+            </Fragment>
+          )}
+        </Fragment>
       ))
   );
 };
@@ -235,6 +340,7 @@ const ResultSide = () => {
   } = useContext(AppContext);
   const emptyList = !succededResultList.length;
   const appendClass = emptyList ? 'empty_list' : '';
+
   return (
     <div className='result_side'>
       <ResultHeader />
@@ -282,7 +388,11 @@ const ResultSide = () => {
                               insurerId={insurer.insurerId}
                               isNumber={1}
                             />
-                            <CoverListItem products={policy.products} />
+                            <CoverListItem
+                              products={policy.products}
+                              insurerDetails={insurer}
+                            />
+                            <HealhtCover healthCover={policy.healths} />
                           </Fragment>
                         ))}
                     </Fragment>
