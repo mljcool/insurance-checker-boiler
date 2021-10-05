@@ -68,6 +68,27 @@ const interceptMyCRM = () => {
       setJWTtokenStorage(((mytime || {}).accessToken || {}).value);
       getClientInfo(familyId);
       getAdviserInfo();
+
+      chrome.storage.local.get(['chromeId'], function(result) {
+        console.log('Value currently is ' + result.chromeId);
+        localStorage.setItem('chromeId', result.chromeId);
+      });
+
+      // chrome.storage.local.get('chromeId').then((response) => {
+      //   console.log(`Chrome Identity has set for this browser`, response);
+      //   // if (!(response || { chromeId: null }).chromeId) {
+      //   //   browser.storage.local
+      //   //     .set({
+      //   //       ['chromeId']: chromeId,
+      //   //     })
+      //   //     .then(() => {
+      //   //       getId(chromeId);
+      //   //       console.log(`Chrome Identity has set for this browser`);
+      //   //     });
+      //   // } else {
+      //   //   getId(response.chromeId);
+      //   // }
+      // });
     }
   });
 };

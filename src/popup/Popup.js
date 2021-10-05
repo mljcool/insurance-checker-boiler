@@ -27,6 +27,8 @@ import {
   createNotify,
 } from 'PhaseTwo/util';
 
+import biri from 'biri';
+
 const WrapperPapper = ({ isToggle = false, children }) => {
   return (
     <Grow in={isToggle}>
@@ -441,22 +443,26 @@ const Popup = () => {
     });
   };
 
-  const coreFunctions = () => {
+  const coreFunctions = (chromeIdNew) => {
     setChromeIdentity((chromeId) => {
-      globalBrowserId = chromeId;
-      setBrowserId(chromeId);
+      // setBrowserId(chromeId);
       getClientList();
       getAdviserData();
       getJWTtokenData();
       getStoreFamilyId();
-      onGetAllConnectedProviders(chromeId);
-      console.log('chromeId', chromeId);
+      onGetAllConnectedProviders(chromeIdNew);
+      console.log('chromeId', chromeIdNew);
       console.log('%c Set Chrome Identity step - 1 success', 'color: #bada55');
     });
   };
 
   useEffect(() => {
-    coreFunctions();
+    biri().then((response) => {
+      globalBrowserId = response;
+      setBrowserId(response);
+      console.log('uniqueId', response);
+      coreFunctions(response);
+    });
   }, []);
 
   return (
