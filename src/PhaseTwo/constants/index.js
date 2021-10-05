@@ -1,4 +1,5 @@
-export const URL_SCRAPING = 'https://policychecker-test.blackfin.tools/';
+// export const URL_SCRAPING = 'https://policychecker-test.blackfin.tools/'; //test
+export const URL_SCRAPING = 'https://policychecker.blackfin.tools/'; // prod
 export const FILTER_TYPES = [
   {
     id: 1,
