@@ -9,7 +9,8 @@
       "matches": [
         "https://mycrm.nzfsg.co.nz/*",
         "https://sit-mycrm.nzfsg.co.nz/*",
-        "https://legacy.sit.mycrm.finance/*"
+        "https://legacy.sit.mycrm.finance/*",
+        "https://mycrm.finance/*"
       ],
       "js": [
         "lib/js/browser-polyfill.js",

@@ -23,8 +23,12 @@ const setInitials = (fname = '', lname = '') => {
    return setNames;
 };
 
+
+// https://mycrm.finance/app/contacts/3165866/summary
 const urlSPliter = () => {
    return new Promise((resolve, reject) => {
+      const PROD = 5,
+      const SIT = 6,
       const url = window.location.href;
       const splitURL = url.split('/');
       const isInContactPage =
@@ -32,7 +36,7 @@ const urlSPliter = () => {
       if (!!splitURL.length && isInContactPage) {
          resolve({
             success: true,
-            familyId: splitURL[6],
+            familyId: splitURL[PROD],
          });
       } else {
          resolve({
